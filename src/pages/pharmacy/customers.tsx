@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 
-import CustomersTable from "../../_components/core/Pharmacy/Customers/CustomersTable";
+import CustomersTable from "../../_components/core/Pharmacy/Customers/index";
 const Customers = () => {
   const [isClient, setIsClient] = useState(false);
 
