@@ -68,7 +68,7 @@ const ServicesTable = () => {
     setOpen(false);
   };
 
-  const handleStatusChange = (id: string, newStatus: string) => {
+  const handleStatusChange = (id: any, newStatus: string) => {
     const data = {
       id: id,
       status: newStatus
