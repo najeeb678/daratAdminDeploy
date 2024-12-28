@@ -1,6 +1,6 @@
 // constants.ts
-import { Services } from "@/types/types";
-export const servicesData: Services[] = [
+
+export const servicesData: any[] = [
    {
      Sr_No: 1,
      SERVICE: "Web Development",
