@@ -1,0 +1,45 @@
+{
+  "name": "darat-admin-panel",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fontsource/raleway": "^5.1.0",
+    "@mui/icons-material": "^6.2.0",
+    "@mui/material": "^6.2.0",
+    "@next/font": "^14.2.15",
+    "@reduxjs/toolkit": "^2.5.0",
+    "axios": "^1.7.9",
+    "chart.js": "^4.4.7",
+    "date-fns": "^4.1.0",
+    "formik": "^2.4.6",
+    "jwt-decode": "^4.0.0",
+    "next": "14.2.16",
+    "otp-input-react": "^0.3.0",
+    "react": "^18",
+    "react-chartjs-2": "^5.2.0",
+    "react-dom": "^18",
+    "react-icons": "^5.4.0",
+    "react-loader-spinner": "^6.1.6",
+    "react-redux": "^9.2.0",
+    "react-toastify": "^10.0.6",
+    "swr": "^2.2.5",
+    "typeface-roboto": "^1.1.13",
+    "yup": "^1.5.0"
+  },
+  "devDependencies": {
+    "@types/date-fns": "^2.5.3",
+    "@types/lodash": "^4.17.13",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "typescript": "^5"
+  }
+}

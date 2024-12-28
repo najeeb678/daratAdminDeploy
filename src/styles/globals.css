@@ -1,0 +1,106 @@
+:root {
+  --font-raleway: "Raleway", sans-serif;
+  --font-inter: "Inter", sans-serif; /* Keep Inter for fallback */
+  --font-avenir: "AvenirMedium", sans-serif;
+  --font-avenirHeavy: "AvenirHeavy", sans-serif;
+  --font-avenirLight: "AvenirLight", sans-serif;
+}
+
+body {
+  font-family: var(--font-raleway), var(--font-avenir), var(--font-inter),
+    sans-serif;
+  background-color: #f5f5f5;
+  color: black;
+}
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700&display=swap");
+
+@font-face {
+  font-family: "AvenirMedium";
+  src: url("/fonts/AvenirMedium.otf") format("truetype");
+  /* font-weight: 400;
+  font-style: normal; */
+}
+
+@font-face {
+  font-family: "AvenirHeavy";
+  src: url("/fonts/AvenirHeavy.otf") format("truetype");
+  /* font-weight: 400;
+  font-style: normal; */
+}
+@font-face {
+  font-family: "AvenirLight";
+  src: url("/fonts/AvenirLTStd-Light.otf");
+}
+@font-face {
+  font-family: "AvenirLT";
+  src: url("/fonts/Avenir Next LT Pro Bold.otf") format("truetype");
+  /* font-weight: 400;
+  font-style: normal; */
+}
+@font-face {
+  font-family: "AvenirBook";
+  src: url("/fonts/AvenirLTStd-Book.otf") format("truetype");
+  /* font-weight: 400;
+  font-style: normal; */
+}
+@font-face {
+  font-family: "AvenirLight";
+  src: url("/fonts/AvenirLight.otf") format("truetype");
+  /* font-weight: 400;
+  font-style: normal; */
+}
+
+body {
+  font-family: "Raleway", sans-serif;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+table,
+th,
+td {
+  font-family: var(--font-inter), sans-serif !important; /* Use !important as a last resort */
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-raleway), sans-serif;
+}
+
+.avenir-medium-text {
+  font-family: var(--font-avenir-medium), sans-serif;
+}
+
+.avenir-heavy-text {
+  font-family: var(--font-avenir-heavy), sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+.error-message {
+  color: red;
+  font-size: 0.775rem; /* Adjust size as needed */
+  margin-top: 0.25rem;
+  font-weight: 400;
+}
+
+input[data-testid="input"] {
+  width: 70px !important; /* Set the width */
+  height: 60px !important; /* Set the height */
+  text-align: center; /* Center the text */
+  margin-right: 8px !important; /* Space between inputs */
+  border: 1px solid #ccc; /* Optional, for border styling */
+  border-radius: 4px; /* Optional, for rounded corners */
+}
