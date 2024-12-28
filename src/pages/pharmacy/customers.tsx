@@ -8,7 +8,7 @@ const Customers = () => {
   const DynamicCustomerTable = dynamic(
     () => import("@/_components/core/Pharmacy/Customers/CustomersTable"),
     {
-      ssr: false, 
+      ssr: false, //fixed
     }
   );
   const dispatch = useDispatch<AppDispatch>();
