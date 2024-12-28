@@ -6,11 +6,13 @@ import { useDispatch, useSelector } from "react-redux";
 import dynamic from "next/dynamic";
 const Customers = () => {
   const DynamicCustomerTable = dynamic(
-    () => import("@/_components/core/Pharmacy/Customers/CustomersTable"),
+    () =>
+      import("@/_components/core/Pharmacy/Customers/CustomersTable"),
     {
       ssr: false, //fixed
     }
   );
+  
   const dispatch = useDispatch<AppDispatch>();
 
   const customersData = useSelector(
