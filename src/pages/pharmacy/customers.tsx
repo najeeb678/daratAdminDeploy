@@ -1,17 +1,13 @@
 import { fetchCustomerShipmentData } from "@/redux/slices/PharmacySlice";
 import { AppDispatch } from "@/redux/store";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import dynamic from "next/dynamic";
+import CustomersTable from "@/_components/core/Pharmacy/Customers/CustomersTable";
 const Customers = () => {
-  const DynamicCustomerTable = dynamic(
-    () =>
-      import("@/_components/core/Pharmacy/Customers/CustomersTable"),
-    {
-      ssr: false, //fixed
-    }
-  );
+  const [isClient, setIsClient] = useState(false);
+
   
   const dispatch = useDispatch<AppDispatch>();
 
@@ -22,12 +18,13 @@ const Customers = () => {
     (state: any) => state.pharmacy.loadingOrdersShipmentData
   );
   useEffect(() => {
+    setIsClient(true);
     dispatch(fetchCustomerShipmentData({ search: "" }));
   }, [dispatch]);
-
+  if (!isClient) return null; 
   return (
     <div>
-      <DynamicCustomerTable customersData={customersData} loading={loading} />
+      <CustomersTable customersData={customersData} loading={loading} />
     </div>
   );
 };
