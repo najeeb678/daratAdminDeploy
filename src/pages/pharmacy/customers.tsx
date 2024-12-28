@@ -2,7 +2,7 @@ import { fetchCustomerShipmentData } from "@/redux/slices/PharmacySlice";
 import { AppDispatch } from "@/redux/store";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import CustomersTable from "@/_components/core/Pharmacy/Customers/CustomersTable";
+
 import dynamic from "next/dynamic";
 const Customers = () => {
   const DynamicCustomerTable = dynamic(
