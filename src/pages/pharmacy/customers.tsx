@@ -3,8 +3,8 @@ import { AppDispatch } from "@/redux/store";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import dynamic from "next/dynamic";
-import CustomersTable from "@/_components/core/Pharmacy/Customers/CustomersTable";
+
+import CustomersTable from "../../_components/core/Pharmacy/Customers/CustomersTable";
 const Customers = () => {
   const [isClient, setIsClient] = useState(false);
 
