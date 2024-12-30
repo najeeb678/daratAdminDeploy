@@ -102,6 +102,7 @@ const AddAppointment: React.FC<AddAppointmentProps> = ({
         } else {
           // Create new doctor
           const res = await dispatch(bookAppointment(payload)).unwrap();
+          toast("Appointment created successfully", { type: "success" });
           if (res) {
             handleClose();
             dispatch(getSchedule({ search: "", filter: "" }));

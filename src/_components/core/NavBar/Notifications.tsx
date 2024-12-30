@@ -184,7 +184,8 @@ const Notifications = () => {
   const router = useRouter();
 
   const [role, setRole] = useState<string | null>(null);
-  const [notifications, setNotifications] = useState<any[]>(dummyNotifications);
+  const [notifications, setNotifications] = useState<any[]>([]);
+  // const [notifications, setNotifications] = useState<any[]>(dummyNotifications);
   const [unreadCount, setUnreadCount] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const formatDate = (date: string | Date): string => {
