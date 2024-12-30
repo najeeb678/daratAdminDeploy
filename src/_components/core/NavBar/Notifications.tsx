@@ -200,8 +200,7 @@ const Notifications = () => {
       return "Invalid Date"; // Fallback or default value
     }
   };
-
-  useEffect(() => {
+  const fetchNotifications = () => {
     const userRole = getRole();
     setRole(userRole);
     dispatch(getNotificationByRole(userRole === "Admin" ? "Admin" : "Doctor"))
@@ -209,11 +208,16 @@ const Notifications = () => {
       .then((res: any) => {
         setNotifications(res);
         setUnreadCount(res.filter((notif: any) => !notif.read).length);
-      });
+      })
+      .catch((error) => console.error("Failed to fetch notifications:", error));
+  };
+  useEffect(() => {
+    fetchNotifications();
   }, [dispatch]);
 
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
+    fetchNotifications();
   };
 
   const handleClose = () => {

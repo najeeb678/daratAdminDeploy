@@ -110,8 +110,8 @@ const AddDetails: React.FC = () => {
       />
       <Grid container spacing={3}>
         {Object.entries(formData.personalDetails).map(([field, value]) => (
-            <Grid size={{ xs: 12, md: 3 }}key={field}>
-          {/* <Grid item xs={12} sm={3} key={field}> */}
+          <Grid size={{ xs: 12, md: 3 }} key={field}>
+            {/* <Grid item xs={12} sm={3} key={field}> */}
             <CustomTypography
               sx={{
                 fontFamily: "var(--font-raleway)",
@@ -134,7 +134,7 @@ const AddDetails: React.FC = () => {
                 )
               }
               sx={{
-                  width: "230px",
+                width: "230px",
                 height: "25px",
                 "& .MuiInputBase-input": {
                   fontSize: "12px",
@@ -143,12 +143,12 @@ const AddDetails: React.FC = () => {
                   marginLeft: "12px",
                   fontFamily:
                     field === "iqamaId" || field === "bloodGroup"
-                    ? "AvenirMedium"
-                    : "AvenirBook",
-                    fontWeight: "500",
+                      ? "AvenirMedium"
+                      : "AvenirBook",
+                  fontWeight: "500",
                 },
-            }}
-            //   select={field === "gender"}
+              }}
+              //   select={field === "gender"}
             >
               {/* {field === "gender" && (
                 <>

@@ -56,7 +56,7 @@ export const sidebarData =
         {
           title: "Services",
           icon: MdOutlineMedicalServices,
-          path: "services",
+          path: "/services",
         },
         {
           title: "Schedule",
