@@ -9,12 +9,18 @@ interface ProfileImageSelectorProps {
   selectedImage: string;
   onImageChange: (imageUrl: string) => void;
   setIsImageUploading?: (isUploading: boolean) => void;
+  imageHeight?: number;
+  imageWidth?: number;
+  customStyles?: React.CSSProperties;
 }
 
 const ProfileImageSelector: React.FC<ProfileImageSelectorProps> = ({
   selectedImage,
   onImageChange,
   setIsImageUploading,
+  imageHeight,
+  imageWidth,
+  customStyles,
 }) => {
   const [uploading, setUploading] = useState(false);
   const dispatch: any = useDispatch();
@@ -53,14 +59,15 @@ const ProfileImageSelector: React.FC<ProfileImageSelectorProps> = ({
         alignItems: "center",
         width: "100%",
         height: "100%",
+        ...customStyles,
       }}
     >
       <Box sx={{ position: "relative" }}>
         {/* Profile Image */}
         <Button
           sx={{
-            height: 160,
-            width: 160,
+            height: imageHeight || 160,
+            width: imageWidth || 160,
             textAlign: "center",
             borderRadius: "50%",
             position: "relative",
@@ -73,8 +80,8 @@ const ProfileImageSelector: React.FC<ProfileImageSelectorProps> = ({
             alt="Profile image"
             src={selectedImage}
             sx={{
-              width: 160,
-              height: 160,
+              height: imageHeight || 160,
+              width: imageWidth || 160,
               borderRadius: "50%",
               opacity: uploading ? 0.5 : 1, // Dim avatar when uploading
             }}

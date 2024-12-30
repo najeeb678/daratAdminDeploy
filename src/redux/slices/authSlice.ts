@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
-
+  createAdminApi,
   getNotificationByRoleApi,
   loginApi,
   markAsReadAdminNotificationsApi,
@@ -26,6 +26,18 @@ export const loginUser = createAsyncThunk(
       const data = await loginApi(credentials);
 
       return data;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data || "Something went wrong");
+    }
+  }
+);
+export const createAdmin = createAsyncThunk(
+  "auth/createAdmin",
+  async (data: any, { rejectWithValue }) => {
+    try {
+      const response = await createAdminApi(data);
+
+      return response;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Something went wrong");
     }
@@ -83,7 +95,7 @@ export const markAsReadAdminNotifications = createAsyncThunk(
   "auth/markAsReadAdminNotifications",
   async (data: any, { rejectWithValue }) => {
     try {
-      console.log("id",data)
+      console.log("id", data);
       const res = await markAsReadAdminNotificationsApi(data);
 
       return res;
@@ -104,8 +116,6 @@ export const markAsReadDoctorNotifications = createAsyncThunk(
     }
   }
 );
-
-
 
 const authSlice = createSlice({
   name: "auth",

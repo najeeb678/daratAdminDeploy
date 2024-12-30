@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Box from "@mui/material/Box";
-import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 import Icon from "@mui/material/Icon";
+import ProfileImageSelector from "@/_components/common/ImageSelector/ProfileImageSelector";
 const profiles = [
   {
     name: "Full Name",
@@ -9,15 +10,17 @@ const profiles = [
     location: "Riyadh, Saudia ",
     image: "/images/Ellipse 3.svg", // Replace with the correct image path
   },
-
 ];
 
 const ProfileCard = () => {
+  const [isImageUploading, setIsImageUploading] = useState(false);
+
+  const [imageUrl, setImageUrl] = useState<string>("");
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: "20px" }}>
       {profiles.map((profile, index) => (
         <Box key={index} sx={styles.cardContainer}>
-          <img
+          {/* <img
             src={profile.image}
             alt={profile.name}
             style={styles.profileImage}
@@ -27,8 +30,18 @@ const ProfileCard = () => {
             <h2 style={styles.name}>{profile.name}</h2>
             <p style={styles.details}>{profile.role}</p>
             <p style={styles.details}>{profile.location}</p>
+          </Box> */}
+          <Box style={styles.profileImage}>
+            <ProfileImageSelector
+              selectedImage={imageUrl}
+              onImageChange={() => {}}
+              setIsImageUploading={setIsImageUploading}
+              imageHeight={130}
+              imageWidth={130}
+            />
           </Box>
-          <button
+          {/* <button
+            onClick={()=>{}}
             style={{
               height: "25px",
               width: "85px",
@@ -42,7 +55,7 @@ const ProfileCard = () => {
             }}
           >
             Edit
-          </button>
+          </button> */}
         </Box>
       ))}
     </Box>

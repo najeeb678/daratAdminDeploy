@@ -20,6 +20,10 @@ export const resendEmailOTPApi = async (data: { email: string }) => {
   const response = await api.post("auth/resendEmailOTP", data);
   return response.data;
 };
+export const createAdminApi = async (data: any) => {
+  const response = await api.post("admin", data);
+  return response.data;
+};
 export const verifyUserOTPApi = async (data: any) => {
   const response = await api.post("auth/verifyUser", data);
   return response.data;
@@ -34,10 +38,16 @@ export const getNotificationByRoleApi = async (data: any) => {
   return response.data;
 };
 export const markAsReadAdminNotificationsApi = async (data: any) => {
-  const response = await api.post(`notifications/markOneNotificationAsReadForAdmin`,data);
+  const response = await api.post(
+    `notifications/markOneNotificationAsReadForAdmin`,
+    data
+  );
   return response.data;
 };
 export const markAsReadDoctorNotificationsApi = async (data: any) => {
-  const response = await api.post(`notifications/markOneNotificationAsReadForDoctor`,data);
+  const response = await api.post(
+    `notifications/markOneNotificationAsReadForDoctor`,
+    data
+  );
   return response.data;
 };
