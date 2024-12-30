@@ -180,7 +180,7 @@ const AddDetails: React.FC = () => {
       </Grid>
 
       {/* Professional Details */}
-      <CustomTypography
+      {/* <CustomTypography
         sx={{
           fontFamily: "var(--font-raleway)",
           fontSize: "14px",
@@ -229,10 +229,10 @@ const AddDetails: React.FC = () => {
             />
           </Grid>
         ))}
-      </Grid>
+      </Grid> */}
 
       {/* Emergency Contact Details */}
-      <CustomTypography
+      {/* <CustomTypography
         sx={{
           fontFamily: "var(--font-raleway)",
           fontSize: "14px",
@@ -283,7 +283,7 @@ const AddDetails: React.FC = () => {
             </Grid>
           )
         )}
-      </Grid>
+      </Grid> */}
 
       {/* Buttons */}
       <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 4 }}>

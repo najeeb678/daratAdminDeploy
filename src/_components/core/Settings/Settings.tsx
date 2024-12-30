@@ -2,7 +2,7 @@ import React from 'react'
 import { SubServices } from '../Services/SubServiceCard'
 import ProfileCard from './ProfileCard'
 import AddDetails from './AddDetails'
-const Settings = () => {
+const SettingsDetails = () => {
   return (
    <> 
     <ProfileCard />
@@ -11,4 +11,4 @@ const Settings = () => {
   )
 }
 
-export default Settings
+export default SettingsDetails

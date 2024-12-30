@@ -211,7 +211,7 @@ const Notifications = () => {
         setUnreadCount(res.filter((notif: any) => !notif.read).length);
       });
   }, [dispatch]);
-  console.log("notifications", notifications);
+
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -324,7 +324,7 @@ const Notifications = () => {
                     fontFamily: "Avenir",
                   }}
                 >
-                  {notif.Appointment?.name}
+                  {notif.Appointment?.patientId?.name}
                 </Typography>{" "}
                 <Typography
                   component="span"
@@ -346,8 +346,7 @@ const Notifications = () => {
                     fontFamily: "Avenir",
                   }}
                 >
-                  Dental Service
-                  {/* {notif.Appointment?.subServiceId} */}
+                  {notif.Appointment?.subService?.name}
                 </Typography>
                 <Typography
                   component="span"
@@ -382,8 +381,7 @@ const Notifications = () => {
                     fontFamily: "Avenir",
                   }}
                 >
-                  with Dr.Hassan
-                  {/* with Dr. {notif.Appointment?.doctor}. //TODO:change name*/}
+                  with {notif.Appointment?.doctorId?.name}
                 </Typography>
               </CustomTypography>
               <Typography
@@ -395,10 +393,10 @@ const Notifications = () => {
                   fontFamily: "Avenir",
                 }}
               >
-                6:20pm
+                {format(new Date(notif.Appointment?.createdAt), "hh:mm a")}
               </Typography>
             </Box>
-            <Box
+            {/* <Box
               sx={{
                 display: "flex",
                 justifyContent: "flex-end",
@@ -450,10 +448,10 @@ const Notifications = () => {
               >
                 Confirm
               </Button>
-            </Box>
+            </Box> */}
           </MenuItem>
         ))}
-        <Divider />
+        {/* <Divider />
         <Box sx={{ textAlign: "center" }}>
           <Button variant="text" onClick={handleSeeAll}>
             <CustomTypography
@@ -467,7 +465,7 @@ const Notifications = () => {
               See All
             </CustomTypography>
           </Button>
-        </Box>
+        </Box> */}
       </Menu>
     </>
   );

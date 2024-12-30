@@ -86,11 +86,11 @@ export const sidebarData =
           ],
         },
 
-        // {
-        //   title: "Settings",
-        //   icon: CiSettings,
-        //   path: "",
-        // },
+        {
+          title: "Settings",
+          icon: CiSettings,
+          path: "/settings",
+        },
       ]
     : [
         {
