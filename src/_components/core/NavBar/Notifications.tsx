@@ -191,7 +191,13 @@ const Notifications = () => {
     return format(new Date(date), "EEEE, dd MMM yyyy");
   };
   const formatDateTime = (date: string | Date): string => {
-    return format(new Date(date), "hh:mm a, dd MMM yyyy");
+    try {
+      const formattedDate = format(new Date(date), "hh:mm a, dd MMM yyyy");
+      return formattedDate;
+    } catch (error) {
+      console.error("Error formatting date:", date, error);
+      return "Invalid Date"; // Fallback or default value
+    }
   };
 
   useEffect(() => {
@@ -204,7 +210,7 @@ const Notifications = () => {
         setUnreadCount(res.filter((notif: any) => !notif.read).length);
       });
   }, [dispatch]);
-
+  console.log("notifications", notifications);
   const handleOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
