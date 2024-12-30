@@ -137,63 +137,91 @@ const SettingsDetails: React.FC<AddCategoryProps> = ({
                   backgroundColor: "#ffffff",
                   border: "1px solid #CECECE",
                   borderRadius: "10px",
+                  padding: "0px 20px",
                   height: "160px",
                   display: "flex",
                   flexDirection: "row",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
-                
-                <ProfileImageSelector
-                  selectedImage={imageUrl}
-                  onImageChange={handleImageChange}
-                  setIsImageUploading={setIsImageUploading}
-                  imageHeight={110}
-                  imageWidth={110}
-                  customStyles={{
-                    justifyContent: "flex-start",
-                    marginLeft: "20px",
-                    width: "auto",
-                  }}
-                />
                 <Box
                   sx={{
-                    marginLeft: "15px",
-                    height: "100%",
                     display: "flex",
-                    flexDirection: "column",
+                    alignItems: "center",
                     justifyContent: "center",
                   }}
                 >
-                  <CustomTypography
-                    sx={{
-                      fontWeight: "500",
-                      fontSize: "18px",
-                      lineheight: "20px",
-                      color: "#161616",
+                  <Box sx={{ display: "flex", alignItems: "center" }}>
+                    <ProfileImageSelector
+                      selectedImage={imageUrl}
+                      onImageChange={handleImageChange}
+                      setIsImageUploading={setIsImageUploading}
+                      imageHeight={110}
+                      imageWidth={110}
+                      customStyles={{
+                        justifyContent: "flex-start",
+                        marginLeft: "20px",
+                        width: "auto",
+                      }}
+                    />
+                    <Box
+                      sx={{
+                        marginLeft: "15px",
+                        height: "100%",
+                        alignItems: "flex-end",
+                      }}
+                    >
+                      <CustomTypography
+                        sx={{
+                          fontWeight: "500",
+                          fontSize: "18px",
+                          lineheight: "20px",
+                          color: "#161616",
+                        }}
+                      >
+                        Full Name
+                      </CustomTypography>
+                      <CustomTypography
+                        sx={{
+                          fontWeight: "350",
+                          fontSize: "12px",
+                          lineheight: "17px",
+                          color: "#7B7B7B",
+                        }}
+                      >
+                        Administrator
+                      </CustomTypography>
+                      <CustomTypography
+                        sx={{
+                          fontWeight: "350",
+                          fontSize: "12px",
+                          lineheight: "17px",
+                          color: "#7B7B7B",
+                        }}
+                      >
+                        Riyadh, Saudia
+                      </CustomTypography>
+                    </Box>
+                  </Box>
+                </Box>
+                <Box sx={{}}>
+                  <Button
+                    onClick={() => {}}
+                    style={{
+                      height: "25px",
+                      width: "85px",
+                      backgroundColor: "rgba(251, 192, 45, 1)",
+                      border: "none",
+                      color: "white",
+                      borderRadius: "12px",
+                      padding: "6px 12px",
+                      fontSize: "11px",
+                      cursor: "pointer",
                     }}
                   >
-                    Full Name
-                  </CustomTypography>
-                  <CustomTypography
-                    sx={{
-                      fontWeight: "350",
-                      fontSize: "12px",
-                      lineheight: "17px",
-                      color: "#7B7B7B",
-                    }}
-                  >
-                    Administrator
-                  </CustomTypography>
-                  <CustomTypography
-                    sx={{
-                      fontWeight: "350",
-                      fontSize: "12px",
-                      lineheight: "17px",
-                      color: "#7B7B7B",
-                    }}
-                  >
-                    Riyadh, Saudia
-                  </CustomTypography>
+                    Edit
+                  </Button>
                 </Box>
               </Box>
             </Grid>
