@@ -168,7 +168,17 @@ import {
   markAsReadDoctorNotifications,
 } from "@/redux/slices/authSlice";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
-
+const commonButtonStyles = {
+  height: "24px",
+  width: "69px",
+  backgroundColor: "#f5f5f5",
+  borderRadius: "30px",
+  border: "none",
+  fontFamily: "Avenir",
+  fontSize: "12px",
+  fontWeight: "500",
+  lineHeight: "14px",
+};
 const Notifications = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -244,7 +254,7 @@ const Notifications = () => {
             width: "505px",
             maxHeight: "500px",
             overflowY: "auto",
-            padding: "10px 16px",
+            padding: "10px 16px 5px 16px",
           },
         }}
         anchorOrigin={{
@@ -285,6 +295,11 @@ const Notifications = () => {
               display: "block",
               padding: "16px",
               fontFamily: "Avenir",
+              height: "66px",
+              "&:hover": {
+                backgroundColor: "transparent",
+                color: "inherit",
+              },
             }}
           >
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
@@ -381,25 +396,28 @@ const Notifications = () => {
                 display: "flex",
                 justifyContent: "flex-end",
                 gap: "8px",
-                marginTop: "8px",
+                marginTop: "-12px",
               }}
             >
               <Button
                 size="small"
                 variant="outlined"
                 sx={{
-                  height: "24px",
-                  width: "69px",
-                  backgroundColor: "#f5f5f5",
-                  borderRadius: "30px",
-                  border: "none",
+                  ...commonButtonStyles,
                   color: "#7B7B7B",
-                  fontFamily: "Avenir",
-                  fontSize: "12px",
-                  fontWeight: "500",
-                  lineHeight: "14px",
+                  "&:hover": {
+                    backgroundColor: "#e0e0e0",
+                    color: "#333",
+                  },
+                  "&:active": {
+                    backgroundColor: "#d6d6d6",
+                    borderColor: "#aaa",
+                  },
                 }}
-                onClick={() => handleAction(notif.id, "cancel")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleAction(notif.id, "cancel");
+                }}
               >
                 Cancel
               </Button>
@@ -407,18 +425,21 @@ const Notifications = () => {
                 size="small"
                 variant="outlined"
                 sx={{
-                  height: "24px",
-                  width: "69px",
-                  backgroundColor: "#f5f5f5",
-                  borderRadius: "30px",
-                  border: "none",
+                  ...commonButtonStyles,
                   color: "#087C31",
-                  fontFamily: "Avenir",
-                  fontSize: "12px",
-                  fontWeight: "500",
-                  lineHeight: "14px",
+                  "&:hover": {
+                    backgroundColor: "#e0f7e5",
+                    color: "#087C31",
+                  },
+                  "&:active": {
+                    backgroundColor: "#c9e5d3",
+                    borderColor: "#087C31",
+                  },
                 }}
-                onClick={() => handleAction(notif.id, "confirm")}
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleAction(notif.id, "confirm");
+                }}
               >
                 Confirm
               </Button>
@@ -426,9 +447,18 @@ const Notifications = () => {
           </MenuItem>
         ))}
         <Divider />
-        <Box sx={{ textAlign: "center", padding: "8px" }}>
+        <Box sx={{ textAlign: "center" }}>
           <Button variant="text" onClick={handleSeeAll}>
-            See All
+            <CustomTypography
+              sx={{
+                fontWeight: "500",
+                fontSize: "12px",
+                fontFamily: "Avenir",
+                lineHeight: "14px",
+              }}
+            >
+              See All
+            </CustomTypography>
           </Button>
         </Box>
       </Menu>
