@@ -125,13 +125,13 @@ const SignInForm = () => {
         sx={{
           display: "flex",
           justifyContent: "center",
-          position: "relative",
         }}
       >
         <Box
           sx={{
             maxWidth: "100%",
             width: "100%",
+            position: "relative",
           }}
         >
           <Box
@@ -140,8 +140,8 @@ const SignInForm = () => {
               marginTop: forgotPassword
                 ? ShowResetPasswordForm
                   ? { xs: "50px", md: "60px", xl: "150px" }
-                  : { xs: "80px", md: "60px", xl: "150px" }
-                : { xs: "80px", md: "60px", xl: "150px" },
+                  : { xs: "50px", md: "60px", xl: "150px" }
+                : { xs: "20px", md: "40px", xl: "150px" },
             }}
           >
             <Image
@@ -149,15 +149,16 @@ const SignInForm = () => {
               alt="Logo"
               width={168}
               height={163}
+              className="responsive-logo"
               priority
             />
           </Box>
 
           <CustomTypography
-            fontSize="24px"
             textAlign="center"
             sx={{
               fontFamily: "Avenir",
+              fontSize: { xs: "18px", md: "24px" },
               fontWeight: "800",
               lineHeight: "28.6px",
               marginTop: "34px",
@@ -196,7 +197,7 @@ const SignInForm = () => {
               noValidate
               onSubmit={formik.handleSubmit}
               sx={{
-                width: "388px",
+                maxWidth: "388px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "center",
@@ -232,7 +233,11 @@ const SignInForm = () => {
                 inputfieldHeight="55px"
               />
               {formik.touched.password && formik.errors.password && (
-                <Typography color="error" variant="caption">
+                <Typography
+                  color="error"
+                  variant="caption"
+                  sx={{ marginTop: "-5px" }}
+                >
                   {typeof formik.errors.password === "string"
                     ? formik.errors.password
                     : ""}
@@ -251,7 +256,7 @@ const SignInForm = () => {
                 disabled={false}
                 sx={{ borderRadius: "5px", height: "55px", marginTop: "2px" }}
               />
-              <Box sx={{ height: "10px" }}></Box>
+              <Box sx={{ height: "2px" }}></Box>
               {formik.touched.role && formik.errors.role && (
                 <Typography color="error" variant="caption">
                   {typeof formik.errors.role === "string"
@@ -338,24 +343,25 @@ const SignInForm = () => {
               setEmailAddress={setEmailAddress}
             />
           )}
-        </Box>
-        <Box
-          sx={{
-            position: "absolute",
-            bottom: "20px",
-            right: "20px",
-          }}
-        >
-          <CustomTypography
-            fontSize="12px"
-            color="#475467"
+          <Box
             sx={{
-              fontFamily: "Avenir",
-              fontWeight: "500",
+              position: "absolute",
+              bottom: "10px",
+              right: "20px",
+              zIndex: "1",
             }}
           >
-            © Dr. Wafa’a Tulbah Clinics {currentYear}
-          </CustomTypography>
+            <CustomTypography
+              fontSize="12px"
+              color="#475467"
+              sx={{
+                fontFamily: "Avenir",
+                fontWeight: "500",
+              }}
+            >
+              © Dr. Wafa’a Tulbah Clinics {currentYear}
+            </CustomTypography>
+          </Box>
         </Box>
       </Grid>
     </Grid>

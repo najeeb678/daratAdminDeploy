@@ -21,14 +21,14 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${raleway.className}`}>
       <StoreProvider store={store}>
-        <ProtectRoute>
-          <ThemeProvider theme={Theme}>
-            <ToastContainer />
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </ThemeProvider>
-        </ProtectRoute>
+        {/* <ProtectRoute> */}
+        <ThemeProvider theme={Theme}>
+          <ToastContainer />
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </ThemeProvider>
+        {/* </ProtectRoute> */}
       </StoreProvider>
     </div>
   );

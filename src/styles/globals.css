@@ -104,3 +104,13 @@ input[data-testid="input"] {
   border: 1px solid #ccc; /* Optional, for border styling */
   border-radius: 4px; /* Optional, for rounded corners */
 }
+.responsive-logo {
+  width: 168px; /* Default width */
+}
+
+@media (max-width: 900px) {
+  .responsive-logo {
+    width: 120px; /* Reduced width for smaller screens */
+    height: auto; /* Maintain aspect ratio */
+  }
+}
