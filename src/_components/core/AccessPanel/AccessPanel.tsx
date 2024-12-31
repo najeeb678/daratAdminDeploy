@@ -2,15 +2,26 @@ import React, { useState, useEffect } from "react";
 import { Box } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { sidebarData } from "@/utils/SidebarData";
+import { getSidebarData } from "@/utils/SidebarData";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
+import { getRole } from "@/utils/utils";
 
 const AccessPanel = () => {
   const router = useRouter();
-  const [openIndex, setOpenIndex] = useState<number | null>(null); // Track open submenu by index
-  const [selectedPath, setSelectedPath] = useState<string | null>(null); // Track selected path for navigation
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
+  const [role, setRole] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchRole = async () => {
+      const fetchedRole = await getRole();
+      setRole(fetchedRole);
+    };
+    fetchRole();
+  }, []);
+  const sidebarData = getSidebarData(role);
   useEffect(() => {
     setIsClient(true);
     // Find the current submenu path if the current route matches one of the submenus
@@ -45,7 +56,7 @@ const AccessPanel = () => {
   };
 
   const isActivePath = (path: string) => router.pathname === path;
-  if (!isClient) return null; 
+  if (!isClient) return null;
   return (
     <Box
       sx={{

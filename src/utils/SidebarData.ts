@@ -1,5 +1,5 @@
 import { CiStar, CiSettings } from "react-icons/ci";
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
 
 import { RiHomeSmileLine } from "react-icons/ri";
 import { SlCalender } from "react-icons/sl";
@@ -8,7 +8,10 @@ import {
   MdOutlineMedicalServices,
   MdOutlineProductionQuantityLimits,
 } from "react-icons/md";
-const CiStethoscope = dynamic(() => import('react-icons/ci').then(mod => mod.CiStethoscope), { ssr: false });
+const CiStethoscope = dynamic(
+  () => import("react-icons/ci").then((mod) => mod.CiStethoscope),
+  { ssr: false }
+);
 
 import { PiUsersThree } from "react-icons/pi";
 import { LiaShippingFastSolid } from "react-icons/lia";
@@ -18,10 +21,8 @@ import { getRole } from "./utils";
 
 const role = getRole();
 
-console.log('role', role)
-
-export const sidebarData =
-  role === "Admin"
+export const getSidebarData = (role: string | null) => {
+  return role === "Admin"
     ? [
         {
           title: "Home",
@@ -110,9 +111,11 @@ export const sidebarData =
           icon: SlCalender,
           path: "/appointments",
         },
-        // {
-        //   title: "Settings",
-        //   icon: CiSettings,
-        //   path: "",
-        // },
+        {
+          title: "Settings",
+          icon: CiSettings,
+          path: "/settings",
+        },
       ];
+};
+
