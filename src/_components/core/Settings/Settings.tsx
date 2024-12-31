@@ -82,7 +82,7 @@ const SettingsDetails: React.FC<any> = () => {
     onSubmit: async (data) => {
       setLoading(true);
 
-      console.log("Form submitted with data:", data);
+
       try {
         if (data.profilePic === "") {
           toast.error("Please upload an image before submitting.");
