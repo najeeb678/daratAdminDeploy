@@ -10,7 +10,6 @@ import {
   Typography,
   Divider,
   Button,
-  backdropClasses,
 } from "@mui/material";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import { AppDispatch } from "@/redux/store";
@@ -24,24 +23,13 @@ import {
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import NotificationModal from "./NotificationsModal";
-const commonButtonStyles = {
-  height: "24px",
-  width: "69px",
-  backgroundColor: "#f5f5f5",
-  borderRadius: "30px",
-  border: "none",
-  fontFamily: "Avenir",
-  fontSize: "12px",
-  fontWeight: "500",
-  lineHeight: "14px",
-};
+
 const Notifications = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
   const [role, setRole] = useState<string | null>(null);
   const [notifications, setNotifications] = useState<any[]>([]);
-  // const [notifications, setNotifications] = useState<any[]>(dummyNotifications);
   const [unreadCount, setUnreadCount] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -55,7 +43,7 @@ const Notifications = () => {
       return formattedDate;
     } catch (error) {
       console.error("Error formatting date:", date, error);
-      return "Invalid Date"; // Fallback or default value
+      return "Invalid Date";
     }
   };
   const fetchNotifications = () => {
@@ -64,8 +52,15 @@ const Notifications = () => {
     dispatch(getNotificationByRole(userRole === "Admin" ? "Admin" : "Doctor"))
       .unwrap()
       .then((res: any) => {
-        setNotifications(res);
-        setUnreadCount(res.filter((notif: any) => !notif.read).length);
+        if (Array.isArray(res)) {
+          setNotifications(res);
+
+          const unreadCount = res.filter(
+            (notif: any) => notif && notif.read === false
+          ).length;
+
+          setUnreadCount(unreadCount);
+        }
       })
       .catch((error) => console.error("Failed to fetch notifications:", error));
   };
@@ -83,33 +78,11 @@ const Notifications = () => {
   };
   const handleModalClose = () => {
     setIsModalOpen(false);
-
-    // if (selectedNotification && !selectedNotification.read) {
-    //   handleMarkAsRead(selectedNotification.id);
-    // }
   };
   const handleNotificationClick = (notif: any) => {
     setSelectedNotification(notif);
     setIsModalOpen(true);
   };
-  const handleAction = async (
-    notifId: string,
-    action: "confirm" | "cancel"
-  ) => {
-    // Call API based on action
-    try {
-      if (action === "confirm") {
-        await dispatch(markAsReadAdminNotifications({ id: notifId })).unwrap();
-      } else {
-        await dispatch(markAsReadDoctorNotifications({ id: notifId })).unwrap();
-      }
-      setNotifications((prev) => prev.filter((notif) => notif.id !== notifId));
-      setUnreadCount((prev) => prev - 1);
-    } catch (error) {
-      console.error("Action failed:", error);
-    }
-  };
-
   const handleSeeAll = () => {
     router.push("/notifications");
     handleClose();
@@ -293,59 +266,6 @@ const Notifications = () => {
                 {format(new Date(notif.Appointment?.createdAt), "hh:mm a")}
               </Typography>
             </Box>
-            {/* <Box
-              sx={{
-                display: "flex",
-                justifyContent: "flex-end",
-                gap: "8px",
-                marginTop: "-12px",
-              }}
-            >
-              <Button
-                size="small"
-                variant="outlined"
-                sx={{
-                  ...commonButtonStyles,
-                  color: "#7B7B7B",
-                  "&:hover": {
-                    backgroundColor: "#e0e0e0",
-                    color: "#333",
-                  },
-                  "&:active": {
-                    backgroundColor: "#d6d6d6",
-                    borderColor: "#aaa",
-                  },
-                }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleAction(notif.id, "cancel");
-                }}
-              >
-                Cancel
-              </Button>
-              <Button
-                size="small"
-                variant="outlined"
-                sx={{
-                  ...commonButtonStyles,
-                  color: "#087C31",
-                  "&:hover": {
-                    backgroundColor: "#e0f7e5",
-                    color: "#087C31",
-                  },
-                  "&:active": {
-                    backgroundColor: "#c9e5d3",
-                    borderColor: "#087C31",
-                  },
-                }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleAction(notif.id, "confirm");
-                }}
-              >
-                Confirm
-              </Button>
-            </Box> */}
           </MenuItem>
         ))}
         {notifications?.length > 3 && (
