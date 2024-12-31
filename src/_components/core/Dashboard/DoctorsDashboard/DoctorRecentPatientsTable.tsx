@@ -15,7 +15,7 @@ import { formatDate, getUserId } from "@/utils/utils";
 
 const DoctorRecentPatientsTable = () => {
   const [patientfilter, setPatientFilter] = useState<string>("weekly");
-  let userId = getUserId();
+  const [userId, setuserId] = useState<any>("");
   const dispatch = useAppDispatch();
   const { doctorsRecentPatients, loading } = useAppSelector(
     (state: RootState) => state.doctorDashboard
@@ -24,11 +24,19 @@ const DoctorRecentPatientsTable = () => {
   const payload = {
     doctorId: userId || "",
     timeFrame: patientfilter,
+    search: "",
   };
-
   useEffect(() => {
-    dispatch(fetchDoctorsRecentPatients(payload));
-  }, [patientfilter, dispatch]);
+    let user = getUserId();
+
+    setuserId(user);
+    if (user) {
+  
+      dispatch(fetchDoctorsRecentPatients(payload));
+    } else {
+      console.warn("User  ID is not defined.");
+    }
+  }, [patientfilter, dispatch, userId]);
 
   type TriageType = "Non Urgent" | "Urgent" | "Emergency" | "Out Patient";
 
@@ -41,26 +49,26 @@ const DoctorRecentPatientsTable = () => {
           ID: patient?.id,
           PatientName: patient?.name,
           Age: calculateAge(patient?.dob),
-          DateOfBirth:formatDate(patient?.dob),
+          DateOfBirth: formatDate(patient?.dob),
           Mobile: patient?.email,
           Department: patient?.subService?.service?.name,
           Triage: triage,
         };
       })
     : [];
-    function calculateAge(dateOfBirth: string): string {
-      const birthDate = new Date(dateOfBirth);
-      const today = new Date();
-      let age = today.getFullYear() - birthDate.getFullYear();
-      const monthDifference = today.getMonth() - birthDate.getMonth();
-      if (
-        monthDifference < 0 ||
-        (monthDifference === 0 && today.getDate() < birthDate.getDate())
-      ) {
-        age--;
-      }
-      return age.toString();
+  function calculateAge(dateOfBirth: string): string {
+    const birthDate = new Date(dateOfBirth);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      age--;
     }
+    return age.toString();
+  }
   const triageStyleMapping = {
     "Non Urgent": {
       color: "#8adcd5",

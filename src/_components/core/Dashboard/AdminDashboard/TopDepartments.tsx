@@ -15,7 +15,7 @@ const TopDepartments = () => {
   useEffect(() => {
     dispatch(fetchTopDepartments());
   }, [dispatch]);
-  console.log("topDepartmentsmmmm", topDepartments);
+
   const serviceNameToFileMap = {
     "Dental Care": "dental-care.svg",
     Dermatologist: "dermatology.svg",

@@ -1,4 +1,4 @@
-import { sidebarData } from "../../utils/SidebarData";
+
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createScheduleApi,

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 
 import GenericTable from "@/_components/common/GenericTable";
-import StatusDropdown from "@/_components/common/SelectDropdown/StatusDropdown";
 import CustomCheckbox from "@/_components/common/CustomCheckBox";
 
 import { Patient, Column, FilterConfig } from "@/types/types";
@@ -24,9 +23,12 @@ const AdminRecentPatientsTable = () => {
   const handlePatientSelectChange = (value: string) => {
     setPatientFilter(value);
   };
-
+  const payload = {
+    timeFrame: patientfilter,
+    search: "",
+  };
   useEffect(() => {
-    dispatch(fetchRecentPatients(patientfilter));
+    dispatch(fetchRecentPatients(payload));
   }, [patientfilter, dispatch]);
 
   type TriageType = "Non Urgent" | "Urgent" | "Emergency" | "Out Patient";
@@ -121,30 +123,26 @@ const AdminRecentPatientsTable = () => {
         data={transformedRecenetPatientData}
         columns={columns}
         title="Recent Patients"
-        loading={false}
-        // customContent={
-        //   <Link
-        //     href="#"
-        //     onClick={(e) => {
-        //       console.log("View All clicked");
-        //       e.preventDefault();
-        //     }}
-        //     style={{
-        //       color: "#7B7B7B",
-        //       fontSize: "11px",
-        //       lineHeight: "14px",
-              
-        //       fontWeight: "300",
-        //       fontFamily: "AvenirMedium",
-        //     }}
-        //   >
-        //     view all
-        //   </Link>
-        // }
+        loading={loading}
+        customContent={
+          <Link
+            href="/patients"
+            style={{
+              color: "#7B7B7B",
+              fontSize: "11px",
+              lineHeight: "14px",
+
+              fontWeight: "300",
+              fontFamily: "AvenirMedium",
+            }}
+          >
+            view all
+          </Link>
+        }
         filters={filters}
         sx={{
           height: "292px",
-          overflowY:"auto",
+          overflowY: "auto",
           marginBottom: "0px",
         }}
         customTableStyles={{
