@@ -68,13 +68,16 @@ const SettingsDetails: React.FC<any> = () => {
       name: "",
       email: "",
       profilePic: "",
-      contactNumber: "2222",
+      contactNumber: "",
     },
     validationSchema: Yup.object().shape({
       name: Yup.string().required("Full Name is required"),
       email: Yup.string().email("Invalid email").required("Email is required"),
 
-      contactNumber: Yup.string().required("Contact No is required"),
+      // contactNumber: Yup.string().required("Contact No is required"),
+      contactNumber: Yup.string()
+        .required("Contact No is required")
+        .matches(/^\+?\d+$/, "Contact No must be a number"),
     }),
     onSubmit: async (data) => {
       setLoading(true);
@@ -93,6 +96,13 @@ const SettingsDetails: React.FC<any> = () => {
 
         if (response) {
           setIsEdit(false);
+          formik.setValues({
+            name: response.name || "",
+            email: response.email || "",
+            profilePic: response.profilePic || "",
+            contactNumber: response.contactNumber || "",
+          });
+          setUserDetails(response);
           toast("Updated successfully", { type: "success" });
         }
 
@@ -103,7 +113,17 @@ const SettingsDetails: React.FC<any> = () => {
       }
     },
   });
-
+  const handleCancel = () => {
+    setIsEdit(false);
+    if (userDetails) {
+      formik.setValues({
+        name: userDetails.name || "",
+        email: userDetails.email || "",
+        profilePic: userDetails.profilePic || "",
+        contactNumber: userDetails.contactNumber || "",
+      });
+    }
+  };
   return (
     <Box
       style={{
@@ -190,7 +210,13 @@ const SettingsDetails: React.FC<any> = () => {
                 </Box>
                 <Box sx={{}}>
                   <Button
-                    onClick={() => setIsEdit(!isEdit)}
+                    onClick={() => {
+                      if (isEdit) {
+                        handleCancel();
+                      } else {
+                        setIsEdit(true);
+                      }
+                    }}
                     style={{
                       height: "25px",
                       width: "85px",
@@ -281,7 +307,6 @@ const SettingsDetails: React.FC<any> = () => {
               <Grid size={{ xs: 12 }} component="div">
                 <GenericInput
                   label="Contact No "
-                  type="number"
                   name="contactNumber"
                   disabled={!isEdit}
                   value={formik.values.contactNumber}
@@ -310,7 +335,7 @@ const SettingsDetails: React.FC<any> = () => {
                 {" "}
                 <Button
                   variant="outlined"
-                  onClick={() => setIsEdit(false)}
+                  onClick={() => handleCancel()}
                   style={{ marginRight: "10px" }}
                   disabled={!isEdit}
                   sx={{
