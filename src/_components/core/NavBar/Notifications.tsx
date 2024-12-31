@@ -139,7 +139,7 @@ const Notifications = () => {
           </CustomTypography>
         </Box>
 
-        <Divider />
+        <Divider sx={{ marginBottom: "8px" }} />
         {notifications?.length === 0 && (
           <Box
             sx={{
@@ -167,14 +167,38 @@ const Notifications = () => {
         {notifications.map((notif: any) => (
           <MenuItem
             key={notif.id}
-            onClick={() => handleNotificationClick(notif)}
+            onClick={() => {
+              if (!notif.read) {
+                const markAsReadAction =
+                  role === "Admin"
+                    ? markAsReadAdminNotifications
+                    : markAsReadDoctorNotifications;
+
+                dispatch(markAsReadAction({notificationId:notif.id}))
+                  .unwrap()
+                  .then(() => {
+                    setNotifications((prev) =>
+                      prev.map((n) =>
+                        n.id === notif.id ? { ...n, read: true } : n
+                      )
+                    );
+                    setUnreadCount((count) => count - 1);
+                  })
+                  .catch((error) =>
+                    console.error("Failed to mark notification as read:", error)
+                  );
+              }
+              handleNotificationClick(notif);
+            }}
             sx={{
               display: "block",
               padding: "16px",
               fontFamily: "Avenir",
               height: "66px",
+              backgroundColor: notif.read ? "#F5F5F5" : "#FBC02D1F",
+              marginBottom: "8px",
               "&:hover": {
-                backgroundColor: "transparent",
+                backgroundColor: notif.read ? "#E0E0E0" : "#F0F0F0", // Adjust hover color
                 color: "inherit",
               },
             }}

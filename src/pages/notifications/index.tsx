@@ -1,26 +1,23 @@
 import React, { useState } from "react";
-import { Box, Button, Checkbox, Typography, Divider } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
-import CustomCheckbox from "@/_components/common/CustomCheckBox";
-import { useSelector } from "react-redux";
+
+import CircleIcon from "@mui/icons-material/Circle";
+import { useDispatch, useSelector } from "react-redux";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import NotificationModal from "@/_components/core/NavBar/NotificationsModal";
+import {
+  markAsReadAdminNotifications,
+  markAsReadDoctorNotifications,
+} from "@/redux/slices/authSlice";
+import { AppDispatch } from "@/redux/store";
 
-const commonButtonStyles = {
-  height: "24px",
-  width: "69px",
-  backgroundColor: "#f5f5f5",
-  borderRadius: "30px",
-  border: "none",
-  fontFamily: "Avenir",
-  fontSize: "12px",
-  fontWeight: "500",
-  lineHeight: "14px",
-};
 const NotificationDetail = () => {
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  const [role, setRole] = useState<string | null>(null);
   const notificationsData = useSelector(
     (state: any) => state.auth.notifications
   );
@@ -37,20 +34,9 @@ const NotificationDetail = () => {
     setSelectedNotification(notif);
     setIsModalOpen(true);
   };
-  const handleAction = async (
-    notifId: string,
-    action: "confirm" | "cancel" | "view"
-  ) => {
-    // Handle action (confirm, cancel, view) here
-    console.log(`Action: ${action} for Notification ID: ${notifId}`);
-    // You can dispatch actions or call APIs based on the action
-  };
+
   const handleModalClose = () => {
     setIsModalOpen(false);
-
-    // if (selectedNotification && !selectedNotification.read) {
-    //   handleMarkAsRead(selectedNotification.id);
-    // }
   };
   return (
     <Box
@@ -69,6 +55,7 @@ const NotificationDetail = () => {
           fontWeight: "450",
           fontSize: "16px",
           lineHeight: "20px",
+          marginBottom: "8px",
         }}
       >
         Notifications
@@ -100,21 +87,43 @@ const NotificationDetail = () => {
       {notificationsData?.map((notif: any) => (
         <Box
           key={notif.id}
-          onClick={() => handleNotificationClick(notif)}
+          onClick={() => {
+            if (!notif.read) {
+              const markAsReadAction =
+                role === "Admin"
+                  ? markAsReadAdminNotifications
+                  : markAsReadDoctorNotifications;
+
+              dispatch(markAsReadAction({ notificationId: notif.id }))
+                .unwrap()
+                .then(() => {})
+                .catch((error) =>
+                  console.error("Failed to mark notification as read:", error)
+                );
+            }
+            handleNotificationClick(notif);
+          }}
           sx={{
             display: "flex",
             alignItems: "center",
             gap: "20px",
             padding: "10px 0",
+            backgroundColor: notif.read ? "#F5F5F5" : "#FBC02D1F",
+            marginBottom: "8px",
+            "&:hover": {
+              backgroundColor: notif.read ? "#E0E0E0" : "#F0F0F0", // Adjust hover color
+              color: "inherit",
+            },
             ":hover": {
               cursor: "pointer",
             },
           }}
         >
-          <CustomCheckbox
-            isDisabled
-            onChange={() => {
-              console.log("Selected :");
+          <CircleIcon
+            sx={{
+              color: notif.read ? "#A6A6A6" : "#FBC02D", // Gray for read, highlighted for unread
+              fontSize: "12px",
+              margin: "0px 8px",
             }}
           />
 
