@@ -64,13 +64,13 @@ export const fetchDashboardAnalytics = createAsyncThunk<
 
 export const fetchRecentPatients = createAsyncThunk<
   any,
-  string,
+  { search?: string; filter?: string } | any,
   { rejectValue: string }
 >(
   "dashboard/fetchRecentPatients",
-  async (timeFrame: string, { rejectWithValue }) => {
+  async (params, { rejectWithValue }) => {
     try {
-      const data = await getRecentPatientsApi(timeFrame);
+      const data = await getRecentPatientsApi(params);
       return data;
     } catch (error: any) {
       console.error("Error fetching Recent Patients:", error);

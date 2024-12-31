@@ -26,18 +26,23 @@ export const getAnalyticsApi = async () => {
     return response.data;
   };
 
-  export const getRecentPatientsApi = async (timeFrame: string = 'weekly') => {
+  export const getRecentPatientsApi = async (params?: { timeFrame: string, search?: string }) => {
+    console.log(params);
     const response = await api.get("dashboard/recent-patients", {
-        params: { timeFrame },
+      params, 
     });
-
+  
     return response.data;
   };
+  
+
 
   export const changeAppointmentStatusApi = async (data: { appointmentId: string; status: string }) => {
     const response = await api.post("appointment/change-status", data);
     return response.data;
   };
+
+  
 
 
 

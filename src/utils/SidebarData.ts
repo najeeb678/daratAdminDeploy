@@ -18,6 +18,8 @@ import { getRole } from "./utils";
 
 const role = getRole();
 
+console.log('role', role)
+
 export const sidebarData =
   role === "Admin"
     ? [
