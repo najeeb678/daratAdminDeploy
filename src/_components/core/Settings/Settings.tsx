@@ -48,7 +48,6 @@ const SettingsDetails: React.FC<any> = () => {
       .then((res: any) => {
         setUserDetails(res);
 
-
         formik.setValues({
           name: res.name || "",
           email: res.email || "",
@@ -149,7 +148,6 @@ const SettingsDetails: React.FC<any> = () => {
                       setIsImageUploading={setIsImageUploading}
                       isDisabled={!isEdit}
                       imageHeight={110}
-
                       imageWidth={110}
                       customStyles={{
                         justifyContent: "flex-start",
