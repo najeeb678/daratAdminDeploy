@@ -73,7 +73,30 @@ const NotificationDetail = () => {
       >
         Notifications
       </CustomTypography>
-
+      {notificationsData?.length === 0 && (
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            minHeight: "40vh",
+            textAlign: "center",
+          }}
+        >
+          <img
+            src="/images/no-data.png"
+            alt="No Data"
+            style={{
+              width: "150px",
+              height: "auto",
+              marginBottom: "20px",
+            }}
+          />
+          <Typography variant="h6" color="textSecondary">
+            No notifications available
+          </Typography>
+        </Box>
+      )}
       {notificationsData?.map((notif: any) => (
         <Box
           key={notif.id}

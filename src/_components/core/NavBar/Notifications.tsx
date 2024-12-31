@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/router";
@@ -12,6 +10,7 @@ import {
   Typography,
   Divider,
   Button,
+  backdropClasses,
 } from "@mui/material";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import { AppDispatch } from "@/redux/store";
@@ -168,6 +167,30 @@ const Notifications = () => {
         </Box>
 
         <Divider />
+        {notifications?.length === 0 && (
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              minHeight: "40vh",
+              textAlign: "center",
+            }}
+          >
+            <img
+              src="/images/no-data.png"
+              alt="No Data"
+              style={{
+                width: "150px",
+                height: "auto",
+                marginBottom: "20px",
+              }}
+            />
+            <Typography variant="h6" color="textSecondary">
+              No notifications available
+            </Typography>
+          </Box>
+        )}
         {notifications.map((notif: any) => (
           <MenuItem
             key={notif.id}
@@ -325,21 +348,25 @@ const Notifications = () => {
             </Box> */}
           </MenuItem>
         ))}
-        <Divider />
-        <Box sx={{ textAlign: "center" }}>
-          <Button variant="text" onClick={handleSeeAll}>
-            <CustomTypography
-              sx={{
-                fontWeight: "500",
-                fontSize: "12px",
-                fontFamily: "Avenir",
-                lineHeight: "14px",
-              }}
-            >
-              See All
-            </CustomTypography>
-          </Button>
-        </Box>
+        {notifications?.length > 3 && (
+          <>
+            <Divider />
+            <Box sx={{ textAlign: "center" }}>
+              <Button variant="text" onClick={handleSeeAll}>
+                <CustomTypography
+                  sx={{
+                    fontWeight: "500",
+                    fontSize: "12px",
+                    fontFamily: "Avenir",
+                    lineHeight: "14px",
+                  }}
+                >
+                  See All
+                </CustomTypography>
+              </Button>
+            </Box>
+          </>
+        )}
       </Menu>
 
       <CustomModal
