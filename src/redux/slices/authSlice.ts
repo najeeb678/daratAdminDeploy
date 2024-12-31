@@ -16,6 +16,7 @@ const initialState = {
   role: "",
   token: null,
   notifications: [],
+  unreadNotificationCount: 0,
 };
 
 // AsyncThunk for login
@@ -132,7 +133,7 @@ export const markAsReadAdminNotifications = createAsyncThunk(
   }
 );
 export const markAsReadDoctorNotifications = createAsyncThunk(
-  "auth/markAsReadAdminNotifications",
+  "auth/markAsReadDoctorNotifications",
   async (data: any, { rejectWithValue }) => {
     try {
       const res = await markAsReadDoctorNotificationsApi(data);
@@ -159,6 +160,15 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {})
       .addCase(getNotificationByRole.fulfilled, (state, action) => {
         state.notifications = action.payload;
+        state.unreadNotificationCount = action.payload.filter(
+          (notif: any) => notif && notif.read === false
+        ).length;
+      })
+      .addCase(markAsReadAdminNotifications.fulfilled, (state, action) => {
+        state.unreadNotificationCount = state.unreadNotificationCount - 1;
+      })
+      .addCase(markAsReadDoctorNotifications.fulfilled, (state, action) => {
+        state.unreadNotificationCount = state.unreadNotificationCount - 1;
       });
   },
 });

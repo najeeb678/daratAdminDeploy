@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Typography } from "@mui/material";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
@@ -13,14 +13,24 @@ import {
   markAsReadDoctorNotifications,
 } from "@/redux/slices/authSlice";
 import { AppDispatch } from "@/redux/store";
+import { getRole } from "@/utils/utils";
 
 const NotificationDetail = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const [role, setRole] = useState<string | null>(null);
+  const [notifications, setNotifications] = useState<any[]>([]);
+
   const notificationsData = useSelector(
     (state: any) => state.auth.notifications
   );
+  useEffect(() => {
+    setNotifications(notificationsData);
+  }, [notificationsData]);
+  useEffect(() => {
+    const userRole = getRole();
+    setRole(userRole);
+  }, []);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState<any>(null);
   const formatDate = (date: string | Date): string => {
@@ -60,7 +70,7 @@ const NotificationDetail = () => {
       >
         Notifications
       </CustomTypography>
-      {notificationsData?.length === 0 && (
+      {notifications?.length === 0 && (
         <Box
           sx={{
             display: "flex",
@@ -84,7 +94,7 @@ const NotificationDetail = () => {
           </Typography>
         </Box>
       )}
-      {notificationsData?.map((notif: any) => (
+      {notifications?.map((notif: any) => (
         <Box
           key={notif.id}
           onClick={() => {
@@ -96,7 +106,13 @@ const NotificationDetail = () => {
 
               dispatch(markAsReadAction({ notificationId: notif.id }))
                 .unwrap()
-                .then(() => {})
+                .then(() => {
+                  setNotifications((prev) =>
+                    prev.map((n) =>
+                      n.id === notif.id ? { ...n, read: true } : n
+                    )
+                  );
+                })
                 .catch((error) =>
                   console.error("Failed to mark notification as read:", error)
                 );

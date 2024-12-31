@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import {
   IconButton,
@@ -30,10 +30,14 @@ const Notifications = () => {
 
   const [role, setRole] = useState<string | null>(null);
   const [notifications, setNotifications] = useState<any[]>([]);
-  const [unreadCount, setUnreadCount] = useState(0);
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState<any>(null);
+  const unreadNotificationCount = useSelector(
+    (state: any) => state.auth.unreadNotificationCount
+  );
+
   const formatDate = (date: string | Date): string => {
     return format(new Date(date), "EEEE, dd MMM yyyy");
   };
@@ -54,12 +58,6 @@ const Notifications = () => {
       .then((res: any) => {
         if (Array.isArray(res)) {
           setNotifications(res);
-
-          const unreadCount = res.filter(
-            (notif: any) => notif && notif.read === false
-          ).length;
-
-          setUnreadCount(unreadCount);
         }
       })
       .catch((error) => console.error("Failed to fetch notifications:", error));
@@ -91,7 +89,7 @@ const Notifications = () => {
   return (
     <>
       <IconButton onClick={handleOpen}>
-        <Badge badgeContent={unreadCount} color="warning">
+        <Badge badgeContent={unreadNotificationCount} color="warning">
           <NotificationsNoneOutlinedIcon
             sx={{ color: "#7B7B7B", width: "26px", height: "26px" }}
           />
@@ -174,7 +172,7 @@ const Notifications = () => {
                     ? markAsReadAdminNotifications
                     : markAsReadDoctorNotifications;
 
-                dispatch(markAsReadAction({notificationId:notif.id}))
+                dispatch(markAsReadAction({ notificationId: notif.id }))
                   .unwrap()
                   .then(() => {
                     setNotifications((prev) =>
@@ -182,7 +180,6 @@ const Notifications = () => {
                         n.id === notif.id ? { ...n, read: true } : n
                       )
                     );
-                    setUnreadCount((count) => count - 1);
                   })
                   .catch((error) =>
                     console.error("Failed to mark notification as read:", error)
