@@ -1,12 +1,14 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createAdminApi,
+  getAdminDetailsApi,
   getNotificationByRoleApi,
   loginApi,
   markAsReadAdminNotificationsApi,
   markAsReadDoctorNotificationsApi,
   resendEmailOTPApi,
   resetForgottenPasswordApi,
+  UpdateAdminApi,
   verifyUserOTPApi,
 } from "../api/authApi";
 
@@ -36,6 +38,30 @@ export const createAdmin = createAsyncThunk(
   async (data: any, { rejectWithValue }) => {
     try {
       const response = await createAdminApi(data);
+
+      return response;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data || "Something went wrong");
+    }
+  }
+);
+export const UpdateAdmin = createAsyncThunk(
+  "auth/UpdateAdmin",
+  async (data: any, { rejectWithValue }) => {
+    try {
+      const response = await UpdateAdminApi(data);
+
+      return response;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data || "Something went wrong");
+    }
+  }
+);
+export const getAdminDetails = createAsyncThunk(
+  "auth/getAdminDetails",
+  async (id: any, { rejectWithValue }) => {
+    try {
+      const response = await getAdminDetailsApi(id);
 
       return response;
     } catch (err: any) {

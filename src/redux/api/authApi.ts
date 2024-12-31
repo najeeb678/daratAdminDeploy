@@ -24,6 +24,10 @@ export const createAdminApi = async (data: any) => {
   const response = await api.post("admin", data);
   return response.data;
 };
+export const UpdateAdminApi = async (data: any) => {
+  const response = await api.patch("admin", data);
+  return response.data;
+};
 export const verifyUserOTPApi = async (data: any) => {
   const response = await api.post("auth/verifyUser", data);
   return response.data;
@@ -35,6 +39,10 @@ export const resetForgottenPasswordApi = async (data: any) => {
 
 export const getNotificationByRoleApi = async (data: any) => {
   const response = await api.get(`notifications/${data}`);
+  return response.data;
+};
+export const getAdminDetailsApi = async (id: any) => {
+  const response = await api.get(`admin/${id}`);
   return response.data;
 };
 export const markAsReadAdminNotificationsApi = async (data: any) => {

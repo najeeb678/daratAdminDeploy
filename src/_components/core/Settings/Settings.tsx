@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Divider } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 
 import { useDispatch } from "react-redux";
@@ -11,66 +11,50 @@ import GenericInput from "@/_components/common/InputField/GenericInput";
 
 import ProfileImageSelector from "@/_components/common/ImageSelector/ProfileImageSelector";
 import { toast } from "react-toastify";
-import { createAdmin } from "@/redux/slices/authSlice";
+import { createAdmin, getAdminDetails, UpdateAdmin } from "@/redux/slices/authSlice";
 import { ThreeDots } from "react-loader-spinner";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
-
-const styles = {
-  cardContainer: {
-    overflowX: "Hidden",
-    width: "1040px",
-    height: "166px",
-    position: "relative",
-    display: "flex",
-    alignItems: "center",
-    borderRadius: "8px",
-    borderWidth: "1.5px",
-    borderStyle: "solid",
-    borderColor: "rgba(222, 222, 222, 0.63)",
-    backgroundColor: "white",
-  },
-  profileImage: {
-    width: "119px",
-    height: "119px",
-    borderRadius: "50%",
-    marginRight: "30px",
-    marginTop: "30px",
-    marginLeft: "40px",
-  },
-  textContainer: {
-    flex: 0.93,
-  },
-  name: {
-    margin: "0",
-    fontSize: "17px",
-    fontWeight: "500",
-    fontFamily: "var(--font-raleway)",
-  },
-  details: {
-    fontFamily: "AvenirBook",
-    fontWeight: "400",
-    fontSize: "11px",
-    margin: "5px 0",
-    color: "rgb(123, 123, 123, 0.7)",
-  },
+import { getDecodedToken } from "@/utils/utils";
+type UserDetails = {
+  id: string;
+  name: string;
+  profilePic: string;
+  email: string;
+  contactNumber: string;
+  role: string;
+  password: string;
 };
 
-interface AddCategoryProps {
-  handleClose?: () => void;
-  productData?: any | null;
-}
-const SettingsDetails: React.FC<AddCategoryProps> = ({
-  handleClose = () => {},
-  productData = null,
-}) => {
+const SettingsDetails: React.FC<any> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [isImageUploading, setIsImageUploading] = useState(false);
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
 
+  console.log("userDetails", userDetails);
   const [imageUrl, setImageUrl] = useState<string>("");
   const [productImage, setProductImage] = useState("");
+  useEffect(() => {
+    const token = getDecodedToken();
 
+    dispatch(getAdminDetails(token?.userId))
+      .unwrap()
+      .then((res: any) => {
+        setUserDetails(res);
+
+        // Set Formik values after fetching user details
+        formik.setValues({
+          name: res.name || "",
+          email: res.email || "",
+          profilePic: res.profilePic || "",
+          contactNo: res.contactNumber || "", // Map 'contactNumber' to 'contactNo'
+        });
+
+        // Set the profile picture state
+        setImageUrl(res.profilePic || "");
+      });
+  }, []);
   const handleImageChange = (url: string) => {
     formik.setFieldValue("profilePic", url);
     setProductImage(url);
@@ -99,13 +83,13 @@ const SettingsDetails: React.FC<AddCategoryProps> = ({
         }
 
         if (isUpdate) {
+          const res = await dispatch(UpdateAdmin(data)).unwrap();
           toast("Updated successfully", { type: "success" });
         } else {
           const res = await dispatch(createAdmin(data)).unwrap();
-          toast("Category created successfully", { type: "success" });
+          toast("Created successfully", { type: "success" });
         }
         setLoading(false);
-        handleClose();
       } catch (error: any) {
         toast.error(error);
         setLoading(false);
@@ -117,9 +101,7 @@ const SettingsDetails: React.FC<AddCategoryProps> = ({
     <Box
       style={{
         width: "100%",
-
         borderRadius: "10px",
-        padding: "5px 20px",
       }}
     >
       <Box component="form" noValidate onSubmit={formik.handleSubmit}>
@@ -137,9 +119,9 @@ const SettingsDetails: React.FC<AddCategoryProps> = ({
                   backgroundColor: "#ffffff",
                   border: "1px solid #CECECE",
                   borderRadius: "10px",
-                  padding: "0px 20px",
                   height: "160px",
                   display: "flex",
+                  padding: "0px 20px 0px 0px",
                   flexDirection: "row",
                   justifyContent: "space-between",
                   alignItems: "center",
@@ -180,8 +162,9 @@ const SettingsDetails: React.FC<AddCategoryProps> = ({
                           color: "#161616",
                         }}
                       >
-                        Full Name
+                        {userDetails?.name || "Name not available"}
                       </CustomTypography>
+
                       <CustomTypography
                         sx={{
                           fontWeight: "350",
@@ -190,17 +173,7 @@ const SettingsDetails: React.FC<AddCategoryProps> = ({
                           color: "#7B7B7B",
                         }}
                       >
-                        Administrator
-                      </CustomTypography>
-                      <CustomTypography
-                        sx={{
-                          fontWeight: "350",
-                          fontSize: "12px",
-                          lineheight: "17px",
-                          color: "#7B7B7B",
-                        }}
-                      >
-                        Riyadh, Saudia
+                        {userDetails?.role || "Role not available"}
                       </CustomTypography>
                     </Box>
                   </Box>
@@ -225,108 +198,163 @@ const SettingsDetails: React.FC<AddCategoryProps> = ({
                 </Box>
               </Box>
             </Grid>
-            <Grid size={{ xs: 12 }} component="div">
-              <GenericInput
-                label="Enter Name"
-                type="text"
-                name="name"
-                value={formik.values.name}
-                onChange={formik.handleChange("name")}
-                onBlur={formik.handleBlur("name")}
-                placeholder="Enter  Name"
-                error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={
-                  formik.touched.name && formik.errors.name
-                    ? formik.errors.name
-                    : undefined
-                }
-              />
-            </Grid>
-            <Grid size={{ xs: 12, md: 6 }} component="div">
-              <GenericInput
-                name="email"
-                label="Email"
-                type="text"
-                value={formik.values.email}
-                onChange={formik.handleChange("email")}
-                onBlur={formik.handleBlur("email")}
-                placeholder="Enter Email"
-              />
-              {formik.touched.email && formik.errors.email && (
-                <span className="error-message">
-                  {" "}
-                  {typeof formik.errors.email === "string"
-                    ? formik.errors.email
-                    : ""}
-                </span>
-              )}
-            </Grid>
-
-            <Grid size={{ xs: 12, md: 6 }} component="div">
-              <GenericInput
-                label="Contact No "
-                type="number"
-                name="contactNo"
-                value={formik.values.contactNo}
-                onChange={formik.handleChange("contactNo")}
-                onBlur={formik.handleBlur("contactNo")}
-                placeholder="Add contactNo"
-                error={
-                  formik.touched.contactNo && Boolean(formik.errors.contactNo)
-                }
-                helperText={
-                  formik.touched.contactNo && formik.errors.contactNo
-                    ? formik.errors.contactNo
-                    : undefined
-                }
-              />
-            </Grid>
-          </Grid>
-
-          <Box
-            sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "start",
-              marginTop: "20px",
-            }}
-          >
-            <Button
-              type="submit"
-              variant="contained"
+            <Grid
+              size={{ xs: 12 }}
+              component="div"
               sx={{
-                fontSize: "12px !important",
-                fontWeight: "700 !important",
-                fontFamily: "Avenir !important",
-                lineHeight: "18px !important",
-                borderRadius: "50px !important",
-                backgroundColor: "#FBC02D !important",
-                boxShadow: "none",
-                transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "#FBC02D !important", // Same background color
-                  color: "white !important",
-                  boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
-                  transform: "scale(1.005)",
-                },
+                backgroundColor: "#ffffff",
+                border: "1px solid #CECECE",
+                borderRadius: "10px",
+                padding: "0px 20px",
+
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                alignItems: "center",
               }}
             >
-              {loading ? (
-                <ThreeDots
-                  height="28"
-                  width="40"
-                  radius="9"
-                  color="#FFFFFF"
-                  ariaLabel="three-dots-loading"
-                  visible
+              <CustomTypography
+                sx={{
+                  margin: "15px 0px 10px 0px",
+                  width: "100%",
+                  fontWeight: "400",
+                  fontSize: "14px",
+                  lineheight: "17px",
+                  color: "#161616",
+                }}
+              >
+                Personal Details
+              </CustomTypography>
+              <Divider
+                sx={{ width: "100%", color: "#A6A6A6", marginBottom: "15px" }}
+              />
+              <Grid size={{ xs: 12 }} component="div">
+                <GenericInput
+                  label="Enter Name"
+                  type="text"
+                  name="name"
+                  value={formik.values.name}
+                  onChange={formik.handleChange("name")}
+                  onBlur={formik.handleBlur("name")}
+                  placeholder="Enter  Name"
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={
+                    formik.touched.name && formik.errors.name
+                      ? formik.errors.name
+                      : undefined
+                  }
                 />
-              ) : isUpdate ? (
-                "Update "
-              ) : (
-                <>Update</>
-              )}
-            </Button>
-          </Box>
+              </Grid>
+
+              <Grid size={{ xs: 12 }} component="div">
+                <GenericInput
+                  name="email"
+                  label="Email"
+                  type="text"
+                  value={formik.values.email}
+                  onChange={formik.handleChange("email")}
+                  onBlur={formik.handleBlur("email")}
+                  placeholder="Enter Email"
+                />
+                {formik.touched.email && formik.errors.email && (
+                  <span className="error-message">
+                    {" "}
+                    {typeof formik.errors.email === "string"
+                      ? formik.errors.email
+                      : ""}
+                  </span>
+                )}
+              </Grid>
+
+              <Grid size={{ xs: 12 }} component="div">
+                <GenericInput
+                  label="Contact No "
+                  type="number"
+                  name="contactNo"
+                  value={formik.values.contactNo}
+                  onChange={formik.handleChange("contactNo")}
+                  onBlur={formik.handleBlur("contactNo")}
+                  placeholder="Add contactNo"
+                  error={
+                    formik.touched.contactNo && Boolean(formik.errors.contactNo)
+                  }
+                  helperText={
+                    formik.touched.contactNo && formik.errors.contactNo
+                      ? formik.errors.contactNo
+                      : undefined
+                  }
+                />
+              </Grid>
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  margin: "20px 0px",
+                }}
+              >
+                {" "}
+                <Button
+                  variant="outlined"
+                  onClick={() => {}}
+                  style={{ marginRight: "10px" }}
+                  sx={{
+                    fontSize: "13px !important",
+                    fontWeight: "400 !important",
+                    width: "114px !important",
+                    borderRadius: "50px !important",
+                    borderColor: "#b2b2b2",
+                    marginRight: "20px",
+                    color: "#A6A6A6",
+                    boxShadow: "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
+                      transform: "scale(1.005)",
+                    },
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  sx={{
+                    fontSize: "12px !important",
+                    fontWeight: "700 !important",
+                    fontFamily: "Avenir !important",
+                    lineHeight: "18px !important",
+                    borderRadius: "50px !important",
+                    width: "114px !important",
+                    backgroundColor: "#FBC02D !important",
+                    boxShadow: "none",
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      backgroundColor: "#FBC02D !important", // Same background color
+                      color: "white !important",
+                      boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
+                      transform: "scale(1.005)",
+                    },
+                  }}
+                >
+                  {loading ? (
+                    <ThreeDots
+                      height="28"
+                      width="40"
+                      radius="9"
+                      color="#FFFFFF"
+                      ariaLabel="three-dots-loading"
+                      visible
+                    />
+                  ) : isUpdate ? (
+                    "Update "
+                  ) : (
+                    <>Update</>
+                  )}
+                </Button>
+              </Box>
+            </Grid>
+          </Grid>
         </Grid>
       </Box>
     </Box>

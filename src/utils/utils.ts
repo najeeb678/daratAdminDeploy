@@ -5,12 +5,12 @@ interface CustomJwtPayload extends JwtPayload {
   userId: string; // Add any other properties you expect in the token
 }
 
-export const getDecodedToken = (): CustomJwtPayload | null => {
+export const getDecodedToken = (): any | null => {
   if (typeof window !== "undefined") {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        return jwtDecode<CustomJwtPayload>(token); // Specify the return type
+        return jwtDecode<any>(token); // Specify the return type
       } catch (error) {
         console.error("Invalid token", error);
         return null;
