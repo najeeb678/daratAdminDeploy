@@ -150,8 +150,6 @@
 
 // export default NotificationModal;
 
-
-
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { format } from "date-fns";
@@ -184,72 +182,122 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
   handleModalClose,
 }) => {
   return (
-    <Box sx={{ padding: "16px" }}>
+    <Box sx={{ padding: "8px 16px" }}>
       {selectedNotification ? (
         <>
           <Typography
-            fontFamily="var(--font-raleway)"
-            sx={{ marginBottom: "16px", fontWeight: "bold" }}
+            fontFamily="var(--font-avenir)"
+            sx={{
+              fontSize: "14px",
+              marginBottom: "16px",
+              lineHeight: "16px",
+              color: "#161616",
+            }}
           >
             {selectedNotification.title}
           </Typography>
-          <Typography variant="body1" sx={{ marginBottom: "16px" }}>
+          <Typography
+            fontFamily="var(--font-avenir)"
+            sx={{
+              fontSize: "12px",
+              marginBottom: "16px",
+              lineHeight: "16px",
+              color: "#7B7B7B",
+            }}
+          >
             {selectedNotification.body}
           </Typography>
 
           {selectedNotification.Appointment && (
             <Box>
               <Typography
-                variant="subtitle1"
-                sx={{ fontWeight: "bold", marginBottom: "8px" }}
+                fontFamily="var(--font-avenir)"
+                sx={{
+                  fontSize: "14px",
+                  marginBottom: "16px",
+                  lineHeight: "16px",
+                  color: "#161616",
+                }}
               >
                 Appointment Details:
               </Typography>
               <Typography
-                variant="body2"
+                fontFamily="var(--font-avenir)"
                 sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
+                  fontSize: "12px",
                   marginBottom: "8px",
+                  lineHeight: "16px",
                 }}
               >
-                <strong>Patient:</strong>{" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    minWidth: "110px",
+                    color: "#7B7B7B",
+                  }}
+                >
+                  Patient:
+                </span>
                 {selectedNotification.Appointment.patientId.name}
               </Typography>
               <Typography
-                variant="body2"
+                fontFamily="var(--font-avenir)"
                 sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
+                  fontSize: "12px",
                   marginBottom: "8px",
+                  lineHeight: "16px",
                 }}
               >
-                <strong>Doctor:</strong>{" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    minWidth: "110px",
+                    color: "#7B7B7B",
+                  }}
+                >
+                  Doctor:
+                </span>
                 {selectedNotification.Appointment.doctorId.name}
               </Typography>
               <Typography
-                variant="body2"
+                fontFamily="var(--font-avenir)"
                 sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
+                  fontSize: "12px",
                   marginBottom: "8px",
+                  lineHeight: "16px",
                 }}
               >
-                <strong>Date:</strong>{" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    minWidth: "110px",
+                    color: "#7B7B7B",
+                  }}
+                >
+                  Date:
+                </span>
                 {format(
                   new Date(selectedNotification.Appointment.scheduledDate),
                   "MM/dd/yyyy"
                 )}
               </Typography>
               <Typography
-                variant="body2"
+                fontFamily="var(--font-avenir)"
                 sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
+                  fontSize: "12px",
                   marginBottom: "8px",
+                  lineHeight: "16px",
                 }}
               >
-                <strong>Time:</strong>{" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    minWidth: "110px",
+                    color: "#7B7B7B",
+                  }}
+                >
+                  Time:
+                </span>
                 {`${format(
                   new Date(selectedNotification.Appointment.startTime),
                   "h:mm a"
@@ -259,25 +307,42 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
                 )}`}
               </Typography>
               <Typography
-                variant="body2"
+                fontFamily="var(--font-avenir)"
                 sx={{
-                  display: "flex",
-                  justifyContent: "flex-start",
+                  fontSize: "12px",
                   marginBottom: "8px",
+                  lineHeight: "16px",
                 }}
               >
-                <strong>Status:</strong>{" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    minWidth: "110px",
+                    color: "#7B7B7B",
+                  }}
+                >
+                  Status:
+                </span>
                 {selectedNotification.Appointment.status}
               </Typography>
               <Typography
-                variant="body2"
+                fontFamily="var(--font-avenir)"
                 sx={{
-                  display: "flex",
-                  gap: "100px",
+                  fontSize: "12px",
                   marginBottom: "8px",
+                  lineHeight: "16px",
+                  width: "100%",
                 }}
               >
-                <strong>Total Fee:</strong> $
+                <span
+                  style={{
+                    display: "inline-block",
+                    minWidth: "110px",
+                    color: "#7B7B7B",
+                  }}
+                >
+                  Total Fee:
+                </span>
                 {selectedNotification.Appointment.TotalFee}
               </Typography>
             </Box>
