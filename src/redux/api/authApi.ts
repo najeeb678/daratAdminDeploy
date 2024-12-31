@@ -24,9 +24,9 @@ export const createAdminApi = async (data: any) => {
   const response = await api.post("admin", data);
   return response.data;
 };
-export const UpdateAdminApi = async (data: any) => {
-  const response = await api.patch("admin", data);
-  return response.data;
+
+export const UpdateAdminApi = ({ id, data }: { id: string; data: any }) => {
+  return api.patch(`admin/${id}`, data); 
 };
 export const verifyUserOTPApi = async (data: any) => {
   const response = await api.post("auth/verifyUser", data);

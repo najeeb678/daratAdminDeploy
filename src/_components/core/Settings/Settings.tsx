@@ -11,10 +11,15 @@ import GenericInput from "@/_components/common/InputField/GenericInput";
 
 import ProfileImageSelector from "@/_components/common/ImageSelector/ProfileImageSelector";
 import { toast } from "react-toastify";
-import { createAdmin, getAdminDetails, UpdateAdmin } from "@/redux/slices/authSlice";
+import {
+  createAdmin,
+  getAdminDetails,
+  UpdateAdmin,
+} from "@/redux/slices/authSlice";
 import { ThreeDots } from "react-loader-spinner";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import { getDecodedToken } from "@/utils/utils";
+import { set } from "lodash";
 type UserDetails = {
   id: string;
   name: string;
@@ -28,13 +33,13 @@ type UserDetails = {
 const SettingsDetails: React.FC<any> = () => {
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(false);
-  const [isUpdate, setIsUpdate] = useState<boolean>(false);
+
+  const [isEdit, setIsEdit] = useState(false);
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
 
-  console.log("userDetails", userDetails);
   const [imageUrl, setImageUrl] = useState<string>("");
-  const [productImage, setProductImage] = useState("");
+
   useEffect(() => {
     const token = getDecodedToken();
 
@@ -42,38 +47,39 @@ const SettingsDetails: React.FC<any> = () => {
       .unwrap()
       .then((res: any) => {
         setUserDetails(res);
+        console.log("rrr", res);
 
-        // Set Formik values after fetching user details
         formik.setValues({
           name: res.name || "",
           email: res.email || "",
           profilePic: res.profilePic || "",
-          contactNo: res.contactNumber || "", // Map 'contactNumber' to 'contactNo'
+          contactNumber: res.contactNumber || "",
         });
 
         // Set the profile picture state
         setImageUrl(res.profilePic || "");
       });
   }, []);
+
   const handleImageChange = (url: string) => {
     formik.setFieldValue("profilePic", url);
-    setProductImage(url);
   };
   const formik = useFormik({
     initialValues: {
       name: "",
       email: "",
       profilePic: "",
-      contactNo: "",
+      contactNumber: "2222",
     },
     validationSchema: Yup.object().shape({
       name: Yup.string().required("Full Name is required"),
       email: Yup.string().email("Invalid email").required("Email is required"),
 
-      contactNo: Yup.string().required("Contact No is required"),
+      contactNumber: Yup.string().required("Contact No is required"),
     }),
     onSubmit: async (data) => {
       setLoading(true);
+
       console.log("Form submitted with data:", data);
       try {
         if (data.profilePic === "") {
@@ -82,13 +88,15 @@ const SettingsDetails: React.FC<any> = () => {
           return;
         }
 
-        if (isUpdate) {
-          const res = await dispatch(UpdateAdmin(data)).unwrap();
+        const response = await dispatch(
+          UpdateAdmin({ id: userDetails!.id, data: data })
+        ).unwrap();
+
+        if (response) {
+          setIsEdit(false);
           toast("Updated successfully", { type: "success" });
-        } else {
-          const res = await dispatch(createAdmin(data)).unwrap();
-          toast("Created successfully", { type: "success" });
         }
+
         setLoading(false);
       } catch (error: any) {
         toast.error(error);
@@ -180,7 +188,7 @@ const SettingsDetails: React.FC<any> = () => {
                 </Box>
                 <Box sx={{}}>
                   <Button
-                    onClick={() => {}}
+                    onClick={() => setIsEdit(!isEdit)}
                     style={{
                       height: "25px",
                       width: "85px",
@@ -193,7 +201,7 @@ const SettingsDetails: React.FC<any> = () => {
                       cursor: "pointer",
                     }}
                   >
-                    Edit
+                    {isEdit ? "Cancel" : "Edit"}
                   </Button>
                 </Box>
               </Box>
@@ -233,6 +241,7 @@ const SettingsDetails: React.FC<any> = () => {
                   label="Enter Name"
                   type="text"
                   name="name"
+                  disabled={!isEdit}
                   value={formik.values.name}
                   onChange={formik.handleChange("name")}
                   onBlur={formik.handleBlur("name")}
@@ -251,6 +260,7 @@ const SettingsDetails: React.FC<any> = () => {
                   name="email"
                   label="Email"
                   type="text"
+                  disabled={!isEdit}
                   value={formik.values.email}
                   onChange={formik.handleChange("email")}
                   onBlur={formik.handleBlur("email")}
@@ -270,17 +280,19 @@ const SettingsDetails: React.FC<any> = () => {
                 <GenericInput
                   label="Contact No "
                   type="number"
-                  name="contactNo"
-                  value={formik.values.contactNo}
-                  onChange={formik.handleChange("contactNo")}
-                  onBlur={formik.handleBlur("contactNo")}
+                  name="contactNumber"
+                  disabled={!isEdit}
+                  value={formik.values.contactNumber}
+                  onChange={formik.handleChange("contactNumber")}
+                  onBlur={formik.handleBlur("contactNumber")}
                   placeholder="Add contactNo"
                   error={
-                    formik.touched.contactNo && Boolean(formik.errors.contactNo)
+                    formik.touched.contactNumber &&
+                    Boolean(formik.errors.contactNumber)
                   }
                   helperText={
-                    formik.touched.contactNo && formik.errors.contactNo
-                      ? formik.errors.contactNo
+                    formik.touched.contactNumber && formik.errors.contactNumber
+                      ? formik.errors.contactNumber
                       : undefined
                   }
                 />
@@ -296,8 +308,9 @@ const SettingsDetails: React.FC<any> = () => {
                 {" "}
                 <Button
                   variant="outlined"
-                  onClick={() => {}}
+                  onClick={() => setIsEdit(false)}
                   style={{ marginRight: "10px" }}
+                  disabled={!isEdit}
                   sx={{
                     fontSize: "13px !important",
                     fontWeight: "400 !important",
@@ -318,6 +331,7 @@ const SettingsDetails: React.FC<any> = () => {
                 </Button>
                 <Button
                   type="submit"
+                  disabled={!isEdit}
                   variant="contained"
                   sx={{
                     fontSize: "12px !important",
@@ -337,7 +351,7 @@ const SettingsDetails: React.FC<any> = () => {
                     },
                   }}
                 >
-                  {loading ? (
+                  {loading || isImageUploading ? (
                     <ThreeDots
                       height="28"
                       width="40"
@@ -346,10 +360,8 @@ const SettingsDetails: React.FC<any> = () => {
                       ariaLabel="three-dots-loading"
                       visible
                     />
-                  ) : isUpdate ? (
-                    "Update "
                   ) : (
-                    <>Update</>
+                    "Update"
                   )}
                 </Button>
               </Box>

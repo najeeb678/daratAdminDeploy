@@ -45,13 +45,13 @@ export const createAdmin = createAsyncThunk(
     }
   }
 );
+
 export const UpdateAdmin = createAsyncThunk(
   "auth/UpdateAdmin",
-  async (data: any, { rejectWithValue }) => {
+  async ({ id, data }: { id: string; data: any }, { rejectWithValue }) => {
     try {
-      const response = await UpdateAdminApi(data);
-
-      return response;
+      const res = await UpdateAdminApi({ id, data }); // Pass id and data
+      return res.data; 
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Something went wrong");
     }

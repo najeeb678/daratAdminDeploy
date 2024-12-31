@@ -29,6 +29,7 @@ type GenericInputProps = {
   labelStyle?: SxProps<Theme>;
   error?: boolean; // Add error prop
   helperText?: string; // Add helperText prop
+  disabled?: boolean;
 };
 
 const GenericInput: React.FC<GenericInputProps> = ({
@@ -48,6 +49,7 @@ const GenericInput: React.FC<GenericInputProps> = ({
   inputfieldHeight,
   error, // Destructure error
   helperText, // Destructure helperText
+  disabled=false
 }) => {
   // Handle CNIC formatting
   const formatCnic = (value: string) => {
@@ -101,6 +103,7 @@ const GenericInput: React.FC<GenericInputProps> = ({
         type={type}
         value={value}
         name={name}
+        disabled={disabled}
         onChange={handleChange}
         variant="outlined"
         onBlur={onBlur}
