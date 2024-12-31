@@ -14,17 +14,20 @@ import {
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
 import { fetchRecentPatients } from "@/redux/slices/AdminDashboardSlice";
 
-const PatientsTable = ({ patientData, loading }: any) => {
+const PatientsTable = () => {
   const dispatch = useAppDispatch();
   const [searchInput, setSearchInput] = useState<string>("");
   const [patientFilter, setPatientFilter] = useState<string>("weekly");
   const [filteredName, setFilteredName] = useState<string>("");
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [isRoleLoaded, setIsRoleLoaded] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchRole = async () => {
       const role = await getRole();
       setUserRole(role);
+      setIsRoleLoaded(true);
     };
 
     fetchRole();
@@ -38,35 +41,38 @@ const PatientsTable = ({ patientData, loading }: any) => {
     (state: RootState) => state.doctorDashboard
   );
   const userId = getUserId();
-  
-  if (userRole === "Admin") {
 
-    useEffect(() => {
+  useEffect(() => {
+   
+    if (isRoleLoaded) {
       const payload = {
         timeFrame: patientFilter,
         search: "",
       };
 
-      dispatch(fetchRecentPatients(payload));
-    }, [patientFilter, dispatch]);
-  } else {
-    useEffect(() => {
-      const payload = {
-        doctorId: userId || "",
-        timeFrame: patientFilter,
-        search: "",
-      };
-
-      dispatch(fetchDoctorsRecentPatients(payload));
-    }, [patientFilter, dispatch]);
-  }
+      if (userRole === "Admin") {
+        dispatch(fetchRecentPatients(payload))
+          .unwrap()
+          .then(() => {
+            setLoading(false);
+          });
+      } else {
+        dispatch(
+          fetchDoctorsRecentPatients({ doctorId: userId || "", ...payload })
+        )
+          .unwrap()
+          .then(() => {
+            setLoading(false);
+          });
+      }
+    }
+  }, [patientFilter, dispatch, userRole, isRoleLoaded]);
 
   useEffect(() => {
     setFilteredName(searchInput);
   }, [searchInput]);
 
   const transformedPatientData = (
-    patientData ||
     recentPatients ||
     doctorsRecentPatients ||
     []
@@ -139,7 +145,9 @@ const PatientsTable = ({ patientData, loading }: any) => {
     { label: "AGE", accessor: "age" },
     { label: "SCHEDULED DATE", accessor: "scheduledDate" },
     { label: "SCHEDULED TIME", accessor: "scheduledTime" },
-    ...(userRole === "Admin" ? [{ label: "DOCTOR", accessor: "doctorName" }] : []),
+    ...(userRole === "Admin"
+      ? [{ label: "DOCTOR", accessor: "doctorName" }]
+      : []),
     { label: "DEPARTMENT", accessor: "department" },
   ];
 
@@ -193,7 +201,7 @@ const PatientsTable = ({ patientData, loading }: any) => {
 
   return (
     <>
-      <GenericTable<Doctor>
+      <GenericTable<any>
         data={transformedPatientData}
         columns={columns}
         title="Recent Patient Records"
