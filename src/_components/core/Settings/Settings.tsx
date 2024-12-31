@@ -47,7 +47,7 @@ const SettingsDetails: React.FC<any> = () => {
       .unwrap()
       .then((res: any) => {
         setUserDetails(res);
-        console.log("rrr", res);
+
 
         formik.setValues({
           name: res.name || "",
@@ -147,7 +147,9 @@ const SettingsDetails: React.FC<any> = () => {
                       selectedImage={imageUrl}
                       onImageChange={handleImageChange}
                       setIsImageUploading={setIsImageUploading}
+                      isDisabled={!isEdit}
                       imageHeight={110}
+
                       imageWidth={110}
                       customStyles={{
                         justifyContent: "flex-start",

@@ -4,6 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch } from "react-redux"; // Redux dispatch
 import { uploadImage } from "@/redux/slices/DoctorsSlice";
 import { ThreeDots } from "react-loader-spinner";
+import PhotoCameraIcon from "@mui/icons-material/PhotoCamera";
 
 interface ProfileImageSelectorProps {
   selectedImage: string;
@@ -12,6 +13,7 @@ interface ProfileImageSelectorProps {
   imageHeight?: number;
   imageWidth?: number;
   customStyles?: React.CSSProperties;
+  isDisabled?: boolean;
 }
 
 const ProfileImageSelector: React.FC<ProfileImageSelectorProps> = ({
@@ -21,6 +23,7 @@ const ProfileImageSelector: React.FC<ProfileImageSelectorProps> = ({
   imageHeight,
   imageWidth,
   customStyles,
+  isDisabled = false,
 }) => {
   const [uploading, setUploading] = useState(false);
   const dispatch: any = useDispatch();
@@ -74,7 +77,7 @@ const ProfileImageSelector: React.FC<ProfileImageSelectorProps> = ({
             overflow: "hidden", // Ensure overlay stays within the circle
           }}
           component="label"
-          disabled={uploading} // Disable button while uploading
+          disabled={uploading || isDisabled} // Disable button while uploading
         >
           <Avatar
             alt="Profile image"
@@ -153,9 +156,15 @@ const ProfileImageSelector: React.FC<ProfileImageSelectorProps> = ({
               backgroundColor: "#f0f0f0",
             },
           }}
-          disabled={uploading} // Disable while uploading
+          disabled={uploading || isDisabled}
         >
-          <EditIcon fontSize="small" />
+          {/* <EditIcon fontSize="small" /> */}
+          <PhotoCameraIcon
+            style={{
+              fontSize:"16px",
+              color: "rgba(251, 192, 45, 1)",
+            }}
+          />
           <input
             type="file"
             accept="image/png, image/jpg, image/jpeg"
