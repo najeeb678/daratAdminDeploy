@@ -15,6 +15,7 @@ import {
 const initialState = {
   role: "",
   token: null,
+  notifications: [],
 };
 
 // AsyncThunk for login
@@ -51,7 +52,7 @@ export const UpdateAdmin = createAsyncThunk(
   async ({ id, data }: { id: string; data: any }, { rejectWithValue }) => {
     try {
       const res = await UpdateAdminApi({ id, data }); // Pass id and data
-      return res.data; 
+      return res.data;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Something went wrong");
     }
@@ -154,7 +155,11 @@ const authSlice = createSlice({
         state.token = action.payload.access_token;
         state.role = action.payload.role;
       })
-      .addCase(loginUser.rejected, (state, action) => {});
+
+      .addCase(loginUser.rejected, (state, action) => {})
+      .addCase(getNotificationByRole.fulfilled, (state, action) => {
+        state.notifications = action.payload;
+      });
   },
 });
 
