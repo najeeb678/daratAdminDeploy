@@ -18,6 +18,8 @@ import { getRole } from "./utils";
 
 const role = getRole();
 
+console.log('role', role)
+
 export const sidebarData =
   role === "Admin"
     ? [
@@ -52,6 +54,11 @@ export const sidebarData =
           title: "Appointments",
           icon: SlCalender,
           path: "/appointments",
+        },
+        {
+          title: "Patients",
+          icon: SlCalender,
+          path: "/patients",
         },
         {
           title: "Services",

@@ -25,14 +25,15 @@ export const getDoctorAppointmentsApi = async (payload: {
 export const getDoctorsRecentPatientsApi = async (payload: {
   doctorId: string;
   timeFrame: string;
+  search: string;
 }) => {
-  const { doctorId, timeFrame } = payload;
+  const { doctorId, timeFrame, search } = payload;
 
   const response = await api.post(
     "dashboard/recent-patients-for-a-doctor",
     { doctorId },
     {
-      params: { timeFrame },
+      params: { timeFrame, search },
     }
   );
   return response.data;
