@@ -168,6 +168,8 @@ import {
   markAsReadDoctorNotifications,
 } from "@/redux/slices/authSlice";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
+import CustomModal from "@/_components/common/CustomModal/CustomModal";
+import NotificationModal from "./NotificationsModal";
 const commonButtonStyles = {
   height: "24px",
   width: "69px",
@@ -188,6 +190,8 @@ const Notifications = () => {
   // const [notifications, setNotifications] = useState<any[]>(dummyNotifications);
   const [unreadCount, setUnreadCount] = useState(0);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedNotification, setSelectedNotification] = useState<any>(null);
   const formatDate = (date: string | Date): string => {
     return format(new Date(date), "EEEE, dd MMM yyyy");
   };
@@ -223,7 +227,17 @@ const Notifications = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const handleModalClose = () => {
+    setIsModalOpen(false);
 
+    // if (selectedNotification && !selectedNotification.read) {
+    //   handleMarkAsRead(selectedNotification.id);
+    // }
+  };
+  const handleNotificationClick = (notif: any) => {
+    setSelectedNotification(notif);
+    setIsModalOpen(true);
+  };
   const handleAction = async (
     notifId: string,
     action: "confirm" | "cancel"
@@ -302,6 +316,7 @@ const Notifications = () => {
         {notifications.map((notif: any) => (
           <MenuItem
             key={notif.id}
+            onClick={() => handleNotificationClick(notif)}
             sx={{
               display: "block",
               padding: "16px",
@@ -471,6 +486,18 @@ const Notifications = () => {
           </Button>
         </Box> */}
       </Menu>
+      {console.log("selectedNotification", selectedNotification)}
+      <CustomModal
+        open={isModalOpen}
+        title={""}
+        handleClose={handleModalClose}
+        modalWidth="50%"
+      >
+        <NotificationModal
+          selectedNotification={selectedNotification}
+          handleModalClose={handleModalClose}
+        />
+      </CustomModal>
     </>
   );
 };
