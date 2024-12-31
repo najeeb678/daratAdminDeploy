@@ -81,7 +81,7 @@ export const fetchDoctorUpcomingAppointments = createAsyncThunk(
 export const fetchDoctorsRecentPatients = createAsyncThunk(
   "appointments/fetchDoctorsRecentPatients",
   async (
-    payload: { doctorId: string; timeFrame: string }, // Combine doctorId and filter into a single payload
+    payload: { doctorId: string; timeFrame: string, search : string }, 
     { rejectWithValue }
   ) => {
     try {

@@ -56,6 +56,11 @@ export const sidebarData =
           path: "/appointments",
         },
         {
+          title: "Patients",
+          icon: SlCalender,
+          path: "/patients",
+        },
+        {
           title: "Services",
           icon: MdOutlineMedicalServices,
           path: "/services",

@@ -6,8 +6,11 @@ import CustomCheckbox from "@/_components/common/CustomCheckBox";
 import { Doctor, Column, FilterConfig } from "@/types/types";
 import { Box } from "@mui/material";
 import { RootState } from "@/redux/store";
-import { getUserId } from "@/utils/utils";
-import { fetchDoctorUpcomingAppointments } from "@/redux/slices/doctorDashboardSlice";
+import { getRole, getUserId } from "@/utils/utils";
+import {
+  fetchDoctorUpcomingAppointments,
+  fetchDoctorsRecentPatients,
+} from "@/redux/slices/doctorDashboardSlice";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
 import { fetchRecentPatients } from "@/redux/slices/AdminDashboardSlice";
 
@@ -16,36 +19,72 @@ const PatientsTable = ({ patientData, loading }: any) => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [patientFilter, setPatientFilter] = useState<string>("weekly");
   const [filteredName, setFilteredName] = useState<string>("");
+  const [userRole, setUserRole] = useState<string | null>(null);
 
+  useEffect(() => {
+    const fetchRole = async () => {
+      const role = await getRole();
+      setUserRole(role);
+    };
+
+    fetchRole();
+  }, []);
 
   const { recentPatients } = useAppSelector(
     (state: RootState) => state.dashboard
   );
 
-  useEffect(() => {
-    dispatch(fetchRecentPatients(patientFilter));
-  }, [patientFilter, dispatch]);
+  const { doctorsRecentPatients } = useAppSelector(
+    (state: RootState) => state.doctorDashboard
+  );
+  const userId = getUserId();
+  
+  if (userRole === "Admin") {
+
+    useEffect(() => {
+      const payload = {
+        timeFrame: patientFilter,
+        search: "",
+      };
+
+      dispatch(fetchRecentPatients(payload));
+    }, [patientFilter, dispatch]);
+  } else {
+    useEffect(() => {
+      const payload = {
+        doctorId: userId || "",
+        timeFrame: patientFilter,
+        search: "",
+      };
+
+      dispatch(fetchDoctorsRecentPatients(payload));
+    }, [patientFilter, dispatch]);
+  }
 
   useEffect(() => {
     setFilteredName(searchInput);
   }, [searchInput]);
 
-  const transformedPatientData = (patientData || recentPatients || []).map(
-    (data: any, index: any) => ({
-      Sr_No: index + 1,
-      ID: data.id,
-      patientName: data?.patientId?.name || "N/A",
-      email: data?.patientId?.email || "N/A",
-      dateOfBirth: data?.patientId?.dateOfBirth || "N/A",
-      doctorName: data?.doctorId?.name || "N/A",
-      scheduledTime: `${new Date(data?.startTime).toLocaleTimeString("en-US", {
+  const transformedPatientData = (
+    patientData ||
+    recentPatients ||
+    doctorsRecentPatients ||
+    []
+  ).map((data: any, index: any) => ({
+    Sr_No: index + 1,
+    ID: data.id,
+    patientName: data?.patientId?.name || "N/A",
+    email: data?.patientId?.email || "N/A",
+    dateOfBirth: data?.patientId?.dateOfBirth || "N/A",
+    doctorName: data?.doctorId?.name || "N/A",
+    scheduledTime:
+      `${new Date(data?.startTime).toLocaleTimeString("en-US", {
         timeZone: "UTC",
       })}` || "N/A",
-      scheduledDate: new Date(data.startTime).toLocaleDateString() || "N/A",
-      age: calculateAge(data?.patientId?.dateOfBirth) || "N/A",
-      department: data?.subService?.service.name || "N/A",
-    })
-  );
+    scheduledDate: new Date(data.startTime).toLocaleDateString() || "N/A",
+    age: calculateAge(data?.patientId?.dateOfBirth) || "N/A",
+    department: data?.subService?.service.name || "N/A",
+  }));
 
   function calculateAge(dateOfBirth: string): string | null {
     if (!dateOfBirth) {
@@ -100,19 +139,32 @@ const PatientsTable = ({ patientData, loading }: any) => {
     { label: "AGE", accessor: "age" },
     { label: "SCHEDULED DATE", accessor: "scheduledDate" },
     { label: "SCHEDULED TIME", accessor: "scheduledTime" },
-    { label: "DOCTOR", accessor: "doctorName" },
+    ...(userRole === "Admin" ? [{ label: "DOCTOR", accessor: "doctorName" }] : []),
     { label: "DEPARTMENT", accessor: "department" },
   ];
 
-  const onSearchPatient = (searchTerm: string) => {
-    const payload = {
+  let onSearchPatient: any;
+
+  if (userRole === "Admin") {
+    onSearchPatient = (searchTerm: string) => {
+      const payload = {
         timeFrame: patientFilter,
-      search: searchTerm,
+        search: searchTerm,
+      };
+
+      dispatch(fetchRecentPatients(payload)).unwrap();
     };
+  } else {
+    onSearchPatient = (searchTerm: string) => {
+      const payload = {
+        doctorId: userId || "",
+        timeFrame: patientFilter,
+        search: searchTerm,
+      };
 
-    dispatch(fetchRecentPatients(payload)).unwrap();
-  };
-
+      dispatch(fetchDoctorsRecentPatients(payload)).unwrap();
+    };
+  }
   const searchFunc = useCallback(_debounce(onSearchPatient, 500), [
     patientFilter,
   ]);
