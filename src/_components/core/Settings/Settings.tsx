@@ -109,6 +109,7 @@ const SettingsDetails: React.FC<any> = () => {
       style={{
         width: "100%",
         borderRadius: "10px",
+        marginTop: "-1px",
       }}
     >
       <Box component="form" noValidate onSubmit={formik.handleSubmit}>
@@ -130,6 +131,7 @@ const SettingsDetails: React.FC<any> = () => {
                   display: "flex",
                   padding: "0px 20px 0px 0px",
                   flexDirection: "row",
+
                   justifyContent: "space-between",
                   alignItems: "center",
                 }}
@@ -214,7 +216,7 @@ const SettingsDetails: React.FC<any> = () => {
                 border: "1px solid #CECECE",
                 borderRadius: "10px",
                 padding: "0px 20px",
-
+                marginTop: "5px",
                 display: "flex",
                 flexDirection: "column",
                 justifyContent: "space-between",
