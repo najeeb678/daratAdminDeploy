@@ -151,7 +151,9 @@ const NotificationDetail = () => {
               minWidth: "130px",
             }}
           >
-            {formatDate(notif.Appointment?.startTime)}
+            {notif.type === "order"
+              ? formatDate(notif.Orders?.created_at)
+              : formatDate(notif.Appointment?.startTime)}
           </CustomTypography>
           <CustomTypography
             sx={{
@@ -161,7 +163,9 @@ const NotificationDetail = () => {
               minWidth: "70px",
             }}
           >
-            {format(new Date(notif.Appointment?.createdAt), "hh:mm a")}
+            {notif.type === "order"
+              ? format(new Date(notif.createdAt), "hh:mm a")
+              : format(new Date(notif.Appointment.createdAt), "hh:mm a")}
           </CustomTypography>
 
           <CustomTypography
@@ -179,7 +183,9 @@ const NotificationDetail = () => {
                 fontFamily: "Avenir",
               }}
             >
-              {notif.Appointment?.patientId?.name}
+              {notif.type === "order"
+                ? notif.Orders?.customer_id?.name
+                : notif.Appointment?.patientId?.name}
             </Typography>
             <Typography
               component="span"
@@ -190,8 +196,9 @@ const NotificationDetail = () => {
                 fontFamily: "Avenir",
               }}
             >
-              {" "}
-              has booked an appointment for the{" "}
+              {notif.type === "order"
+                ? " has placed an order with ID "
+                : " has booked an appointment for the "}
             </Typography>
             <Typography
               component="span"
@@ -202,7 +209,9 @@ const NotificationDetail = () => {
                 fontFamily: "Avenir",
               }}
             >
-              {notif.Appointment?.subService?.name}
+              {notif.type === "order"
+                ? notif.Orders?.unique_code
+                : notif.Appointment?.subService?.name}
             </Typography>
             <Typography
               component="span"
@@ -225,7 +234,9 @@ const NotificationDetail = () => {
                 fontFamily: "Avenir",
               }}
             >
-              {formatDateTime(notif.Appointment?.startTime)}{" "}
+              {notif.type === "order"
+                ? `${format(new Date(notif.createdAt), "hh:mm a")}.`
+                : formatDateTime(notif.Appointment?.startTime)}{" "}
             </Typography>
             <Typography
               component="span"
@@ -236,7 +247,9 @@ const NotificationDetail = () => {
                 fontFamily: "Avenir",
               }}
             >
-              with {notif.Appointment?.doctorId?.name}
+              {notif.type === "order"
+                ? ""
+                : `with ${notif.Appointment?.doctorId?.name}.`}
             </Typography>
           </CustomTypography>
 

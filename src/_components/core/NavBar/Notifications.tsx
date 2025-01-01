@@ -366,7 +366,7 @@ const Notifications = () => {
                   }}
                 >
                   {notif.type === "order"
-                    ? formatDateTime(notif.Orders?.created_at)
+                    ? `${formatDateTime(notif.Orders?.created_at)}.`
                     : formatDateTime(notif.Appointment?.startTime)}
                 </Typography>
                 <Typography
