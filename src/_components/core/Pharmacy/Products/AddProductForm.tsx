@@ -33,6 +33,9 @@ const AddProductForm: React.FC<AddProductProps> = ({
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [productImage, setProductImage] = useState("");
+  const [isImageUploading, setIsImageUploading] = useState(false);
+
+
 
   const allCategoriesData = useSelector(
     (state: any) => state.pharmacy.allCategories
@@ -48,6 +51,8 @@ const AddProductForm: React.FC<AddProductProps> = ({
         attachment: productData.attachment,
         description: productData.description,
         categoryId: productData.categoryId,
+        stock: productData.stock,
+        price: productData.price,
       });
       setProductImage(productData.attachment);
       setIsUpdate(true);
@@ -64,11 +69,22 @@ const AddProductForm: React.FC<AddProductProps> = ({
       attachment: "",
       description: "",
       categoryId: "",
+      stock: null,
+      price: null,
     },
     validationSchema: Yup.object().shape({
       name: Yup.string().required("Full Name is required"),
       categoryId: Yup.string().required("Category is required"),
       description: Yup.string().required("Description is required"),
+      stock: Yup.number()
+        .typeError("Stock must be a number")
+        .required("Stock is required")
+        .positive("Stock must be a positive number")
+        .integer("Stock must be an integer"),
+      price: Yup.number()
+        .typeError("Price must be a number")
+        .required("Price is required")
+        .positive("Price must be a positive number"),
     }),
     onSubmit: async (data) => {
       setLoading(true);
@@ -184,11 +200,43 @@ const AddProductForm: React.FC<AddProductProps> = ({
               <ProductImageUploader
                 selectedImage={productImage}
                 onImageChange={handleImageChange}
+                setIsImageUploading={setIsImageUploading}
                 height={160}
                 width={160}
               />
             </Grid>
-
+            <Grid size={{ xs: 6 }} component="div">
+              <GenericInput
+                label="Stock"
+                name="stock"
+                placeholder="Enter Stock"
+                value={formik.values.stock ?? ""}
+                onChange={formik.handleChange("stock")}
+                onBlur={formik.handleBlur("stock")}
+                error={formik.touched.stock && Boolean(formik.errors.stock)}
+                helperText={
+                  formik.touched.stock && formik.errors.stock
+                    ? formik.errors.stock
+                    : undefined
+                }
+              />
+            </Grid>
+            <Grid size={{ xs: 6 }} component="div">
+              <GenericInput
+                label="Price"
+                name="price"
+                placeholder="Enter Price"
+                value={formik.values.price ?? ""}
+                onChange={formik.handleChange("price")}
+                onBlur={formik.handleBlur("price")}
+                error={formik.touched.price && Boolean(formik.errors.price)}
+                helperText={
+                  formik.touched.price && formik.errors.price
+                    ? formik.errors.price
+                    : undefined
+                }
+              />
+            </Grid>
             <Grid size={{ xs: 12 }} component="div">
               <CustomMultilineInput
                 name="description"
@@ -255,7 +303,7 @@ const AddProductForm: React.FC<AddProductProps> = ({
                 },
               }}
             >
-              {loading ? (
+              {loading ||isImageUploading ? (
                 <ThreeDots
                   height="28"
                   width="40"
