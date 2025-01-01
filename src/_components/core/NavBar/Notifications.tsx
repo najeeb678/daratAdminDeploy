@@ -180,6 +180,7 @@ const Notifications = () => {
                     dispatch(
                       markAsReadDoctorNotifications({
                         notificationId: notif.id,
+                        doctorId: userId,
                       })
                     )
                       .unwrap()
