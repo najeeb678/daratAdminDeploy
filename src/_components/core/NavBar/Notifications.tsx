@@ -172,7 +172,10 @@ const Notifications = () => {
           </Box>
         )}
         {role === "Doctor"
-          ? "Doctor"
+          ? notifications.map((notif: any) => {
+              console.log("notif", notif);
+              return null; // Add rendering logic for Doctor if needed
+            })
           : notifications.map((notif: any) => (
               <MenuItem
                 key={notif.id}
