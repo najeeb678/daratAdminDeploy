@@ -469,6 +469,7 @@ const Notifications = () => {
           handleClose={handleClose}
           selectedNotification={selectedNotification}
           handleModalClose={handleModalClose}
+          role={role}
         />
       </CustomModal>
     </>
