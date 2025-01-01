@@ -213,86 +213,80 @@ const Notifications = () => {
                 }}
               >
                 <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                  <Box
-                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  <CustomTypography
+                    sx={{
+                      fontWeight: "400",
+                      fontSize: "12px",
+                    }}
                   >
-                    <CustomTypography
+                    <Typography
+                      component="span"
                       sx={{
-                        fontWeight: "400",
+                        fontWeight: "bold",
                         fontSize: "12px",
+                        fontFamily: "Avenir",
                       }}
                     >
-                      <Typography
-                        component="span"
-                        sx={{
-                          fontWeight: "bold",
-                          fontSize: "12px",
-                          fontFamily: "Avenir",
-                        }}
-                      >
-                        {notif.patientId?.name}
-                      </Typography>{" "}
-                      <Typography
-                        component="span"
-                        sx={{
-                          color: "#A6A6A6",
-                          fontWeight: "400",
-                          fontSize: "12px",
-                          fontFamily: "Avenir",
-                        }}
-                      >
-                        has booked an appointment for the{" "}
-                      </Typography>
-                      <Typography
-                        component="span"
-                        sx={{
-                          fontWeight: "400",
-                          fontSize: "12px",
-                          color: "black",
-                          fontFamily: "Avenir",
-                        }}
-                      >
-                        {notif.subService?.name}
-                      </Typography>
-                      {notif.type === "order" ? <br /> : ""}
-                      <Typography
-                        component="span"
-                        sx={{
-                          color: "#A6A6A6",
-                          fontWeight: "400",
-                          fontSize: "12px",
-                          fontFamily: "Avenir",
-                        }}
-                      >
-                        {" "}
-                        on
-                      </Typography>
-                      <br />
-                      <Typography
-                        component="span"
-                        sx={{
-                          fontWeight: "400",
-                          fontSize: "12px",
-                          color: "black",
-                          fontFamily: "Avenir",
-                        }}
-                      >
-                        {formatDateTime(notif.startTime)}
-                      </Typography>
-                  
-                    </CustomTypography>
+                      {notif.patientId?.name}
+                    </Typography>{" "}
+                    <Typography
+                      component="span"
+                      sx={{
+                        color: "#A6A6A6",
+                        fontWeight: "400",
+                        fontSize: "12px",
+                        fontFamily: "Avenir",
+                      }}
+                    >
+                      has booked an appointment for the{" "}
+                    </Typography>
                     <Typography
                       component="span"
                       sx={{
                         fontWeight: "400",
-                        color: "#A6A6A6",
-                        fontSize: "10px",
+                        fontSize: "12px",
+                        color: "black",
                         fontFamily: "Avenir",
                       }}
                     >
-                      {format(new Date(notif.createdAt), "hh:mm a")}
+                      {notif.subService?.name}
                     </Typography>
-                  </Box>
+                    {notif.type === "order" ? <br /> : ""}
+                    <br />
+                    <Typography
+                      component="span"
+                      sx={{
+                        color: "#A6A6A6",
+                        fontWeight: "400",
+                        fontSize: "12px",
+                        fontFamily: "Avenir",
+                      }}
+                    >
+                      on{" "}
+                    </Typography>
+                    <Typography
+                      component="span"
+                      sx={{
+                        fontWeight: "400",
+                        fontSize: "12px",
+                        color: "black",
+                        fontFamily: "Avenir",
+                      }}
+                    >
+                      {formatDateTime(notif.startTime)}
+                    </Typography>
+                  </CustomTypography>
+                  <Typography
+                    component="span"
+                    sx={{
+                      fontWeight: "400",
+                      color: "#A6A6A6",
+                      fontSize: "10px",
+                      fontFamily: "Avenir",
+                    }}
+                  >
+                    {format(new Date(notif.createdAt), "hh:mm a")}
+                  </Typography>
                 </Box>
               </MenuItem>
             ))
