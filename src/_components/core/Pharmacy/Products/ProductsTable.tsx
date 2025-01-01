@@ -280,7 +280,7 @@ const ProductsTable = ({ productsData = [], loading }: any) => {
         open={openCategoryModal}
         title={"Add Category"}
         handleClose={() => setOpenCategoryModal(false)}
-        modalWidth="50%"
+        modalWidth="65%"
       >
         <AddCategory handleClose={() => setOpenCategoryModal(false)} />
       </CustomModal>

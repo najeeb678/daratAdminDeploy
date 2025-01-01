@@ -35,8 +35,6 @@ const AddProductForm: React.FC<AddProductProps> = ({
   const [productImage, setProductImage] = useState("");
   const [isImageUploading, setIsImageUploading] = useState(false);
 
-
-
   const allCategoriesData = useSelector(
     (state: any) => state.pharmacy.allCategories
   );
@@ -151,7 +149,7 @@ const AddProductForm: React.FC<AddProductProps> = ({
               rowSpacing={1}
               columnSpacing={2}
               direction="row"
-              size={8}
+              size={{ xs: 12, md: 8 }}
             >
               <Grid size={{ xs: 12 }} component="div">
                 <SingleSelect
@@ -196,7 +194,13 @@ const AddProductForm: React.FC<AddProductProps> = ({
               </Grid>
             </Grid>
 
-            <Grid size={{ xs: 4 }} component="div">
+            <Grid
+              size={{ xs: 12, md: 4 }}
+              sx={{
+                order: { xs: -1, md: 0 },
+              }}
+              component="div"
+            >
               <ProductImageUploader
                 selectedImage={productImage}
                 onImageChange={handleImageChange}
@@ -205,7 +209,7 @@ const AddProductForm: React.FC<AddProductProps> = ({
                 width={160}
               />
             </Grid>
-            <Grid size={{ xs: 6 }} component="div">
+            <Grid size={{ xs: 12, sm: 6 }} component="div">
               <GenericInput
                 label="Stock"
                 name="stock"
@@ -221,7 +225,7 @@ const AddProductForm: React.FC<AddProductProps> = ({
                 }
               />
             </Grid>
-            <Grid size={{ xs: 6 }} component="div">
+            <Grid size={{ xs: 12, sm: 6 }} component="div">
               <GenericInput
                 label="Price"
                 name="price"
@@ -303,7 +307,7 @@ const AddProductForm: React.FC<AddProductProps> = ({
                 },
               }}
             >
-              {loading ||isImageUploading ? (
+              {loading || isImageUploading ? (
                 <ThreeDots
                   height="28"
                   width="40"

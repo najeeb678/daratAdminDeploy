@@ -107,6 +107,12 @@ input[data-testid="input"] {
 .responsive-logo {
   width: 168px; /* Default width */
 }
+.flexCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 
 @media (max-width: 900px) {
   .responsive-logo {

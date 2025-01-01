@@ -84,7 +84,7 @@ const AddCategory: React.FC<AddCategoryProps> = ({
             rowSpacing={1}
             columnSpacing={2}
             direction="row"
-            size={8}
+            size={{ xs: 12, md: 8 }}
           >
             <Grid size={{ xs: 12 }} component="div">
               <GenericInput
@@ -126,11 +126,19 @@ const AddCategory: React.FC<AddCategoryProps> = ({
               />
             </Grid>
           </Grid>
-          <Grid container size={4}>
+          <Grid
+            size={{ xs: 12, md: 4 }}
+            className="flexCenter"
+            sx={{
+              order: { xs: -1, md: 0 },
+            }}
+          >
             <Grid size={{ xs: 12 }} component="div">
               <ProductImageUploader
                 selectedImage={productImage}
                 onImageChange={handleImageChange}
+                height={160}
+                width={160}
               />
             </Grid>
           </Grid>
