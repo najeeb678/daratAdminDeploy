@@ -252,30 +252,6 @@ const NotificationDetail = () => {
                 : `with ${notif.Appointment?.doctorId?.name}.`}
             </Typography>
           </CustomTypography>
-
-          {/* <Box sx={{ display: "flex", gap: "8px" }}>
-            <Button
-              variant="outlined"
-              onClick={() => handleAction(notif.id, "cancel")}
-              sx={{ ...commonButtonStyles, color: "#7B7B7B" }}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={() => handleAction(notif.id, "confirm")}
-              sx={{ ...commonButtonStyles, color: "#087C31" }}
-            >
-              Confirm
-            </Button>
-            <Button
-              variant="outlined"
-              onClick={() => handleAction(notif.id, "view")}
-              sx={{ ...commonButtonStyles }}
-            >
-              View
-            </Button>
-          </Box> */}
         </Box>
       ))}
       <CustomModal

@@ -24,102 +24,7 @@ import CustomTypography from "@/_components/common/CustomTypography/CustomTypogr
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import NotificationModal from "./NotificationsModal";
 
-let data = [
-  {
-    id: "1590e4dc-5352-43fe-b777-7f6eb1e830db",
-    patient: null,
-    doctorId: null,
-    title: "New Appointment",
-    body: "John Riz has booked an appointment with Dr. Hassan",
-    type: "booking",
-    read: true,
-    createdAt: "2024-12-31T12:20:23.279Z",
-    appointmentId: "ba0e7c0b-86d1-4fba-8340-5b3972c07c72",
-    orderId: null,
-    Appointment: {
-      id: "ba0e7c0b-86d1-4fba-8340-5b3972c07c72",
-      patient: "b4dd3547-f24c-401f-931f-7b159f4f0b40",
-      doctor: "f35f788e-f3b6-4735-b27a-24e4068fdd87",
-      subTotalFee: 200,
-      TotalFee: 200,
-      discount: 0,
-      subServiceId: "b4592f04-7738-40c8-b1e3-73d956375e2d",
-      scheduledDate: "2025-01-01T00:00:00.000Z",
-      startTime: "2025-01-01T13:30:00.000Z",
-      endTime: "2025-01-01T14:00:00.000Z",
-      weekday: "Wednesday",
-      status: "Confirmed",
-      paymentMethod: null,
-      name: null,
-      email: null,
-      contactNo: null,
-      dob: null,
-      createdAt: "2024-12-31T12:20:20.378Z",
-      updatedAt: "2024-12-31T12:20:22.698Z",
-      is_Active: true,
-      is_Deleted: false,
-      doctorId: {
-        name: "Dr. Hassan",
-      },
-      patientId: {
-        name: "John Riz",
-      },
-      subService: {
-        name: "Dental Flossing",
-      },
-    },
-    Orders: null,
-  },
-  {
-    id: "1fedd77c-75a6-4dc4-b26a-92b116a8d3d4",
-    patient: null,
-    doctorId: null,
-    title: "New Order",
-    body: "Mehad Nadeem has placed a new order with order number ORDER-1735721581522",
-    type: "order",
-    read: false,
-    createdAt: "2025-01-01T08:53:05.391Z",
-    appointmentId: null,
-    orderId: "9177c183-2704-4095-87c1-0578ac394e3e",
-    Appointment: null,
-    Orders: {
-      id: "9177c183-2704-4095-87c1-0578ac394e3e",
-      addressId: "4fd1b29c-a257-401d-8acf-e513362d8fec",
-      unique_code: "ORDER-1735721581522",
-      customerId: "9ace1997-4710-4a8a-b6c1-2f16e8880436",
-      notes: "",
-      price: 800,
-      totalPrice: 810,
-      totalDiscount: 0,
-      quantity: 4,
-      paymentMethod: "Cash",
-      status: "CONFIRMED",
-      deliveryDate: null,
-      refundId: null,
-      created_at: "2025-01-01T08:53:01.523Z",
-      updated_at: "2025-01-01T08:53:03.605Z",
-      deleted_at: false,
-      deliveryFeeId: "06dcdfef-f894-4ba6-a632-2ed71c1c45a8",
-      customer_id: {
-        name: "Mehad Nadeem",
-      },
-      orderItems: [
-        {
-          id: "611e9272-608b-4d41-bc09-3d38176663c5",
-          itemId: "5aeff5a2-a529-4764-be7a-5da0f6f59e99",
-          colorId: null,
-          orderId: "9177c183-2704-4095-87c1-0578ac394e3e",
-          quantity: 1,
-          price: 200,
-          discount: null,
-          created_at: "2025-01-01T08:53:03.008Z",
-          updated_at: "2025-01-01T08:53:03.008Z",
-          deleted_at: false,
-        },
-      ],
-    },
-  },
-];
+
 const Notifications = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
@@ -427,6 +332,7 @@ const Notifications = () => {
         modalWidth="50%"
       >
         <NotificationModal
+          handleClose={handleClose}
           selectedNotification={selectedNotification}
           handleModalClose={handleModalClose}
         />

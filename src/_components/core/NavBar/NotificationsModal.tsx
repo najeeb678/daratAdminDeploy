@@ -1,6 +1,7 @@
 import React from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { format } from "date-fns";
+import Link from "next/link";
 
 interface Appointment {
   patientId: {
@@ -18,12 +19,14 @@ interface Appointment {
 
 interface Order {
   unique_code: string;
+  id: number;
   customer_id: {
     name: string;
   };
   price: number;
   totalPrice: number;
   status: string;
+
   orderItems: Array<{
     id: string;
     itemId: string;
@@ -41,11 +44,13 @@ interface NotificationModalProps {
     Orders?: Order;
   } | null;
   handleModalClose: () => void;
+  handleClose?: () => void;
 }
 
 const NotificationModal: React.FC<NotificationModalProps> = ({
   selectedNotification,
   handleModalClose,
+  handleClose = () => {},
 }) => {
   let type = selectedNotification?.type;
 
@@ -193,6 +198,33 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
                       {`- ${item.quantity} x Item ${item.itemId} @ ${item.price}`}
                     </Typography>
                   ))} */}
+                  </Typography>
+                  <Typography
+                    fontFamily="var(--font-avenir)"
+                    sx={{
+                      fontSize: "12px",
+                      marginBottom: "8px",
+                      lineHeight: "16px",
+                    }}
+                  >
+                    <span
+                      style={{
+                        display: "inline-block",
+                        minWidth: "110px",
+                        color: "#7B7B7B",
+                      }}
+                    >
+                      Order Details:
+                    </span>
+                    <Link
+                      onClick={() => {
+                        handleClose(), handleModalClose();
+                      }}
+                      href={`/pharmacy/order-details/${selectedNotification.Orders.id}`}
+                      style={{ fontFamily: "var(--font-avenirLight)" }}
+                    >
+                      View Full Order
+                    </Link>
                   </Typography>
                 </Box>
               )
