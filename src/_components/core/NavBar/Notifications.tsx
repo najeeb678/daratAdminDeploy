@@ -175,7 +175,8 @@ const Notifications = () => {
           ? notifications.map((notif: any) => (
               <MenuItem
                 key={notif.id}
-                onClick={() => {
+              onClick={() => {
+                  console.log("notif", notif);
                   if (!notif.read) {
                     dispatch(
                       markAsReadDoctorNotifications({
