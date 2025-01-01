@@ -330,7 +330,7 @@ const GenericTable = <T extends {}>({
             sx={{
               display: "flex",
               mt: 1,
-              height: "30px",
+              height: "40px",
               width: "100%",
               justifyContent: "flex-end",
             }}

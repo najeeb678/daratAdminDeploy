@@ -43,7 +43,6 @@ const PatientsTable = () => {
   const userId = getUserId();
 
   useEffect(() => {
-   
     if (isRoleLoaded) {
       const payload = {
         timeFrame: patientFilter,
@@ -213,6 +212,9 @@ const PatientsTable = () => {
           height: "29px",
           top: "0px",
           borderRadius: "50px",
+        }}
+        customTableStyles={{
+          overflowY: "hidden",
         }}
       />
     </>
