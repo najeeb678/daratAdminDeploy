@@ -173,25 +173,173 @@ const Notifications = () => {
         )}
         {role === "Doctor"
           ? "Doctor"
-          : notifications?.length > 3 && (
-              <>
-                <Divider />
-                <Box sx={{ textAlign: "center" }}>
-                  <Button variant="text" onClick={handleSeeAll}>
-                    <CustomTypography
+          : notifications.map((notif: any) => (
+              <MenuItem
+                key={notif.id}
+                onClick={() => {
+                  if (!notif.read) {
+                    const markAsReadAction =
+                      role === "Admin"
+                        ? markAsReadAdminNotifications
+                        : markAsReadDoctorNotifications;
+
+                    dispatch(markAsReadAction({ notificationId: notif.id }))
+                      .unwrap()
+                      .then(() => {
+                        setNotifications((prev) =>
+                          prev.map((n) =>
+                            n.id === notif.id ? { ...n, read: true } : n
+                          )
+                        );
+                      })
+                      .catch((error) =>
+                        console.error(
+                          "Failed to mark notification as read:",
+                          error
+                        )
+                      );
+                  }
+                  handleNotificationClick(notif);
+                }}
+                sx={{
+                  display: "block",
+                  padding: "16px",
+                  fontFamily: "Avenir",
+                  height: "66px",
+                  backgroundColor: notif.read ? "#F5F5F5" : "#FBC02D1F",
+                  marginBottom: "8px",
+                  "&:hover": {
+                    backgroundColor: notif.read ? "#E0E0E0" : "#F0F0F0", // Adjust hover color
+                    color: "inherit",
+                  },
+                }}
+              >
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <CustomTypography
+                    sx={{
+                      fontWeight: "400",
+                      fontSize: "12px",
+                    }}
+                  >
+                    <Typography
+                      component="span"
                       sx={{
-                        fontWeight: "500",
+                        fontWeight: "bold",
                         fontSize: "12px",
                         fontFamily: "Avenir",
-                        lineHeight: "14px",
                       }}
                     >
-                      See All
-                    </CustomTypography>
-                  </Button>
+                      {" "}
+                      {notif.type === "order"
+                        ? notif.Orders?.customer_id?.name
+                        : notif.Appointment?.patientId?.name}
+                    </Typography>{" "}
+                    <Typography
+                      component="span"
+                      sx={{
+                        color: "#A6A6A6",
+                        fontWeight: "400",
+                        fontSize: "12px",
+                        fontFamily: "Avenir",
+                      }}
+                    >
+                      {notif.type === "order"
+                        ? "has placed an order with ID "
+                        : " has booked an appointment for the "}
+                    </Typography>
+                    <Typography
+                      component="span"
+                      sx={{
+                        fontWeight: "400",
+                        fontSize: "12px",
+                        color: "black",
+                        fontFamily: "Avenir",
+                      }}
+                    >
+                      {notif.type === "order"
+                        ? notif.Orders?.unique_code
+                        : notif.Appointment?.subService?.name}
+                    </Typography>
+                    {notif.type === "order" ? <br /> : ""}
+                    <Typography
+                      component="span"
+                      sx={{
+                        color: "#A6A6A6",
+                        fontWeight: "400",
+                        fontSize: "12px",
+                        fontFamily: "Avenir",
+                      }}
+                    >
+                      {" "}
+                      on
+                    </Typography>
+                    {notif.type === "order" ? " " : <br />}
+                    <Typography
+                      component="span"
+                      sx={{
+                        fontWeight: "400",
+                        fontSize: "12px",
+                        color: "black",
+                        fontFamily: "Avenir",
+                      }}
+                    >
+                      {notif.type === "order"
+                        ? `${formatDateTime(notif.Orders?.created_at)}.`
+                        : formatDateTime(notif.Appointment?.startTime)}
+                    </Typography>
+                    <Typography
+                      component="span"
+                      sx={{
+                        fontWeight: "400",
+                        fontSize: "12px",
+                        color: "black",
+                        fontFamily: "Avenir",
+                      }}
+                    >
+                      {notif.type === "order"
+                        ? ""
+                        : `with ${notif.Appointment?.doctorId?.name}`}
+                    </Typography>
+                  </CustomTypography>
+                  <Typography
+                    component="span"
+                    sx={{
+                      fontWeight: "400",
+                      color: "#A6A6A6",
+                      fontSize: "10px",
+                      fontFamily: "Avenir",
+                    }}
+                  >
+                    {notif.type === "order"
+                      ? format(new Date(notif.createdAt), "hh:mm a")
+                      : format(
+                          new Date(notif.Appointment.createdAt),
+                          "hh:mm a"
+                        )}
+                  </Typography>
                 </Box>
-              </>
-            )}
+              </MenuItem>
+            ))}
+
+        {notifications?.length > 3 && (
+          <>
+            <Divider />
+            <Box sx={{ textAlign: "center" }}>
+              <Button variant="text" onClick={handleSeeAll}>
+                <CustomTypography
+                  sx={{
+                    fontWeight: "500",
+                    fontSize: "12px",
+                    fontFamily: "Avenir",
+                    lineHeight: "14px",
+                  }}
+                >
+                  See All
+                </CustomTypography>
+              </Button>
+            </Box>
+          </>
+        )}
       </Menu>
 
       <CustomModal
