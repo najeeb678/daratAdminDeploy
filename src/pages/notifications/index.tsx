@@ -158,7 +158,7 @@ const NotificationDetail = () => {
                   minWidth: "130px",
                 }}
               >
-                {formatDate(notif.startTime)}
+                {formatDate(notif?.Appointment?.startTime)}
               </CustomTypography>
               <CustomTypography
                 sx={{
@@ -168,7 +168,7 @@ const NotificationDetail = () => {
                   minWidth: "70px",
                 }}
               >
-                {format(new Date(notif.createdAt), "hh:mm a")}
+                {format(new Date(notif?.Appointment?.createdAt), "hh:mm a")}
               </CustomTypography>
 
               <CustomTypography
@@ -185,7 +185,7 @@ const NotificationDetail = () => {
                     fontFamily: "Avenir",
                   }}
                 >
-                  {notif.patientId?.name}{" "}
+                  {notif?.Appointment?.patientId?.name}{" "}
                 </Typography>
                 <Typography
                   component="span"
@@ -207,7 +207,7 @@ const NotificationDetail = () => {
                     fontFamily: "Avenir",
                   }}
                 >
-                  {notif.subService?.name}
+                  {notif?.Appointment?.subService?.name}
                 </Typography>
                 <Typography
                   component="span"
@@ -230,7 +230,7 @@ const NotificationDetail = () => {
                     fontFamily: "Avenir",
                   }}
                 >
-                  {formatDateTime(notif.startTime)}
+                  {formatDateTime(notif?.Appointment?.startTime)}
                 </Typography>
                 <Typography
                   component="span"
@@ -241,7 +241,7 @@ const NotificationDetail = () => {
                     fontFamily: "Avenir",
                   }}
                 >
-                  w
+                  
                 </Typography>
               </CustomTypography>
             </Box>

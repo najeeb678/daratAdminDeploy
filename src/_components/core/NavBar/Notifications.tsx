@@ -176,7 +176,7 @@ const Notifications = () => {
               <MenuItem
                 key={notif.id}
               onClick={() => {
-                  console.log("notif", notif);
+
                   if (!notif.read) {
                     dispatch(
                       markAsReadDoctorNotifications({
@@ -229,7 +229,7 @@ const Notifications = () => {
                         fontFamily: "Avenir",
                       }}
                     >
-                      {notif.patientId?.name}
+                      {notif?.Appointment?.patientId?.name}
                     </Typography>{" "}
                     <Typography
                       component="span"
@@ -251,9 +251,9 @@ const Notifications = () => {
                         fontFamily: "Avenir",
                       }}
                     >
-                      {notif.subService?.name}
+                      {notif?.Appointment?.subService?.name}
                     </Typography>
-                    {notif.type === "order" ? <br /> : ""}
+                   
                     <br />
                     <Typography
                       component="span"
@@ -275,7 +275,7 @@ const Notifications = () => {
                         fontFamily: "Avenir",
                       }}
                     >
-                      {formatDateTime(notif.startTime)}
+                      {formatDateTime(notif?.Appointment?.startTime)}
                     </Typography>
                   </CustomTypography>
                   <Typography
