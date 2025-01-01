@@ -37,10 +37,24 @@ export const resetForgottenPasswordApi = async (data: any) => {
   return response.data;
 };
 
-export const getNotificationByRoleApi = async (data: any) => {
-  const response = await api.get(`notifications/${data}`);
-  return response.data;
+// export const getNotificationByRoleApi = async (data: any) => {
+//   const response = await api.get(`notifications/${data}`);
+//   return response.data;
+// };
+export const getNotificationByRoleApi = async (role: string, doctorId?: string) => {
+  console.log("role", role);
+  console.log("doctorId", doctorId);
+  if (role === "Doctor") {
+    // Use POST method with payload for doctor
+    const response = await api.post("notifications/doctor", { doctorId });
+    return response.data;
+  } else {
+    // Use GET method for admin
+    const response = await api.get(`notifications/${role}`);
+    return response.data;
+  }
 };
+
 export const getAdminDetailsApi = async (id: any) => {
   const response = await api.get(`admin/${id}`);
   return response.data;

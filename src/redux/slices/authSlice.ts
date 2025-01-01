@@ -109,21 +109,34 @@ export const resetForgottenPassword = createAsyncThunk(
 );
 export const getNotificationByRole = createAsyncThunk(
   "auth/getNotificationByRole",
-  async (data: any, { rejectWithValue }) => {
+  async ({ role, doctorId }: { role: string; doctorId?: string }, { rejectWithValue }) => {
+    console.log("doctorId slice", doctorId);
     try {
-      const res = await getNotificationByRoleApi(data);
-
+      const res = await getNotificationByRoleApi(role, doctorId);
       return res;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Something went wrong");
     }
   }
 );
+
+// export const getNotificationByRole = createAsyncThunk(
+//   "auth/getNotificationByRole",
+//   async (data: any, { rejectWithValue }) => {
+//     try {
+//       const res = await getNotificationByRoleApi(data);
+
+//       return res;
+//     } catch (err: any) {
+//       return rejectWithValue(err.response?.data || "Something went wrong");
+//     }
+//   }
+// );
 export const markAsReadAdminNotifications = createAsyncThunk(
   "auth/markAsReadAdminNotifications",
   async (data: any, { rejectWithValue }) => {
     try {
-      console.log("id", data);
+
       const res = await markAsReadAdminNotificationsApi(data);
 
       return res;
