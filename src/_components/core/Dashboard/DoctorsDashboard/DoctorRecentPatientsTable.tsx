@@ -31,7 +31,6 @@ const DoctorRecentPatientsTable = () => {
 
     setuserId(user);
     if (user) {
-  
       dispatch(fetchDoctorsRecentPatients(payload));
     } else {
       console.warn("User  ID is not defined.");
@@ -148,10 +147,29 @@ const DoctorRecentPatientsTable = () => {
         columns={columns}
         title="Recent Patients"
         loading={false}
+        customContent={
+          <Link
+            href="/patients"
+            style={{
+              color: "#7B7B7B",
+              fontSize: "11px",
+              lineHeight: "14px",
+
+              fontWeight: "300",
+              fontFamily: "AvenirMedium",
+            }}
+          >
+            view all
+          </Link>
+        }
         filters={filters}
         sx={{
           height: "292px",
+          overflowY: "hidden",
           marginBottom: "0px",
+        }}
+        customTableStyles={{
+          overflowY: "hidden",
         }}
       />
     </>

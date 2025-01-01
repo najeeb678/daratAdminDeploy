@@ -107,6 +107,11 @@ export const getSidebarData = (role: string | null) => {
           path: "/",
         },
         {
+          title: "Patients",
+          icon: SlCalender,
+          path: "/patients",
+        },
+        {
           title: "Appointments",
           icon: SlCalender,
           path: "/appointments",
@@ -118,4 +123,3 @@ export const getSidebarData = (role: string | null) => {
         },
       ];
 };
-

@@ -46,7 +46,7 @@ let userId=getUserId()
     <Grid container spacing={1.6}>
       <Grid size={{ xs: 12 }} component="div">
         <Greetings
-          greeting="Good Morning!"
+          greeting={`${greetingText}`}
           name={userData?.name||""}
           message="Have a great day at work"
           imgUrl="/images/Dr.png"

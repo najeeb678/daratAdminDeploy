@@ -54,7 +54,7 @@ const Notifications = () => {
   const fetchNotifications = () => {
     const userRole = getRole();
     setRole(userRole);
-    dispatch(getNotificationByRole(userRole === "Admin" ? "Admin" : "Doctor"))
+    dispatch(getNotificationByRole(userRole === "Admin" ? "Admin" : "doctor"))
       .unwrap()
       .then((res: any) => {
         if (Array.isArray(res)) {

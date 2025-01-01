@@ -1,7 +1,7 @@
 import Layout from "@/_components/core/Layout/Layout";
 import store from "@/redux/store";
 import "@/styles/globals.css";
-import Theme from "@/styles/Theme/Theme";
+import Theme, { globalStyles } from "@/styles/Theme/Theme";
 import { ThemeProvider } from "@emotion/react";
 import { Provider as StoreProvider } from "react-redux";
 import type { AppProps } from "next/app";
@@ -21,14 +21,15 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <div className={`${raleway.className}`}>
       <StoreProvider store={store}>
-        {/* <ProtectRoute> */}
-        <ThemeProvider theme={Theme}>
-          <ToastContainer />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
-        </ThemeProvider>
-        {/* </ProtectRoute> */}
+        <ProtectRoute>
+          <ThemeProvider theme={Theme}>
+            {globalStyles}
+            <ToastContainer />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </ThemeProvider>
+        </ProtectRoute>
       </StoreProvider>
     </div>
   );

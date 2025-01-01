@@ -76,6 +76,7 @@ const AdminRecentPatientsTable = () => {
             gap={"5px"}
           >
             <CustomCheckbox
+              isDisabled
               onChange={() => {
                 console.log("Selected Patient:", row.PatientName);
               }}
@@ -142,7 +143,7 @@ const AdminRecentPatientsTable = () => {
         filters={filters}
         sx={{
           height: "292px",
-          overflowY: "auto",
+          overflowY: "hidden",
           marginBottom: "0px",
         }}
         customTableStyles={{
