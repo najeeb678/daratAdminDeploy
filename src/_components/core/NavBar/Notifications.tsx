@@ -172,10 +172,130 @@ const Notifications = () => {
           </Box>
         )}
         {role === "Doctor"
-          ? notifications.map((notif: any) => {
-              console.log("notif", notif);
-              return null; // Add rendering logic for Doctor if needed
-            })
+          ? notifications.map((notif: any) => (
+              <MenuItem
+                key={notif.id}
+                onClick={() => {
+                  if (!notif.read) {
+                    dispatch(
+                      markAsReadDoctorNotifications({
+                        notificationId: notif.id,
+                      })
+                    )
+                      .unwrap()
+                      .then(() => {
+                        setNotifications((prev) =>
+                          prev.map((n) =>
+                            n.id === notif.id ? { ...n, read: true } : n
+                          )
+                        );
+                      })
+                      .catch((error) =>
+                        console.error(
+                          "Failed to mark notification as read:",
+                          error
+                        )
+                      );
+                  }
+                  handleNotificationClick(notif);
+                }}
+                sx={{
+                  display: "block",
+                  padding: "16px",
+                  fontFamily: "Avenir",
+                  height: "66px",
+                  backgroundColor: notif.read ? "#F5F5F5" : "#FBC02D1F",
+                  marginBottom: "8px",
+                  "&:hover": {
+                    backgroundColor: notif.read ? "#E0E0E0" : "#F0F0F0",
+                    color: "inherit",
+                  },
+                }}
+              >
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                  <Box
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <CustomTypography
+                      sx={{
+                        fontWeight: "400",
+                        fontSize: "12px",
+                      }}
+                    >
+                      <Typography
+                        component="span"
+                        sx={{
+                          fontWeight: "bold",
+                          fontSize: "12px",
+                          fontFamily: "Avenir",
+                        }}
+                      >
+                        {notif.patientId?.name}
+                      </Typography>{" "}
+                      <Typography
+                        component="span"
+                        sx={{
+                          color: "#A6A6A6",
+                          fontWeight: "400",
+                          fontSize: "12px",
+                          fontFamily: "Avenir",
+                        }}
+                      >
+                        has booked an appointment for the{" "}
+                      </Typography>
+                      <Typography
+                        component="span"
+                        sx={{
+                          fontWeight: "400",
+                          fontSize: "12px",
+                          color: "black",
+                          fontFamily: "Avenir",
+                        }}
+                      >
+                        {notif.subService?.name}
+                      </Typography>
+                      {notif.type === "order" ? <br /> : ""}
+                      <Typography
+                        component="span"
+                        sx={{
+                          color: "#A6A6A6",
+                          fontWeight: "400",
+                          fontSize: "12px",
+                          fontFamily: "Avenir",
+                        }}
+                      >
+                        {" "}
+                        on
+                      </Typography>
+                      <br />
+                      <Typography
+                        component="span"
+                        sx={{
+                          fontWeight: "400",
+                          fontSize: "12px",
+                          color: "black",
+                          fontFamily: "Avenir",
+                        }}
+                      >
+                        {formatDateTime(notif.startTime)}
+                      </Typography>
+                  
+                    </CustomTypography>
+                    <Typography
+                      component="span"
+                      sx={{
+                        fontWeight: "400",
+                        color: "#A6A6A6",
+                        fontSize: "10px",
+                        fontFamily: "Avenir",
+                      }}
+                    >
+                      {format(new Date(notif.createdAt), "hh:mm a")}
+                    </Typography>
+                  </Box>
+                </Box>
+              </MenuItem>
+            ))
           : notifications.map((notif: any) => (
               <MenuItem
                 key={notif.id}
