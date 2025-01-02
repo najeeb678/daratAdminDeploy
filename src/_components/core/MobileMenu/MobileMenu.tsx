@@ -1,18 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { getSidebarData } from "@/utils/SidebarData";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
 import { getRole } from "@/utils/utils";
+import { FaBars } from "react-icons/fa";
 
-const AccessPanel = () => {
+const MobileMenu = () => {
   const router = useRouter();
+
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [selectedPath, setSelectedPath] = useState<string | null>(null);
   const [isClient, setIsClient] = useState(false);
   const [role, setRole] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const isSmallScreen = useMediaQuery("(max-width: 600px)");
+  const isMediumScreen = useMediaQuery("(max-width: 1150px)");
+
+  const handleMobileMenuToggle = () => {
+    setMobileMenuOpen((prev) => !prev);
+  };
 
   useEffect(() => {
     const fetchRole = async () => {
@@ -21,69 +31,58 @@ const AccessPanel = () => {
     };
     fetchRole();
   }, []);
+
   const sidebarData = getSidebarData(role);
+
   useEffect(() => {
     setIsClient(true);
-    // Find the current submenu path if the current route matches one of the submenus
+
     const currentSubMenu = sidebarData.find((item) =>
       item.subMenu?.some((subItem) => router.pathname.startsWith(subItem.path))
     );
 
-    if (currentSubMenu && currentSubMenu.subMenu) {
+    if (currentSubMenu?.subMenu) {
       const selectedSubMenuPath = currentSubMenu.subMenu.find((subItem) =>
         router.pathname.startsWith(subItem.path)
       )?.path;
 
-      if (selectedSubMenuPath) {
-        setSelectedPath(selectedSubMenuPath);
-      }
+      setSelectedPath(selectedSubMenuPath || null);
     }
-  }, [router.pathname]);
-  const handleSubMenuToggle = (item: any, index: number) => {
-    if (openIndex === index) {
-      // If submenu is already open, close it
-      setOpenIndex(null);
-    } else {
-      // If submenu is closed, open it
-      setOpenIndex(index);
+  }, [router.pathname, sidebarData]);
 
-      // Automatically select the first submenu item if available
-      const firstSubMenuPath = item.subMenu?.[0]?.path;
-      if (firstSubMenuPath) {
-        setSelectedPath(firstSubMenuPath); // Select the first submenu item path
-      }
+  const handleSubMenuToggle = (item: any, index: number) => {
+    setOpenIndex((prevIndex) => (prevIndex === index ? null : index));
+    const firstSubMenuPath = item.subMenu?.[0]?.path;
+    if (firstSubMenuPath) {
+      setSelectedPath(firstSubMenuPath);
     }
   };
 
   const isActivePath = (path: string) => router.pathname === path;
+
   if (!isClient) return null;
-  return (
+
+  const renderSidebar = () => (
     <Box
       sx={{
         width: "150px",
-        height: "auto",
-        position: "absolute",
-        top: "25px",
-        left: "25px",
-        gap: "10px",
-        display: "flex",
-        flexDirection: "column",
-        padding: "10px",
-        cursor: "pointer",
+        maxHeight: "calc(100vh - 60px)", // Adjust the height to allow for scrolling
+        overflowY: "auto", // Enable vertical scrolling
+        // paddingRight: "10px", // Optional padding to avoid content touching the scrollbar
+      
       }}
     >
       {sidebarData.map((item, index) => {
         const Icon = item.icon;
-        const isActive = isActivePath(item.path || ""); // Check if main menu item is active
-        const isSubMenuOpen = openIndex === index; // Check if this submenu is open
+        const isActive = isActivePath(item.path || "");
+        const isSubMenuOpen = openIndex === index;
 
         return (
           <Box
             key={index}
             sx={{
-              width: "150px",
               borderRadius: "8px",
-              padding: isSubMenuOpen ? "0px 0px 5px 0px " : "0px",
+              padding: isSubMenuOpen ? "0px 0px 5px 0px" : "0px",
               backgroundColor: isSubMenuOpen ? "#F5F5F5" : "",
               "&:hover": {
                 backgroundColor: "#F5F5F5",
@@ -92,12 +91,15 @@ const AccessPanel = () => {
           >
             <Box
               sx={{
-                width: "150px",
                 height: "40px",
-                padding: "12px 70px 12px 14.9px",
+                padding: "12px 15px",
                 gap: "12px",
                 borderRadius: "8px",
                 backgroundColor: isActive ? "#F5F5F5" : "",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+                cursor: "pointer",
                 "&:hover": {
                   backgroundColor: "#F5F5F5",
                   "& .icon, & .text": {
@@ -108,18 +110,13 @@ const AccessPanel = () => {
               onClick={() => {
                 if (!item.subMenu) {
                   setSelectedPath(item.path);
+                  router.push(item.path || "");
                 } else {
                   handleSubMenuToggle(item, index);
                 }
               }}
             >
-              <Link
-                href={item.path || "#"}
-                style={{
-                  display: "flex",
-                  textDecoration: "none",
-                }}
-              >
+              <Box display="flex" alignItems="center">
                 <Box
                   className="icon"
                   sx={{
@@ -132,60 +129,38 @@ const AccessPanel = () => {
                 <CustomTypography
                   className="text"
                   sx={{
-                    marginBottom: "4px",
+                    marginLeft: "12px",
                     fontWeight: "500",
                     fontSize: "12px",
-                    lineHeight: "16.39px",
-                    marginLeft: "12px",
                     color: isActive ? "#FBC02D" : "#7B7B7B",
                     transition: "color 0.3s",
-                    whiteSpace: "nowrap",
+                    
                   }}
                 >
                   {item.title}
                 </CustomTypography>
-                {item.subMenu && (
-                  <Box
-                    sx={{
-                      marginLeft: "10px",
-                      fontSize: "16px",
-                      color: "#FBC02D",
-                      fontWeight: "500",
-                      marginTop: "-3.7px",
-                    }}
-                  >
-                    {isSubMenuOpen ? (
-                      <RiArrowDropDownLine
-                        style={{ width: "25px", height: "25px" }}
-                      />
-                    ) : (
-                      <RiArrowDropRightLine
-                        style={{ width: "25px", height: "25px" }}
-                      />
-                    )}
-                  </Box>
-                )}
-              </Link>
+              </Box>
+              {item.subMenu && (
+                <Box sx={{ fontSize: "16px", color: "#FBC02D" }}>
+                  {isSubMenuOpen ? (
+                    <RiArrowDropDownLine />
+                  ) : (
+                    <RiArrowDropRightLine />
+                  )}
+                </Box>
+              )}
             </Box>
 
-            {/* Render submenu items */}
             {item.subMenu && isSubMenuOpen && (
-              <Box
-                sx={{
-                  paddingLeft: "5px",
-                  display: "flex",
-                  flexDirection: "column",
-                }}
-              >
+              <Box sx={{ paddingLeft: "15px", display: "flex", flexDirection: "column" }}>
                 {item.subMenu.map((subItem, subIndex) => {
                   const isSubItemActive = isActivePath(subItem.path || "");
                   return (
                     <Box
                       key={subIndex}
                       sx={{
-                        width: "138px",
                         height: "40px",
-                        padding: "12px 70px 12px 14.95px",
+                        padding: "8px 15px",
                         borderRadius: "8px",
                         backgroundColor: isSubItemActive ? "white" : "",
                         "&:hover": {
@@ -216,14 +191,11 @@ const AccessPanel = () => {
                         <CustomTypography
                           className="text"
                           sx={{
-                            marginBottom: "4px",
+                            marginLeft: "12px",
                             fontWeight: "500",
                             fontSize: "12px",
-                            lineHeight: "16.39px",
-                            marginLeft: "12px",
                             color: isSubItemActive ? "#FBC02D" : "#7B7B7B",
                             transition: "color 0.3s",
-                            whiteSpace: "nowrap",
                           }}
                         >
                           {subItem.title}
@@ -239,6 +211,41 @@ const AccessPanel = () => {
       })}
     </Box>
   );
+
+  return (
+    <Box>
+      {(isSmallScreen || isMediumScreen) && (
+        <Box sx={{ 
+            position: "absolute", 
+        top: "20px",
+         left: "10px",
+        //  marginRight: "20px"
+          }}>
+          <FaBars
+            style={{ fontSize: "24px", cursor: "pointer" }}
+            onClick={handleMobileMenuToggle}
+          />
+        </Box>
+      )}
+
+      {(isSmallScreen || isMediumScreen) && mobileMenuOpen && (
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50px",
+            left: "0",
+            width: "200px",
+            // height:"100%",
+            right: "0",
+            backgroundColor: "#fff",
+            padding: "20px",
+          }}
+        >
+          {renderSidebar()}
+        </Box>
+      )}
+    </Box>
+  );
 };
 
-export default AccessPanel;
+export default MobileMenu;

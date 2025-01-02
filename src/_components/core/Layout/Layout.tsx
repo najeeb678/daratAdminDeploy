@@ -3,6 +3,8 @@ import { Box, useTheme } from "@mui/material";
 import NavBar from "@/_components/core/NavBar/NavBar";
 import { useRouter } from "next/router";
 import AccessPanel from "../AccessPanel/AccessPanel";
+import MobileMenu from "../MobileMenu/MobileMenu";
+
 interface LayoutProps {
   children: ReactNode;
 }
@@ -12,7 +14,6 @@ const Layout = ({ children }: LayoutProps) => {
   const router = useRouter();
 
   const centerLayoutRoutes = ["/authentication/sign-in"];
-
   const isCenterLayout = centerLayoutRoutes.includes(router.pathname);
 
   if (isCenterLayout) {
@@ -30,6 +31,7 @@ const Layout = ({ children }: LayoutProps) => {
       </Box>
     );
   }
+
   return (
     <Box
       sx={{
@@ -43,27 +45,39 @@ const Layout = ({ children }: LayoutProps) => {
         sx={{
           position: "fixed",
           backgroundColor: "#FFFFFF",
-          borderBottom: `1px solid #e4e8f8`,
+          borderBottom: "1px solid #e4e8f8",
           height: "58px",
-          right: 0,
-          left: 0,
           top: 0,
+          left: 0,
+          right: 0,
           zIndex: 10,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingX: "16px",
         }}
       >
-        <NavBar />
+        <Box sx={{ display: { xs: "block", sm: "none", md: "none", lg: "none" } }}>
+          <MobileMenu />
+        </Box>
+
+        {/* Navigation Bar */}
+        <Box sx={{ flexGrow: 1 }}>
+          <NavBar />
+        </Box>
       </Box>
 
       {/* Left Sidebar */}
       <Box
         sx={{
-          width: { xs: "50px",md:"150px", lg: "200px", xl: "200px" },
+          width: { sm: "200px", md: "200px", lg: "200px", xl: "200px" },
           border: "1px solid #CECECE",
           backgroundColor: "#FFFFFF",
           borderTopRightRadius: "10px",
           minHeight: "100vh",
           position: "fixed",
           marginTop: "72px",
+          display: { xs: "block", sm: "block", md: "block", lg: "block" }, // Show on small and medium screens, hide on large screens
           left: 0,
           overflowY: "auto",
           zIndex: 2,
@@ -79,8 +93,7 @@ const Layout = ({ children }: LayoutProps) => {
         sx={{
           flexGrow: 1,
           padding: "2px 16px 14px 0px",
-          ml: { xs: "50px",md:"100px", lg: "215px", xl: "215px" },
-          // ml: { xs: "215px" },
+          ml: { xs: "15px", sm: "215px", md: "215px", lg: "215px", xl: "215px" },
           marginTop: "72px",
           overflow: "auto",
           position: "relative",
@@ -93,4 +106,4 @@ const Layout = ({ children }: LayoutProps) => {
   );
 };
 
-export default Layout;
+export default Layout;  
