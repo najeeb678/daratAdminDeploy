@@ -13,23 +13,38 @@ const tableColumns: Column<any>[] = [
   {
     label: "SR.NO",
     accessor: "srNo",
-    render: (value) => value, 
+    render: (value) => value,
   },
-  { label: "Offers", accessor: "offer" }, 
+  { label: "Offers", accessor: "offer" },
   {
     label: "Silver",
     accessor: "silver",
-    render: (value: boolean) => value && <CheckIcon style={{ color: "rgba(123, 123, 123, 1)", width: "220px" }} />,
+    render: (value: boolean) =>
+      value && (
+        <CheckIcon
+          style={{ color: "rgba(123, 123, 123, 1)", width: "220px" }}
+        />
+      ),
   },
   {
     label: "Gold",
     accessor: "gold",
-    render: (value: boolean) => value && <CheckIcon style={{ color: "rgba(123, 123, 123, 1)", width: "220px" }} />,
+    render: (value: boolean) =>
+      value && (
+        <CheckIcon
+          style={{ color: "rgba(123, 123, 123, 1)", width: "220px" }}
+        />
+      ),
   },
   {
     label: "PLATINUM",
     accessor: "platinum",
-    render: (value: boolean) => value && <CheckIcon style={{ color: "rgba(123, 123, 123, 1)", width: "220px"}} />,
+    render: (value: boolean) =>
+      value && (
+        <CheckIcon
+          style={{ color: "rgba(123, 123, 123, 1)", width: "220px" }}
+        />
+      ),
   },
 ];
 const ManageLoyaltyOffers = () => {
@@ -69,13 +84,15 @@ const ManageLoyaltyOffers = () => {
   }, {});
 
   // Step 3: Map unique services to table rows
-  const tableData = Object.values(uniqueServices).map((service:any, index) => ({
-    srNo: index + 1, // Sequential SR.NO
-    offer: service.name,
-    silver: service.loyaltyTypes.includes("Silver"),
-    gold: service.loyaltyTypes.includes("Gold"),
-    platinum: service.loyaltyTypes.includes("Platinum"),
-  }));
+  const tableData = Object.values(uniqueServices).map(
+    (service: any, index) => ({
+      srNo: index + 1, // Sequential SR.NO
+      offer: service.name,
+      silver: service.loyaltyTypes.includes("Silver"),
+      gold: service.loyaltyTypes.includes("Gold"),
+      platinum: service.loyaltyTypes.includes("Platinum"),
+    })
+  );
 
   return (
     <GenericTable
@@ -93,23 +110,23 @@ const ManageLoyaltyOffers = () => {
       columns={tableColumns}
       loading={loading}
       showPagination={false}
-      buttons={[
-        {
-          label: "Add New Offer",
-          variant: "contained",
-          onClick: handleAddNewOffer,
-          sx: {
-            fontFamily: "var(--font-avenir-medium)",
-            width: "114px !important",
-            height: "29px !important",
-            padding: "1.47px 14px",
-            borderRadius: "100px !important",
-            opacity: 1,
-            backgroundColor: "rgba(251, 192, 45, 1) !important",
-            fontSize: "12px !important",
-          },
-        },
-      ]}
+      // buttons={[
+      //   {
+      //     label: "Add New Offer",
+      //     variant: "contained",
+      //     onClick: handleAddNewOffer,
+      //     sx: {
+      //       fontFamily: "var(--font-avenir-medium)",
+      //       width: "114px !important",
+      //       height: "29px !important",
+      //       padding: "1.47px 14px",
+      //       borderRadius: "100px !important",
+      //       opacity: 1,
+      //       backgroundColor: "rgba(251, 192, 45, 1) !important",
+      //       fontSize: "12px !important",
+      //     },
+      //   },
+      // ]}
     />
   );
 };
