@@ -57,7 +57,7 @@ const AddAppointment: React.FC<AddAppointmentProps> = ({
     }));
   const transformPayload = (data: any) => {
     return {
-      contactNo: parseInt(data.contactNo),
+      contactNo: data.contactNo,
       dob: data.dob,
       slotId: data.slotId,
       doctorId: data.doctorId,
