@@ -27,7 +27,7 @@ import {
 
 import StatusDropdown from "@/_components/common/SelectDropdown/StatusDropdown";
 
-import { formatTime, getUserId } from "@/utils/utils";
+import { formatDate, formatTime, getUserId } from "@/utils/utils";
 import { fetchDoctorUpcomingAppointments } from "@/redux/slices/doctorDashboardSlice";
 
 const DoctorAppointmentsTable = ({ appointmentsData, loading }: any) => {
@@ -66,6 +66,7 @@ const DoctorAppointmentsTable = ({ appointmentsData, loading }: any) => {
         doctor: data?.doctorId?.name || "N/A",
         startTime: formatTime(data?.startTime) || "N/A",
         endTime: formatTime(data?.endTime) || "N/A",
+        date: formatDate(data?.scheduledDate),
         service: data?.subService?.name || "N/A",
         fees: data?.doctorId?.doctorFee || 0,
         status: data?.status || "Unknown",
@@ -126,6 +127,8 @@ const DoctorAppointmentsTable = ({ appointmentsData, loading }: any) => {
     { label: "DOCTOR", accessor: "doctor" },
     { label: "START TIME", accessor: "startTime" },
     { label: "END TIME", accessor: "endTime" },
+    { label: "Date", accessor: "date" },
+
     { label: "SERVICE", accessor: "service" },
     { label: "FEES", accessor: "fees" },
 

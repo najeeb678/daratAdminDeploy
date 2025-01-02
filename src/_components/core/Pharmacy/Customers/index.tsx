@@ -40,7 +40,7 @@ const CustomersTable = ({ customersData = [], loading = false }: any) => {
         status: data?.status,
       }))
     : [];
-  console.log("transformedCustomersData", transformedCustomersData);
+
   const columns: Column<any>[] = [
     {
       label: "Sr_No",

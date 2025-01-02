@@ -54,6 +54,7 @@ const OrderDetailsTable = ({ ordersData = [], loading = false }: any) => {
         details: data,
         deliveryDate: formatDate(data?.deliveryDate),
         status: data?.status,
+        payment: data?.paymentMethod,
       }))
     : [];
   const handleStatusChange = async (orderId: string, newStatus: string) => {
@@ -101,7 +102,8 @@ const OrderDetailsTable = ({ ordersData = [], loading = false }: any) => {
     { label: "QUANTITY", accessor: "quantity" },
     { label: "PRICE", accessor: "price" },
     { label: "CREATED AT ", accessor: "createdAt" },
-    { label: "DELIVERY DATE ", accessor: "deliveryDate" },
+    // { label: "DELIVERY DATE ", accessor: "deliveryDate" },
+    { label: "PAYMENT METHOD", accessor: "payment" },
     {
       label: "DETAILS ",
       accessor: "",
