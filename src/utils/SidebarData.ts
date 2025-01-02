@@ -66,11 +66,11 @@ export const getSidebarData = (role: string | null) => {
           icon: MdOutlineMedicalServices,
           path: "/services",
         },
-        {
-          title: "Schedule",
-          icon: SlCalender,
-          path: "/schedule",
-        },
+        // {
+        //   title: "Schedule",
+        //   icon: SlCalender,
+        //   path: "/schedule",
+        // },
         {
           title: "Pharmacy",
           icon: TiPlusOutline,
