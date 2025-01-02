@@ -63,7 +63,9 @@ const AccessPanel = () => {
   if (!isClient) return null;
 
   const renderSidebar = () => (
-    <Box sx={{ width: "150px", 
+    <Box sx={{ 
+      // width: "150px", 
+      width:{xs:"70px",sm:"100px",md:"150px",lg:"200px"},
     
     marginTop:{xs:"10px",sm:"10px",md:"10px",lg:"30px"},
     marginLeft:{xs:"0px",sm:"0px",md:"5px",lg:"15px"}

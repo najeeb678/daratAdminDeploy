@@ -57,7 +57,7 @@ const Layout = ({ children }: LayoutProps) => {
       {/* Left Sidebar */}
       <Box
         sx={{
-          width: { xs: "200px", lg: "200px", xl: "200px" },
+          width: { xs: "50px",md:"150px", lg: "200px", xl: "200px" },
           border: "1px solid #CECECE",
           backgroundColor: "#FFFFFF",
           borderTopRightRadius: "10px",
@@ -79,8 +79,8 @@ const Layout = ({ children }: LayoutProps) => {
         sx={{
           flexGrow: 1,
           padding: "2px 16px 14px 0px",
-
-          ml: { xs: "215px" },
+          ml: { xs: "50px",md:"100px", lg: "215px", xl: "215px" },
+          // ml: { xs: "215px" },
           marginTop: "72px",
           overflow: "auto",
           position: "relative",
