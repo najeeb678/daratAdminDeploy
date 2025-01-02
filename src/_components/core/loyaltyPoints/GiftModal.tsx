@@ -47,7 +47,7 @@ const GiftModal = () => {
     };
 
     dispatch(createGiftSlice(payload));
-    dispatch(getGiftsSlice());
+
 
     handleClose();
   };

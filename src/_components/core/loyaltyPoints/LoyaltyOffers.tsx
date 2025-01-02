@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import { ButtonConfig, Column } from "@/types/types";
@@ -49,12 +49,19 @@ const tableColumns: Column<any>[] = [
 ];
 const ManageLoyaltyOffers = () => {
   const dispatch = useAppDispatch();
-  const { loyaltyPackages, loading } = useAppSelector(
+  const [loading, setLoading] = useState(false);
+  const { loyaltyPackages } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
 
   useEffect(() => {
-    dispatch(getLoyaltyPackages());
+    dispatch(getLoyaltyPackages()) .unwrap()
+    .then(() => {
+      setLoading(false);
+    })
+    .catch(() => {
+      setLoading(false);
+    });;
   }, [dispatch]);
 
   const handleAddNewOffer = () => {

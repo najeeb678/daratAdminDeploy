@@ -175,10 +175,22 @@ const loyaltyPointsSlice = createSlice({
       .addCase(
         createGiftSlice.fulfilled,
         (state, action: PayloadAction<any>) => {
+          console.log("createGiftSlice", action.payload);
           state.loading = false;
-          state.createGift = action.payload;
+
+          if (
+            action.payload &&
+            action.payload.subService &&
+            action.payload.subService.name
+          ) {
+            const updatedSubService = action.payload.subService.name;
+            state.gifts[0].subService.name = updatedSubService;
+          } else {
+            console.error("SubService name not found in the payload.");
+          }
         }
       )
+
       .addCase(createGiftSlice.rejected, (state, action) => {
         state.loading = false;
         state.error = (action.payload as string) || "An unknown error occurred";
@@ -208,6 +220,7 @@ const loyaltyPointsSlice = createSlice({
       })
       .addCase(getGiftsSlice.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
+        console.log("getGiftsSlice", action.payload);
         state.gifts = action.payload;
       })
       .addCase(getGiftsSlice.rejected, (state, action) => {

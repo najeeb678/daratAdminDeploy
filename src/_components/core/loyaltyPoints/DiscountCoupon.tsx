@@ -14,7 +14,7 @@ const DiscountCoupon = () => {
   const { getCouponCode, gifts, loading } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
-
+console.log("gifts",gifts)
   useEffect(() => {
     dispatch(getDiscounts());
     dispatch(getGiftsSlice());
@@ -99,7 +99,7 @@ const DiscountCoupon = () => {
           <CustomTypography
             sx={{
               fontFamily: "var(--font-avenir-medium)",
-              fontSize: "24px",
+              fontSize: "22px",
               fontWeight: 800,
               lineHeight: "28.8px",
               textAlign: "left",
