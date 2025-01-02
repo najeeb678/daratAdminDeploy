@@ -102,9 +102,10 @@ const DoctorAppointmentsTable = () => {
   };
 
   const statusDropdownoptions = [
-    { value: "Pending", label: "Pending", color: "red" },
-    { value: "Confirmed", label: "Confirmed", color: "green" },
-    { value: "Completed", label: "Completed", color: "orange" },
+    { value: "Pending", label: "Pending", color: "#FFA500" },
+    { value: "Confirmed", label: "Confirmed", color: "#28A745" },
+    { value: "Completed", label: "Completed", color: "#007BFF" },
+    { value: "Cancelled", label: "Cancelled", color: "#DC3545" },
   ];
 
   const columns: Column<Appointment>[] = [

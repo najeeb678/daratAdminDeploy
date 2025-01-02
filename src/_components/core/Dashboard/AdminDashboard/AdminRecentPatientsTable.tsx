@@ -14,9 +14,9 @@ import { fetchRecentPatients } from "@/redux/slices/AdminDashboardSlice";
 
 const AdminRecentPatientsTable = () => {
   const [patientfilter, setPatientFilter] = useState<string>("weekly");
-
+  const [loading, setLoading] = useState(false);
   const dispatch = useAppDispatch();
-  const { recentPatients, loading } = useAppSelector(
+  const { recentPatients } = useAppSelector(
     (state: RootState) => state.dashboard
   );
 
@@ -28,7 +28,15 @@ const AdminRecentPatientsTable = () => {
     search: "",
   };
   useEffect(() => {
-    dispatch(fetchRecentPatients(payload));
+    setLoading(true);
+    dispatch(fetchRecentPatients(payload))
+      .unwrap()
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   }, [patientfilter, dispatch]);
 
   type TriageType = "Non Urgent" | "Urgent" | "Emergency" | "Out Patient";
