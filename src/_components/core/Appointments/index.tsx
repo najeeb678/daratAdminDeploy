@@ -54,7 +54,7 @@ const AdminAppointmentsTable = ({ appointmentsData, loading }: any) => {
   const transformedDoctorsData = appointmentsData
     ? appointmentsData.map((data: any, index: any) => ({
         Sr_No: index + 1,
-        ID: data.id,
+        ID: data?.id,
         patientName: data?.patientId?.name || "N/A",
         doctor: data?.doctorId?.name || "N/A",
         startTime: formatTime(data?.startTime) || "N/A",
@@ -145,7 +145,7 @@ const AdminAppointmentsTable = ({ appointmentsData, loading }: any) => {
                 height: "25px",
               }}
             />
-            <DropDownForActions
+            {/* <DropDownForActions
               items={[
                 {
                   icon: (
@@ -173,7 +173,7 @@ const AdminAppointmentsTable = ({ appointmentsData, loading }: any) => {
                   },
                 },
               ]}
-            />
+            /> */}
           </Box>
         );
       },

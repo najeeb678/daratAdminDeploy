@@ -61,7 +61,7 @@ const DoctorAppointmentsTable = ({ appointmentsData, loading }: any) => {
   const transformedDoctorsData = appointmentsData
     ? appointmentsData.map((data: any, index: any) => ({
         Sr_No: index + 1,
-        ID: data.id,
+        ID: data?.id,
         patientName: data?.patientId?.name || "N/A",
         doctor: data?.doctorId?.name || "N/A",
         startTime: formatTime(data?.startTime) || "N/A",
@@ -152,7 +152,7 @@ const DoctorAppointmentsTable = ({ appointmentsData, loading }: any) => {
                 height: "25px",
               }}
             />
-            <DropDownForActions
+            {/* <DropDownForActions
               items={[
                 {
                   icon: (
@@ -180,7 +180,7 @@ const DoctorAppointmentsTable = ({ appointmentsData, loading }: any) => {
                   },
                 },
               ]}
-            />
+            /> */}
           </Box>
         );
       },
@@ -279,7 +279,7 @@ const DoctorAppointmentsTable = ({ appointmentsData, loading }: any) => {
         cancel={() => {
           setSelectedAppointments(null), setIsDeleteModalOpen(false);
         }}
-        proceed={() => handleAppointmentDelete(selectedAppointments.ID)}
+        proceed={() => handleAppointmentDelete(selectedAppointments?.ID)}
       />
     </>
   );

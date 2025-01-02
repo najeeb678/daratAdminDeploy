@@ -52,7 +52,7 @@ export const bookAppointment = createAsyncThunk(
   async (payload: any, { rejectWithValue }) => {
     try {
       const response = await bookAppointmentApi(payload);
-      return response.data;
+      return response;
     } catch (error: any) {
       return rejectWithValue(error.response?.data || "Error fetching slots");
     }
@@ -85,6 +85,12 @@ const appointmentSlice = createSlice({
       .addCase(getAllAppointments.fulfilled, (state, action) => {
         state.loadingappointmentsData = false;
         state.appointmentsData = action.payload;
+      })
+      .addCase(bookAppointment.fulfilled, (state, action) => {
+        // console.log("bookAppointment", action.payload?.payment?.data);
+        // console.log("state.appointmentsData", state.appointmentsData);
+
+        state.appointmentsData.push(action.payload?.payment?.data);
       })
       .addCase(deleteAppointment.fulfilled, (state, action): any => {
         state.appointmentsData = state.appointmentsData.filter(
