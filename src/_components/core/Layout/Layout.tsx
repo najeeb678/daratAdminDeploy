@@ -63,6 +63,7 @@ const Layout = ({ children }: LayoutProps) => {
           borderTopRightRadius: "10px",
           minHeight: "100vh",
           position: "fixed",
+
           marginTop: "72px",
           left: 0,
           overflowY: "auto",

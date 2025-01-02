@@ -60,16 +60,17 @@ const AccessPanel = () => {
   return (
     <Box
       sx={{
-        width: "150px",
-        height: "auto",
-        position: "absolute",
-        top: "25px",
+        width: "170px",
+        height: "calc(100vh - 70px)",
+        position: "fixed",
+        top: "80px",
         left: "25px",
         gap: "10px",
         display: "flex",
         flexDirection: "column",
         padding: "10px",
         cursor: "pointer",
+        overflowY: "auto",
       }}
     >
       {sidebarData.map((item, index) => {
