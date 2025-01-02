@@ -113,6 +113,7 @@ const EditModal = () => {
               ) || null
             }
             onBlur={formik.handleBlur("metalName")}
+            sx={{ height:"45px",borderRadius:"5px" ,marginBottom:"6px"}}
           />
           {formik.touched.metalName && formik.errors.metalName && (
             <span className="error-message">{formik.errors.metalName}</span>
@@ -133,6 +134,7 @@ const EditModal = () => {
               ) || null
             }
             onBlur={formik.handleBlur("subServiceIds")}
+            sx={{ height:"45px",borderRadius:"5px" ,marginBottom:"6px"}}
           />
           {formik.touched.subServiceIds && formik.errors.subServiceIds && (
             <span className="error-message">{formik.errors.subServiceIds}</span>
@@ -154,6 +156,8 @@ const EditModal = () => {
                 ? formik.errors.expiryDate
                 : undefined
             }
+            inputfieldHeight="45px"
+            
           />
 
           <Box display="flex" justifyContent="flex-end" marginTop="16px">

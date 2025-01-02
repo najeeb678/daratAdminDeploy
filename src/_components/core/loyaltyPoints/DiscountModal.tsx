@@ -4,6 +4,7 @@ import CustomTypography from "@/_components/common/CustomTypography/CustomTypogr
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import { createDiscount, getDiscounts } from "@/redux/slices/loyaltyPointSlice";
 import { useAppDispatch } from "@/utils/hook";
+import GenericInput from "@/_components/common/InputField/GenericInput";
 
 const DiscountModal = () => {
   const dispatch = useAppDispatch();
@@ -80,9 +81,35 @@ const DiscountModal = () => {
             name="value"
             value={formData.value}
             onChange={handleInputChange}
-            sx={{ marginBottom: "16px", width: "100%" }}
+            placeholder="Add Discount"
+            sx={{
+              marginBottom: "16px",
+              width: "100%",
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "5px",
+                height: "55px",
+                "&:hover fieldset": {
+                  borderColor: "#D7D7D7",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#D7D7D7",
+                },
+              },
+              "& .MuiInputBase-input::placeholder": {
+                color: "#7B7B7B",
+                fontSize: "12px",
+              },
+              "& .MuiInputLabel-root": {
+                color: "#B2B2B2", // Default label color
+                "&.Mui-focused": {
+                  color: "#FBC02D", // Change color when focused
+                },
+                "&:hover": {
+                  color: "#FBC02D", // Change color on hover
+                },
+              },
+            }}
           />
-
           <Box display="flex" justifyContent="flex-end" marginTop="16px">
             <Button
               variant="contained"
