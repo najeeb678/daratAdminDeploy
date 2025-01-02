@@ -14,7 +14,7 @@ const DiscountCoupon = () => {
   const { getCouponCode, gifts, loading } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
-console.log("getCouponCode",getCouponCode)
+// console.log("getCouponCode",getCouponCode)
   useEffect(() => {
     dispatch(getDiscounts());
     dispatch(getGiftsSlice());
