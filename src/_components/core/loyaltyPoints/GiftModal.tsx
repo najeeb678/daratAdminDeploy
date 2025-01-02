@@ -17,6 +17,7 @@ import {
 } from "@/redux/slices/loyaltyPointSlice";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
 import { RootState } from "@/redux/store";
+import SingleSelect from "@/_components/common/AdvancedUiElements/SingleSelect";
 
 const GiftModal = () => {
   const dispatch = useAppDispatch();
@@ -40,6 +41,10 @@ const GiftModal = () => {
   const handleSelectChange = (e: SelectChangeEvent) => {
     setFormData({ ...formData, subServiceId: e.target.value });
   };
+  const handleSinleSelectChange = (value: any) => {
+    console.log("vvv", value);
+    setFormData({ ...formData, subServiceId: value?.id });
+  };
 
   const handleSaveChanges = () => {
     const payload = {
@@ -47,7 +52,6 @@ const GiftModal = () => {
     };
 
     dispatch(createGiftSlice(payload));
-
 
     handleClose();
   };
@@ -91,24 +95,22 @@ const GiftModal = () => {
         modalWidth="50%"
       >
         <Box component="form">
-          <FormControl fullWidth sx={{ marginBottom: "16px" }}>
-            <InputLabel>Sub Service</InputLabel>
-            <Select
-              label="Sub Service"
-              name="subServiceId"
-              value={formData.subServiceId}
-              onChange={handleSelectChange}
-            >
-              {subServices
-                ? subServices.map((subService) => (
-                    <MenuItem key={subService.id} value={subService.id}>
-                      {subService.name}
-                    </MenuItem>
-                  ))
-                : null}
-            </Select>
-          </FormControl>
-
+          <SingleSelect
+            title="Sub Service"
+            textFieldLabel="Select Sub-Service"
+            name="subServiceId"
+            data={subServices || []}
+            onChange={(value) => {
+              handleSinleSelectChange(value);
+            }}
+            value={
+              subServices?.find(
+                (service) => service.id === formData.subServiceId
+              ) || null
+            }
+            onBlur={() => {}}
+            sx={{ height: "48px", borderRadius: "5px", marginBottom: "16px" }}
+          />
           <Box display="flex" justifyContent="flex-end" marginTop="16px">
             <Button
               variant="contained"
