@@ -6,7 +6,7 @@ export const loginApi = async (data: {
   role: string;
 }) => {
   const response = await api.post("auth/login", data);
-  console.log("login response", response);
+
   const userInfo = {
     name: response?.data.name,
     profilePic: response?.data.profilePic,
@@ -28,6 +28,9 @@ export const createAdminApi = async (data: any) => {
 export const UpdateAdminApi = ({ id, data }: { id: string; data: any }) => {
   return api.patch(`admin/${id}`, data); 
 };
+export const UpdateDoctorApi = ({ id, data }: { id: string; data: any }) => {
+  return api.patch(`doctor/${id}`, data); 
+};
 export const verifyUserOTPApi = async (data: any) => {
   const response = await api.post("auth/verifyUser", data);
   return response.data;
@@ -37,13 +40,9 @@ export const resetForgottenPasswordApi = async (data: any) => {
   return response.data;
 };
 
-// export const getNotificationByRoleApi = async (data: any) => {
-//   const response = await api.get(`notifications/${data}`);
-//   return response.data;
-// };
+
 export const getNotificationByRoleApi = async (role: string, doctorId?: string) => {
-  console.log("role", role);
-  console.log("doctorId", doctorId);
+
   if (role === "Doctor") {
     // Use POST method with payload for doctor
     const response = await api.post("notifications/doctor", { doctorId });
@@ -57,6 +56,10 @@ export const getNotificationByRoleApi = async (role: string, doctorId?: string) 
 
 export const getAdminDetailsApi = async (id: any) => {
   const response = await api.get(`admin/${id}`);
+  return response.data;
+};
+export const getDoctorDetailsApi = async (id: any) => {
+  const response = await api.get(`doctor/${id}`);
   return response.data;
 };
 export const markAsReadAdminNotificationsApi = async (data: any) => {

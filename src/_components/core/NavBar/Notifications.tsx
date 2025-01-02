@@ -38,7 +38,7 @@ const Notifications = () => {
   const unreadNotificationCount = useSelector(
     (state: any) => state.auth.unreadNotificationCount
   );
-console.log("userId",userId)
+
   const formatDate = (date: string | Date): string => {
     return format(new Date(date), "EEEE, dd MMM yyyy");
   };
@@ -53,7 +53,7 @@ console.log("userId",userId)
   };
   const fetchNotifications = () => {
     const userRole = getRole() || "";
-    console.log("userRole1", userRole);
+
     setRole(userRole);
 
     const doctorId =
@@ -175,8 +175,7 @@ console.log("userId",userId)
           ? notifications.map((notif: any) => (
               <MenuItem
                 key={notif.id}
-              onClick={() => {
-
+                onClick={() => {
                   if (!notif.read) {
                     dispatch(
                       markAsReadDoctorNotifications({
@@ -253,7 +252,6 @@ console.log("userId",userId)
                     >
                       {notif?.Appointment?.subService?.name}
                     </Typography>
-                   
                     <br />
                     <Typography
                       component="span"

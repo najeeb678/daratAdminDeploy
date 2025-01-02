@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   createAdminApi,
   getAdminDetailsApi,
+  getDoctorDetailsApi,
   getNotificationByRoleApi,
   loginApi,
   markAsReadAdminNotificationsApi,
@@ -9,6 +10,7 @@ import {
   resendEmailOTPApi,
   resetForgottenPasswordApi,
   UpdateAdminApi,
+  UpdateDoctorApi,
   verifyUserOTPApi,
 } from "../api/authApi";
 
@@ -71,6 +73,29 @@ export const getAdminDetails = createAsyncThunk(
     }
   }
 );
+export const getDoctorDetails = createAsyncThunk(
+  "auth/getDoctorDetails",
+  async (id: any, { rejectWithValue }) => {
+    try {
+      const response = await getDoctorDetailsApi(id);
+
+      return response;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data || "Something went wrong");
+    }
+  }
+);
+export const UpdateDoctor = createAsyncThunk(
+  "auth/UpdateDoctor",
+  async ({ id, data }: { id: string; data: any }, { rejectWithValue }) => {
+    try {
+      const res = await UpdateDoctorApi({ id, data }); // Pass id and data
+      return res.data;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data || "Something went wrong");
+    }
+  }
+);
 export const resendEmailOTP = createAsyncThunk(
   "auth/resendEmailOTP",
   async (credentials: { email: string }, { rejectWithValue }) => {
@@ -110,7 +135,7 @@ export const resetForgottenPassword = createAsyncThunk(
 export const getNotificationByRole = createAsyncThunk(
   "auth/getNotificationByRole",
   async ({ role, doctorId }: { role: string; doctorId?: string }, { rejectWithValue }) => {
-    console.log("doctorId slice", doctorId);
+
     try {
       const res = await getNotificationByRoleApi(role, doctorId);
       return res;

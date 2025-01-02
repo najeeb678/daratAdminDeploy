@@ -14,11 +14,13 @@ import { toast } from "react-toastify";
 import {
   createAdmin,
   getAdminDetails,
+  getDoctorDetails,
   UpdateAdmin,
+  UpdateDoctor,
 } from "@/redux/slices/authSlice";
 import { ThreeDots } from "react-loader-spinner";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
-import { getDecodedToken } from "@/utils/utils";
+import { getDecodedToken, getRole } from "@/utils/utils";
 import { set } from "lodash";
 type UserDetails = {
   id: string;
@@ -38,28 +40,56 @@ const SettingsDetails: React.FC<any> = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [isImageUploading, setIsImageUploading] = useState(false);
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+  const [role, setRole] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
 
   const [imageUrl, setImageUrl] = useState<string>("");
+  useEffect(() => {
+    const userRole = getRole() || "";
+    setRole(userRole);
+  }, [role]);
 
   useEffect(() => {
     const token = getDecodedToken();
-    setIsDataLoading(true);
-    dispatch(getAdminDetails(token?.userId))
-      .unwrap()
-      .then((res: any) => {
-        setUserDetails(res);
 
-        formik.setValues({
-          name: res.name || "",
-          email: res.email || "",
-          profilePic: res.profilePic || "",
-          contactNumber: res.contactNumber || "",
-        });
 
-        // Set the profile picture state
-        setImageUrl(res.profilePic || "");
-        setIsDataLoading(false);
-      });
+    role === "Admin"
+      ? dispatch(getAdminDetails(token?.userId))
+          .unwrap()
+          .then((res: any) => {
+            setUserDetails(res);
+
+            formik.setValues({
+              name: res.name || "",
+              email: res.email || "",
+              profilePic: res.profilePic || "",
+              contactNumber: res.contactNumber || "",
+            });
+
+            // Set the profile picture state
+            setImageUrl(res.profilePic || "");
+            setIsDataLoading(false);
+          })
+          .catch((error) => {
+            setIsDataLoading(false);
+          })
+      : dispatch(getDoctorDetails(token?.userId))
+          .unwrap()
+          .then((res: any) => {
+            setUserDetails(res);
+
+            formik.setValues({
+              name: res.name || "",
+              email: res.email || "",
+              profilePic: res.profilePic || "",
+              contactNumber: res.contactNumber || "",
+            });
+            setImageUrl(res.profilePic || "");
+            setIsDataLoading(false);
+          })
+          .catch((error) => {
+            setIsDataLoading(false);
+          });
   }, []);
 
   const handleImageChange = (url: string) => {
@@ -91,9 +121,14 @@ const SettingsDetails: React.FC<any> = () => {
           return;
         }
 
-        const response = await dispatch(
-          UpdateAdmin({ id: userDetails!.id, data: data })
-        ).unwrap();
+        const response =
+          role === "Admin"
+            ? await dispatch(
+                UpdateAdmin({ id: userDetails!.id, data: data })
+              ).unwrap()
+            : await dispatch(
+                UpdateDoctor({ id: userDetails!.id, data: data })
+              ).unwrap();
 
         if (response) {
           setIsEdit(false);
