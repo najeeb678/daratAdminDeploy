@@ -15,7 +15,7 @@ const Index = () => {
     }
   }, [router.isReady]);
 
-  console.log('subServiceId', sub_serviceId);
+
 
   return (
     <>

@@ -15,9 +15,11 @@ import { formatDate, getUserId } from "@/utils/utils";
 
 const DoctorRecentPatientsTable = () => {
   const [patientfilter, setPatientFilter] = useState<string>("weekly");
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [userId, setuserId] = useState<any>("");
   const dispatch = useAppDispatch();
-  const { doctorsRecentPatients, loading } = useAppSelector(
+  const { doctorsRecentPatients } = useAppSelector(
     (state: RootState) => state.doctorDashboard
   );
 
@@ -28,10 +30,14 @@ const DoctorRecentPatientsTable = () => {
   };
   useEffect(() => {
     let user = getUserId();
-
+    setLoading(true);
     setuserId(user);
     if (user) {
-      dispatch(fetchDoctorsRecentPatients(payload));
+      dispatch(fetchDoctorsRecentPatients(payload))
+        .unwrap()
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
       console.warn("User  ID is not defined.");
     }
@@ -146,7 +152,7 @@ const DoctorRecentPatientsTable = () => {
         data={transformedRecenetPatientData}
         columns={columns}
         title="Recent Patients"
-        loading={false}
+        loading={loading}
         customContent={
           <Link
             href="/patients"

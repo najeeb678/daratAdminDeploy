@@ -14,13 +14,15 @@ import { RootState } from "@/redux/store";
 import { changeAppointmentStatus } from "@/redux/slices/AdminDashboardSlice";
 import { toast } from "react-toastify";
 import { getUserId } from "@/utils/utils";
+import { useDispatch } from "react-redux";
 
 const DoctorAppointmentsTable = () => {
-  const dispatch = useAppDispatch();
+  const dispatch: any = useDispatch();
+  const [loading, setLoading] = useState<boolean>(false);
 
   let userId = getUserId();
 
-  const { doctorUpcomingAppointments, loading } = useAppSelector(
+  const { doctorUpcomingAppointments } = useAppSelector(
     (state: RootState) => state.doctorDashboard
   );
 
@@ -32,9 +34,10 @@ const DoctorAppointmentsTable = () => {
         ID: appointment?.id,
         Patient: appointment?.patientId?.name || "N/A",
         Doctor: appointment?.doctorId?.name || "N/A",
-        Time: `${new Date(appointment?.startTime).toLocaleTimeString("en-US", {
-          timeZone: "UTC",
-        })}` || "N/A",
+        Time:
+          `${new Date(appointment?.startTime).toLocaleTimeString("en-US", {
+            timeZone: "UTC",
+          })}` || "N/A",
         Service: appointment?.subService?.name || "N/A",
         Age: calculateAge(appointment?.patientId?.dateOfBirth) || "N/A",
         DateOfBirth: appointment?.patientId?.dateOfBirth || "N/A",
@@ -66,7 +69,12 @@ const DoctorAppointmentsTable = () => {
     search: "",
   };
   useEffect(() => {
-    dispatch(fetchDoctorUpcomingAppointments(payload));
+    setLoading(true);
+    dispatch(fetchDoctorUpcomingAppointments(payload))
+      .unwrap()
+      .finally(() => {
+        setLoading(false);
+      });
   }, [dispatch, apointmentfilter]);
 
   const handleStatusChange = async (
@@ -172,7 +180,7 @@ const DoctorAppointmentsTable = () => {
         data={transformedAppointmentsData}
         columns={columns}
         title="Upcoming Appointments"
-        loading={false}
+        loading={loading}
         filters={filters}
         customContent={
           <Link

@@ -11,7 +11,11 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
 import { RootState } from "@/redux/store";
-import { deleteServices, getAllServices, updateStatusOfService } from "@/redux/slices/ServicesSlice";
+import {
+  deleteServices,
+  getAllServices,
+  updateStatusOfService,
+} from "@/redux/slices/ServicesSlice";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import AddService from "./AddService";
 
@@ -21,8 +25,8 @@ const ServicesTable = () => {
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
   const [selectedService, setSelectedService] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const { allServicesData } = useAppSelector(
@@ -45,7 +49,12 @@ const ServicesTable = () => {
     : [];
 
   useEffect(() => {
-    dispatch(getAllServices({ search: "", filter: "" }));
+    setLoading(true);
+    dispatch(getAllServices({ search: "", filter: "" }))
+      .unwrap()
+      .finally(() => {
+        setLoading(false);
+      });
   }, [dispatch]);
 
   const handleNewService = (): any => {
@@ -71,11 +80,11 @@ const ServicesTable = () => {
   const handleStatusChange = (id: any, newStatus: string) => {
     const data = {
       id: id,
-      status: newStatus
-    }
-    dispatch(updateStatusOfService(data))
+      status: newStatus,
+    };
+    dispatch(updateStatusOfService(data));
     setServices((prevServices) =>
-      prevServices.map((service:any) =>
+      prevServices.map((service: any) =>
         service.id === id ? { ...service, STATUS: newStatus } : service
       )
     );
@@ -153,7 +162,7 @@ const ServicesTable = () => {
       label: "Status",
       accessor: "STATUS",
       render: (value: string, row: (typeof servicesData)[0]) => {
-        const selectedStatus = row.STATUS
+        const selectedStatus = row.STATUS;
         return (
           <Box
             display="flex"
@@ -233,7 +242,7 @@ const ServicesTable = () => {
       <GenericTable<(typeof servicesData)[0]>
         data={data}
         columns={columns}
-        loading={false}
+        loading={loading}
         title="Services"
         buttons={buttons}
       />

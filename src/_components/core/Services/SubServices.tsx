@@ -11,57 +11,61 @@ import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutli
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
 import { RootState } from "@/redux/store";
-import { deleteSubServices, getAllServices, getAllsubServices, getSubServicesofService, updateStatusOfSubService } from "@/redux/slices/ServicesSlice";
+import {
+  deleteSubServices,
+  getAllServices,
+  getAllsubServices,
+  getSubServicesofService,
+  updateStatusOfSubService,
+} from "@/redux/slices/ServicesSlice";
 import { useRouter } from "next/router";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import AddSubService from "./AddSubService";
 const SubServicesTable = () => {
   const [open, setOpen] = useState<boolean>(false);
-  const [services, setServices] = useState(servicesData); // Using services data
+  const [services, setServices] = useState(servicesData);
   const [selectedServices, setSelectedServices] = useState<number[]>([]);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false); // To control delete modal visibility
-  const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const router = useRouter();
   const { sub_serviceId } = router.query;
   const { subServicesOfService } = useAppSelector(
-   (state: RootState) => state.service
- );
+    (state: RootState) => state.service
+  );
 
-
- console.log('sub_serviceId',sub_serviceId)
- const handleNewSubService = (): any => {
-   setOpenCreateModal(true);
- };
- 
+  const handleNewSubService = (): any => {
+    setOpenCreateModal(true);
+  };
 
   useEffect(() => {
     if (sub_serviceId) {
-      console.log("in useEffect", sub_serviceId);
       dispatch(getSubServicesofService({ id: sub_serviceId }));
-      console.log("subServicesOfService", subServicesOfService);
     }
-  }, [dispatch, sub_serviceId]); // Make sure dispatch happens only after subServiceId is available
+  }, [dispatch, sub_serviceId]); 
 
-  
-  
-
-  const data = subServicesOfService ? subServicesOfService.map((subService:any, index) => {
-   
-    return {
-      ID: subService?.id,
-      Sr_No: index+1,
-       SERVICE: subService?.name,
-       IMAGE: subService?.picture, 
-       STATUS: subService?.is_Active,
-       DESCRIPTION: subService?.description
-    };
-  }) : [];
+  const data = subServicesOfService
+    ? subServicesOfService.map((subService: any, index) => {
+        return {
+          ID: subService?.id,
+          Sr_No: index + 1,
+          SERVICE: subService?.name,
+          IMAGE: subService?.picture,
+          STATUS: subService?.is_Active,
+          DESCRIPTION: subService?.description,
+        };
+      })
+    : [];
   useEffect(() => {
-    dispatch(getSubServicesofService({ id: sub_serviceId })); 
-  }, [dispatch]); 
+    setLoading(true);
+    dispatch(getSubServicesofService({ id: sub_serviceId })).unwrap()
+    .finally(() => {
+      setLoading(false);
+    });;
+  }, [dispatch]);
 
   // Set default status to "inactive" if not provided
   useEffect(() => {
@@ -81,26 +85,25 @@ const SubServicesTable = () => {
   };
 
   const handleDeleteSubService = () => {
-   if (selectedServices) {
-     dispatch(deleteSubServices(selectedServices));
-     setIsDeleteModalOpen(false);
-   }
- };
+    if (selectedServices) {
+      dispatch(deleteSubServices(selectedServices));
+      setIsDeleteModalOpen(false);
+    }
+  };
 
- const handleOpenDeleteModal = (service: any) => {
-   setSelectedServices(service);
-   setIsDeleteModalOpen(true);
- };
-
+  const handleOpenDeleteModal = (service: any) => {
+    setSelectedServices(service);
+    setIsDeleteModalOpen(true);
+  };
 
   // Handle status change
   const handleStatusChange = (srNo: number, newStatus: string) => {
-    console.log("New status:", newStatus);
+
     const data = {
       id: srNo,
-      status: newStatus
-    }
-    dispatch(updateStatusOfSubService(data))
+      status: newStatus,
+    };
+    dispatch(updateStatusOfSubService(data));
     setServices((prevServices) =>
       prevServices.map((service) =>
         service.Sr_No === srNo ? { ...service, STATUS: newStatus } : service
@@ -109,9 +112,9 @@ const SubServicesTable = () => {
   };
 
   const handleOpenUpdate = async (service: any) => {
-   setSelectedServices(service);
-   setOpenCreateModal(true);
- };
+    setSelectedServices(service);
+    setOpenCreateModal(true);
+  };
 
   // Handle checkbox selection
   const handleCheckboxChange = (srNo: number) => {
@@ -136,8 +139,8 @@ const SubServicesTable = () => {
       render: (_, row) => (
         <div style={{ display: "flex", alignItems: "center" }}>
           <CustomCheckbox
-            // checked={selectedServices?.includes(row.Sr_No)} // Check if the checkbox should be selected
-            // onChange={() => handleCheckboxChange(row.Sr_No)} // Handle checkbox toggle
+          // checked={selectedServices?.includes(row.Sr_No)} // Check if the checkbox should be selected
+          // onChange={() => handleCheckboxChange(row.Sr_No)} // Handle checkbox toggle
           />
           <span style={{ marginLeft: "8px" }}>{row.Sr_No}</span>{" "}
           {/* Display SR. NO next to the checkbox */}
@@ -146,8 +149,6 @@ const SubServicesTable = () => {
     },
     { label: "SUB SERVICE", accessor: "SERVICE" },
     { label: "DESCRIPTION", accessor: "DESCRIPTION" },
-
-   
 
     {
       label: "Image",
@@ -168,7 +169,7 @@ const SubServicesTable = () => {
       render: (value: string, row: (typeof servicesData)[0]) => {
         // Ensure the default value is 'inactive' if the status is not provided
         const selectedStatus = row.STATUS;
-       
+
         return (
           <Box
             display="flex"
@@ -201,7 +202,7 @@ const SubServicesTable = () => {
                     />
                   ),
                   label: "Update",
-                  
+
                   onClick: () => handleOpenUpdate(row),
                 },
                 {
@@ -214,7 +215,7 @@ const SubServicesTable = () => {
                   ),
                   label: "Delete",
                   onClick: () => {
-                     handleOpenDeleteModal(row);
+                    handleOpenDeleteModal(row);
                     // setIsDeleteModalOpen(true);
                   },
                 },
@@ -225,8 +226,6 @@ const SubServicesTable = () => {
       },
     },
   ];
-
-  
 
   const buttons: ButtonConfig[] = [
     {
@@ -255,7 +254,7 @@ const SubServicesTable = () => {
       <GenericTable<any>
         data={data}
         columns={columns}
-        loading={false}
+        loading={loading}
         title="Sub Services"
         buttons={buttons}
       />
@@ -265,7 +264,10 @@ const SubServicesTable = () => {
         handleClose={() => setOpenCreateModal(false)}
         modalWidth="50%"
       >
-        <AddSubService subServiceData = {selectedServices} handleClose={() => setOpenCreateModal(false)} />
+        <AddSubService
+          subServiceData={selectedServices}
+          handleClose={() => setOpenCreateModal(false)}
+        />
       </CustomModal>
       <CustomModal
         open={isDeleteModalOpen}

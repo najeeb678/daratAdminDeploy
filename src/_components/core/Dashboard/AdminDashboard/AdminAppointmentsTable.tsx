@@ -15,8 +15,9 @@ import { toast } from "react-toastify";
 import { start } from "repl";
 
 const AdminAppointmentsTable = () => {
+  const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
-  const { upcomingAppointments, loading } = useAppSelector(
+  const { upcomingAppointments } = useAppSelector(
     (state: RootState) => state.dashboard
   );
 
@@ -29,9 +30,10 @@ const AdminAppointmentsTable = () => {
           ID: appointment?.id,
           Patient: appointment?.patientId?.name || "N/A",
           Doctor: appointment?.doctorId?.name || "N/A",
-          Time: `${new Date(appointment.startTime).toLocaleTimeString("en-US", {
-            timeZone: "UTC",
-          })}` || "N/A",
+          Time:
+            `${new Date(appointment.startTime).toLocaleTimeString("en-US", {
+              timeZone: "UTC",
+            })}` || "N/A",
           Date: new Date(appointment.startTime).toLocaleDateString() || "N/A",
           Service: appointment?.subService?.name || "N/A",
           Age: calculateAge(appointment?.patientId?.dateOfBirth) || "N/A",
@@ -59,7 +61,12 @@ const AdminAppointmentsTable = () => {
   }
 
   useEffect(() => {
-    dispatch(fetchUpcomingAppointments(apointmentfilter));
+    setLoading(true);
+    dispatch(fetchUpcomingAppointments(apointmentfilter))
+      .unwrap()
+      .finally(() => {
+        setLoading(false);
+      });
   }, [dispatch, apointmentfilter]);
 
   const handleStatusChange = async (
@@ -167,7 +174,7 @@ const AdminAppointmentsTable = () => {
         data={transformedAppointmentsData || []}
         columns={columns}
         title="Upcoming Appointments"
-        loading={false}
+        loading={loading}
         customContent={
           <Link
             href="/appointments"
