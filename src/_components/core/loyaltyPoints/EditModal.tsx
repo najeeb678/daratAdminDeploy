@@ -1,17 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Box,
-  TextField,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  Chip,
-  OutlinedInput,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Button, Box } from "@mui/material";
 import { toast } from "react-toastify";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
@@ -20,17 +11,19 @@ import {
   getSubservices,
 } from "@/redux/slices/loyaltyPointSlice";
 import { RootState } from "@/redux/store";
+import SingleSelect from "@/_components/common/AdvancedUiElements/SingleSelect";
+import GenericInput from "@/_components/common/InputField/GenericInput";
+
+const packageOptions = [
+  { id: "Silver", name: "Silver" },
+  { id: "Gold", name: "Gold" },
+  { id: "Platinum", name: "Platinum" },
+];
 
 const EditModal = () => {
   const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    metalName: "",
-    subServiceIds: [] as string[],
-    expiryDate: "",
-  });
-
   const dispatch = useAppDispatch();
-  const { subServices, loading } = useAppSelector(
+  const { subServices } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
 
@@ -41,39 +34,37 @@ const EditModal = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value ,} = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const formik = useFormik({
+    initialValues: {
+      metalName: "",
+      subServiceIds: [],
+      expiryDate: "",
+    },
+    validationSchema: Yup.object().shape({
+      metalName: Yup.string().required("Package name is required"),
+      subServiceIds: Yup.array().min(1, "At least one sub-service is required"),
+      expiryDate: Yup.number()
+        .required("Expiry days are required")
+        .positive("Must be a positive number"),
+    }),
+    onSubmit: async (values) => {
+      try {
+        await dispatch(
+          createLoyaltyPackage({
+            loyaltyType: values.metalName,
+            subServiceIds: values.subServiceIds, // This should be an array
+            expiryDate: values.expiryDate,
+          })
+        ).unwrap();
 
-  const handleSelectChange = (event: SelectChangeEvent) => {
-    setFormData({ ...formData, metalName: event.target.value });
-  };
-
-  const handleSubServiceChange = (event: SelectChangeEvent<string[]>) => {
-    setFormData({
-      ...formData,
-      subServiceIds: event.target.value as string[],
-    });
-  };
-
-  const handleSubmit = async () => {
-    try {
-      await dispatch(
-        createLoyaltyPackage({
-          loyaltyType: formData.metalName,
-          subServiceIds: formData.subServiceIds,
-          expiryDate: formData.expiryDate
-        })
-      ).unwrap(); // Use `unwrap` to handle Redux Toolkit actions
-
-      toast.success("Loyalty package updated successfully!");
-      handleClose();
-    } catch (error) {
-      toast.error("Failed to update loyalty package. Please try again.");
-      console.error("Error submitting form:", error);
-    }
-  };
+        toast.success("Loyalty package updated successfully!");
+        handleClose();
+      } catch (error) {
+        toast.error("Failed to update loyalty package. Please try again.");
+        console.error("Error submitting form:", error);
+      }
+    },
+  });
 
   return (
     <Box marginTop="-28px" display="flex" justifyContent="flex-end">
@@ -109,57 +100,65 @@ const EditModal = () => {
         handleClose={handleClose}
         modalWidth="50%"
       >
-        <Box component="form" onSubmit={handleSubmit}>
-       
+        <Box component="form" noValidate onSubmit={formik.handleSubmit}>
+          <SingleSelect
+            title="Select Package"
+            textFieldLabel="Package Name"
+            name="metalName"
+            data={packageOptions}
+            onChange={(value) => formik.setFieldValue("metalName", value?.name)}
+            value={
+              packageOptions.find(
+                (option) => option.name === formik.values.metalName
+              ) || null
+            }
+            onBlur={formik.handleBlur("metalName")}
+          />
+          {formik.touched.metalName && formik.errors.metalName && (
+            <span className="error-message">{formik.errors.metalName}</span>
+          )}
 
-          <FormControl fullWidth sx={{ marginBottom: "16px" }}>
-            <InputLabel>Package Name</InputLabel>
-            <Select
-              label="Metal Name"
-              name="metalName"
-              value={formData.metalName}
-              onChange={handleSelectChange}
-            >
-              <MenuItem value="Silver">Silver</MenuItem>
-              <MenuItem value="Gold">Gold</MenuItem>
-              <MenuItem value="Platinum">Platinum</MenuItem>
-            </Select>
-          </FormControl>
+          <SingleSelect
+            title="Sub Service"
+            textFieldLabel="Select Sub-Service"
+            name="subServiceIds"
+            data={subServices || []}
+            onChange={(value) => {
+              const selectedIds = value ? [value.id] : [];
+              formik.setFieldValue("subServiceIds", selectedIds);
+            }}
+            value={
+              subServices?.find(
+                (service) => service.id === formik.values.subServiceIds[0]
+              ) || null
+            }
+            onBlur={formik.handleBlur("subServiceIds")}
+          />
+          {formik.touched.subServiceIds && formik.errors.subServiceIds && (
+            <span className="error-message">{formik.errors.subServiceIds}</span>
+          )}
 
-          <FormControl fullWidth sx={{ marginBottom: "16px" }}>
-            <InputLabel>Sub-Services</InputLabel>
-            <Select
-              multiple
-              value={formData.subServiceIds}
-              onChange={handleSubServiceChange}
-              input={<OutlinedInput />}
-              renderValue={(selected) => (
-                <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-                  {(selected as string[]).map((value) => (
-                    <Chip key={value} label={value} />
-                  ))}
-                </Box>
-              )}
-            >
-              {subServices?.map((service) => (
-                <MenuItem key={service.id} value={service.id}>
-                  {service.name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-
-          <TextField
-            label="Expiry Days" 
-            variant="outlined"
+          <GenericInput
+            label="Expiry Days"
+            type="text"
             name="expiryDate"
-            value={formData.expiryDate}
-            onChange={handleInputChange}
-            sx={{ marginBottom: "16px", width: "100%" }}
+            value={formik.values.expiryDate}
+            onChange={formik.handleChange("expiryDate")}
+            onBlur={formik.handleBlur("expiryDate")}
+            placeholder="Add No.of expiry days"
+            error={
+              formik.touched.expiryDate && Boolean(formik.errors.expiryDate)
+            }
+            helperText={
+              formik.touched.expiryDate && formik.errors.expiryDate
+                ? formik.errors.expiryDate
+                : undefined
+            }
           />
 
           <Box display="flex" justifyContent="flex-end" marginTop="16px">
             <Button
+              type="submit"
               variant="contained"
               color="primary"
               sx={{
@@ -170,7 +169,6 @@ const EditModal = () => {
                 borderRadius: "50px",
                 backgroundColor: "rgba(251, 192, 45, 1)",
               }}
-              onClick={handleSubmit}
             >
               Save
             </Button>
