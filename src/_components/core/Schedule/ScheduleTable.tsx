@@ -53,8 +53,14 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
         dr_name: data?.doctorId.name,
         service: data?.subService?.name,
         date: formatDate(data?.scheduleDate),
-        start_time: formatTime(data?.startTime),
-        end_time: formatTime(data?.endTime),
+        start_time:
+          `${new Date(data?.startTime).toLocaleTimeString("en-US", {
+            timeZone: "UTC",
+          })}` || "N/A",
+        end_time:
+          `${new Date(data?.endTime).toLocaleTimeString("en-US", {
+            timeZone: "UTC",
+          })}` || "N/A",
         number_of_slots: data?.slotNumber,
         doctorId: data?.doctorId.id,
         weekday: data?.weekday,
@@ -91,51 +97,51 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
     { label: "DATE", accessor: "date" },
     { label: "START TIME", accessor: "start_time" },
     { label: "END TIME", accessor: "end_time" },
-    {
-      label: "NUMBER OF SLOTS",
-      accessor: "number_of_slots",
-      render: (value: string, row: Doctor) => {
-        return (
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            width="100%"
-          >
-            <span>{value}</span>
-            <DropDownForActions
-              items={[
-                // {
-                //   icon: (
-                //     <DriveFileRenameOutlineIcon
-                //       fontSize="inherit"
-                //       color="primary"
-                //       sx={{ fontSize: "12px" }}
-                //     />
-                //   ),
-                //   label: "Update",
-                //   onClick: () => handleOpenUpdate(row),
-                // },
-                {
-                  icon: (
-                    <DeleteIcon
-                      fontSize="inherit"
-                      color="error"
-                      sx={{ fontSize: "12px", padding: "0px" }}
-                    />
-                  ),
-                  label: "Delete",
-                  onClick: () => {
-                    setSelectedSchedule(row);
-                    setIsDeleteModalOpen(true);
-                  },
-                },
-              ]}
-            />
-          </Box>
-        );
-      },
-    },
+    // {
+    //   label: "NUMBER OF SLOTS",
+    //   accessor: "number_of_slots",
+    //   render: (value: string, row: Doctor) => {
+    //     return (
+    //       <Box
+    //         display="flex"
+    //         justifyContent="space-between"
+    //         alignItems="center"
+    //         width="100%"
+    //       >
+    //         <span>{value}</span>
+    //         <DropDownForActions
+    //           items={[
+    //             // {
+    //             //   icon: (
+    //             //     <DriveFileRenameOutlineIcon
+    //             //       fontSize="inherit"
+    //             //       color="primary"
+    //             //       sx={{ fontSize: "12px" }}
+    //             //     />
+    //             //   ),
+    //             //   label: "Update",
+    //             //   onClick: () => handleOpenUpdate(row),
+    //             // },
+    //             {
+    //               icon: (
+    //                 <DeleteIcon
+    //                   fontSize="inherit"
+    //                   color="error"
+    //                   sx={{ fontSize: "12px", padding: "0px" }}
+    //                 />
+    //               ),
+    //               label: "Delete",
+    //               onClick: () => {
+    //                 setSelectedSchedule(row);
+    //                 setIsDeleteModalOpen(true);
+    //               },
+    //             },
+    //           ]}
+    //         />
+    //       </Box>
+    //     );
+    //   },
+    // },
   ];
   const onSearchSchedule = (searchTerm: string) => {
     dispatch(
@@ -169,7 +175,6 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
   ];
 
   const handleOpenUpdate = async (row: any) => {
-
     // dispatch(schedule())
     const { ID, doctorId, weekday } = row; // Extract necessary data from the row
 
