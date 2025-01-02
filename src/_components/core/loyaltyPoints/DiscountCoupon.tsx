@@ -15,8 +15,6 @@ const DiscountCoupon = () => {
     (state: RootState) => state.loyaltyPoints
   );
 
-
-
   useEffect(() => {
     dispatch(getDiscounts());
     dispatch(getGiftsSlice());

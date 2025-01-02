@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Button, Box, TextField } from "@mui/material";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
-import { createDiscount } from "@/redux/slices/loyaltyPointSlice";
+import { createDiscount, getDiscounts } from "@/redux/slices/loyaltyPointSlice";
 import { useAppDispatch } from "@/utils/hook";
 
 const DiscountModal = () => {
@@ -27,6 +27,7 @@ const DiscountModal = () => {
     if (type && value) {
       const data = { type: type, value: value };
       dispatch(createDiscount(data));
+      dispatch(getDiscounts());
       handleClose();
     } else {
       alert("Please fill in both points and metal name.");

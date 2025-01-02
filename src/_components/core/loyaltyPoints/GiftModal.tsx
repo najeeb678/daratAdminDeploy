@@ -11,7 +11,10 @@ import {
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import { useDispatch } from "react-redux";
-import { createGiftSlice } from "@/redux/slices/loyaltyPointSlice";
+import {
+  createGiftSlice,
+  getGiftsSlice,
+} from "@/redux/slices/loyaltyPointSlice";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
 import { RootState } from "@/redux/store";
 
@@ -44,6 +47,7 @@ const GiftModal = () => {
     };
 
     dispatch(createGiftSlice(payload));
+    dispatch(getGiftsSlice());
 
     handleClose();
   };
