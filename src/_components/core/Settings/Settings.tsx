@@ -52,46 +52,35 @@ const SettingsDetails: React.FC<any> = () => {
   useEffect(() => {
     const token = getDecodedToken();
 
+    if (role) {
+      setIsDataLoading(true); // Start loading data
+      const fetchData = async () => {
+        try {
+          let res;
+          if (role === "Admin") {
+            res = await dispatch(getAdminDetails(token?.userId)).unwrap();
+          } else {
+            res = await dispatch(getDoctorDetails(token?.userId)).unwrap();
+          }
 
-    role === "Admin"
-      ? dispatch(getAdminDetails(token?.userId))
-          .unwrap()
-          .then((res: any) => {
-            setUserDetails(res);
-
-            formik.setValues({
-              name: res.name || "",
-              email: res.email || "",
-              profilePic: res.profilePic || "",
-              contactNumber: res.contactNumber || "",
-            });
-
-            // Set the profile picture state
-            setImageUrl(res.profilePic || "");
-            setIsDataLoading(false);
-          })
-          .catch((error) => {
-            setIsDataLoading(false);
-          })
-      : dispatch(getDoctorDetails(token?.userId))
-          .unwrap()
-          .then((res: any) => {
-            setUserDetails(res);
-
-            formik.setValues({
-              name: res.name || "",
-              email: res.email || "",
-              profilePic: res.profilePic || "",
-              contactNumber: res.contactNumber || "",
-            });
-            setImageUrl(res.profilePic || "");
-            setIsDataLoading(false);
-          })
-          .catch((error) => {
-            setIsDataLoading(false);
+          setUserDetails(res);
+          formik.setValues({
+            name: res.name || "",
+            email: res.email || "",
+            profilePic: res.profilePic || "",
+            contactNumber: res.contactNumber || "",
           });
-  }, []);
+          setImageUrl(res.profilePic || "");
+        } catch (error) {
+          console.error("Error fetching user details:", error);
+        } finally {
+          setIsDataLoading(false);
+        }
+      };
 
+      fetchData();
+    }
+  }, [role]);
   const handleImageChange = (url: string) => {
     formik.setFieldValue("profilePic", url);
   };
