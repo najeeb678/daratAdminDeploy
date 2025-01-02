@@ -77,12 +77,22 @@ export const getGreeting = (): string => {
  * @param {string | Date} time - The time to format (ISO string, timestamp, or Date object).
  * @returns {string} - Formatted time (e.g., "11:00:00 PM") or "N/A" if invalid.
  */
-export const formatTime = (time:any) => {
+// export const formatTime = (time:any) => {
+//   if (!time || time === "N/A") return "N/A"; // Handle empty or invalid time
+//   try {
+//     const date = new Date(time); // Convert input to a Date object
+//     if (isNaN(date.getTime())) return "N/A"; // Check for invalid date
+//     return format(date, "hh:mm:ss a"); // Format as 11:00:00 PM
+//   } catch {
+//     return "N/A"; // Fallback for unexpected errors
+//   }
+// };
+export const formatTime = (time: any) => {
   if (!time || time === "N/A") return "N/A"; // Handle empty or invalid time
   try {
     const date = new Date(time); // Convert input to a Date object
     if (isNaN(date.getTime())) return "N/A"; // Check for invalid date
-    return format(date, "hh:mm:ss a"); // Format as 11:00:00 PM
+    return date.toLocaleTimeString("en-US", { timeZone: "UTC" }); // Format as per UTC
   } catch {
     return "N/A"; // Fallback for unexpected errors
   }
