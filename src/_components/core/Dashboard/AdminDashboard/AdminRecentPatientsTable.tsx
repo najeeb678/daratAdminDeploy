@@ -40,11 +40,11 @@ const AdminRecentPatientsTable = () => {
         return {
           Sr_No: index + 1,
           ID: patient?.patientId?.id,
-          PatientName: patient?.patientId?.name,
-          Age: patient.patientId?.age,
-          DateOfBirth: patient?.patientId?.dateOfBirth,
-          Mobile: patient?.patientId?.email,
-          Department: patient?.subService?.service?.name,
+          PatientName: patient?.patientId?.name || "N/A",
+          Age: patient.patientId?.age || "N/A",
+          DateOfBirth: patient?.patientId?.dateOfBirth || "N/A",
+          Mobile: patient?.contactNo || "N/A",
+          Department: patient?.subService?.service?.name || "N/A",
           Triage: triage,
         };
       })
