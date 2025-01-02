@@ -30,7 +30,7 @@ const DoctorAnalyticsCards = () => {
     {
       image: "/images/Surgeries.svg",
       label: "Surgeries",
-      value: "56",
+      value: "0",
       percentage: "-15% vs last month",
     },
     {
