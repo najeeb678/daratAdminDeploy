@@ -46,11 +46,11 @@ const DoctorRecentPatientsTable = () => {
         return {
           Sr_No: index + 1,
           ID: patient?.id,
-          PatientName: patient?.name,
-          Age: calculateAge(patient?.dob),
-          DateOfBirth: formatDate(patient?.dob),
-          Mobile: patient?.email,
-          Department: patient?.subService?.service?.name,
+          PatientName: patient?.name || "N/A",
+          Age: calculateAge(patient?.dob) || "N/A",
+          DateOfBirth: formatDate(patient?.dob) || "N/A",
+          Mobile: patient?.contactNo || "N/A",
+          Department: patient?.subService?.service?.name || "N/A",
           Triage: triage,
         };
       })

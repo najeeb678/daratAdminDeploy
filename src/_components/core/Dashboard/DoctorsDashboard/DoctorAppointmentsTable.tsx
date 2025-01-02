@@ -30,19 +30,19 @@ const DoctorAppointmentsTable = () => {
     ? doctorUpcomingAppointments.map((appointment, index) => ({
         Sr_No: index + 1,
         ID: appointment?.id,
-        Patient: appointment?.patientId?.name,
-        Doctor: appointment?.doctorId?.name,
+        Patient: appointment?.patientId?.name || "N/A",
+        Doctor: appointment?.doctorId?.name || "N/A",
         Time: `${new Date(appointment?.startTime).toLocaleTimeString("en-US", {
           timeZone: "UTC",
-        })}`,
-        Service: appointment?.subService?.name,
-        Age: calculateAge(appointment?.patientId?.dateOfBirth),
-        DateOfBirth: appointment?.patientId?.dateOfBirth,
-        Mobile: appointment?.patientId?.contactNumber,
-        Department: appointment?.subService?.name,
+        })}` || "N/A",
+        Service: appointment?.subService?.name || "N/A",
+        Age: calculateAge(appointment?.patientId?.dateOfBirth) || "N/A",
+        DateOfBirth: appointment?.patientId?.dateOfBirth || "N/A",
+        Mobile: appointment?.patientId?.contactNumber || "N/A",
+        Department: appointment?.subService?.name || "N/A",
         Triage: "Urgent",
-        Status: appointment?.status,
-        Date: new Date(appointment?.startTime).toLocaleDateString(),
+        Status: appointment?.status || "N/A",
+        Date: new Date(appointment?.startTime).toLocaleDateString() || "N/A",
       }))
     : [];
 
