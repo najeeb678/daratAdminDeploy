@@ -28,7 +28,7 @@ const LoyaltyCards = () => {
   } else {
     // console.log('No loyalty packages available');
   }
-  
+
   return (
     <Grid container spacing={2}>
       {/* Loyalty Points Section */}
@@ -41,7 +41,6 @@ const LoyaltyCards = () => {
             marginTop="15px"
           >
             <CustomTypography
-          
               sx={{
                 fontFamily: "var(--font-avenir-medium)",
                 fontSize: "16px",
@@ -67,8 +66,11 @@ const LoyaltyCards = () => {
                 color: "rgba(123, 123, 123, 1)",
               }}
             >
-              Expiry date: {loyaltyPackages && loyaltyPackages[0] ? loyaltyPackages[0].expiryDate : 'No expiry date available'} days
-
+              Expiry:{" "}
+              {loyaltyPackages && loyaltyPackages[0]
+                ? loyaltyPackages[0].expiryDate
+                : "No expiry date available"}{" "}
+              days
             </CustomTypography>
           </Box>
 
@@ -77,7 +79,6 @@ const LoyaltyCards = () => {
             {loyaltyLevels.map((level, index) => (
               <Box key={index} sx={{ marginRight: "35px" }}>
                 <CustomTypography
-                 
                   sx={{
                     // fontFamily: "Raleway, sans-serif",
                     fontFamily: "var(--font-avenir-medium)",

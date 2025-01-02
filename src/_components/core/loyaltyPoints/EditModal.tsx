@@ -150,7 +150,7 @@ const EditModal = () => {
           </FormControl>
 
           <TextField
-            label="Expiry Date"
+            label="Expiry Days" 
             variant="outlined"
             name="expiryDate"
             value={formData.expiryDate}
