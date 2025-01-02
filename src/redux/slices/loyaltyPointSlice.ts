@@ -156,8 +156,21 @@ const loyaltyPointsSlice = createSlice({
       .addCase(
         createDiscount.fulfilled,
         (state, action: PayloadAction<any>) => {
+          console.log("createDiscount", action.payload?.value);
+
           state.loading = false;
           state.createCoupon = action.payload;
+
+          if (
+            action.payload &&
+            state.getCouponCode &&
+            state.getCouponCode.length > 0
+          ) {
+            const updatedValue = action.payload?.value;
+            state.getCouponCode[0].value = updatedValue;
+          } else {
+            console.error("Coupon code not found or payload is empty.");
+          }
         }
       )
       .addCase(createDiscount.rejected, (state, action) => {
@@ -175,7 +188,6 @@ const loyaltyPointsSlice = createSlice({
       .addCase(
         createGiftSlice.fulfilled,
         (state, action: PayloadAction<any>) => {
-          console.log("createGiftSlice", action.payload);
           state.loading = false;
 
           if (
@@ -220,7 +232,7 @@ const loyaltyPointsSlice = createSlice({
       })
       .addCase(getGiftsSlice.fulfilled, (state, action: PayloadAction<any>) => {
         state.loading = false;
-        console.log("getGiftsSlice", action.payload);
+
         state.gifts = action.payload;
       })
       .addCase(getGiftsSlice.rejected, (state, action) => {
