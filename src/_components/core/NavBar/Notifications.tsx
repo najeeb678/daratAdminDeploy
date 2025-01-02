@@ -111,7 +111,7 @@ const Notifications = () => {
         PaperProps={{
           style: {
             width: "505px",
-            maxHeight: "500px",
+            maxHeight: "calc(100vh - 200px)",
             overflowY: "auto",
             padding: "10px 16px 5px 16px",
           },
