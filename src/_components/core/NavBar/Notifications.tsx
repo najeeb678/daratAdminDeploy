@@ -38,7 +38,7 @@ const Notifications = () => {
   const unreadNotificationCount = useSelector(
     (state: any) => state.auth.unreadNotificationCount
   );
-
+console.log("userId",userId)
   const formatDate = (date: string | Date): string => {
     return format(new Date(date), "EEEE, dd MMM yyyy");
   };
