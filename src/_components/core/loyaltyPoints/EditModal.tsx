@@ -36,6 +36,35 @@ const EditModal = () => {
   const { loyaltyPackages } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
+  const packageToSubServices = loyaltyPackages?.reduce((acc, packageItem) => {
+    const { loyaltyType, SubServices } = packageItem;
+
+    // Ensure the package type exists as a key in the accumulator
+    if (!acc[loyaltyType]) {
+      acc[loyaltyType] = [];
+    }
+
+    // Extract IDs of the SubServices and add them to the respective package type
+    const subServiceIds = SubServices.map((subService: any) => subService.id);
+    acc[loyaltyType].push(...subServiceIds);
+
+    return acc;
+  }, {});
+  const packageToExpiryDates = loyaltyPackages?.reduce((acc, packageItem) => {
+    const { loyaltyType, expiryDate } = packageItem;
+
+    // Ensure the package type exists as a key in the accumulator
+    if (!acc[loyaltyType]) {
+      acc[loyaltyType] = [];
+    }
+
+    // Add the expiryDate to the respective package type
+    acc[loyaltyType].push(expiryDate);
+
+    return acc;
+  }, {});
+  console.log("packageToSubServices", packageToSubServices);
+  console.log("packageToExpiryDates", packageToExpiryDates);
   useEffect(() => {
     dispatch(getSubservices());
   }, [dispatch]);
@@ -127,7 +156,17 @@ const EditModal = () => {
             textFieldLabel="Package Name"
             name="metalName"
             data={packageOptions}
-            onChange={(value) => formik.setFieldValue("metalName", value?.name)}
+            onChange={(value) => {
+              const selectedPackageName = value?.name;
+              formik.setFieldValue("metalName", selectedPackageName);
+              const selectedExpiryDates =
+                packageToExpiryDates[selectedPackageName] || [];
+              formik.setFieldValue("expiryDate", selectedExpiryDates[0] || "");
+
+              const selectedSubServices =
+                packageToSubServices[selectedPackageName] || [];
+              formik.setFieldValue("subServiceIds", selectedSubServices);
+            }}
             value={
               packageOptions.find(
                 (option) => option.name === formik.values.metalName
