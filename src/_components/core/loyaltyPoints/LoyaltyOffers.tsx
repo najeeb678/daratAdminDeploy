@@ -55,13 +55,14 @@ const ManageLoyaltyOffers = () => {
   );
 
   useEffect(() => {
-    dispatch(getLoyaltyPackages()) .unwrap()
-    .then(() => {
-      setLoading(false);
-    })
-    .catch(() => {
-      setLoading(false);
-    });;
+    dispatch(getLoyaltyPackages())
+      .unwrap()
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   }, [dispatch]);
 
   const handleAddNewOffer = () => {
@@ -112,6 +113,15 @@ const ManageLoyaltyOffers = () => {
         textUnderlinePosition: "from-font",
         textDecorationSkipInk: "none",
         color: "rgba(123, 123, 123, 1)",
+      }}
+      titleStyles={{
+        fontFamily: "var(--font-avenir-medium)",
+        fontSize: "16px",
+        fontWeight: 500,
+        lineHeight: "19.2px",
+        textAlign: "left",
+        textUnderlinePosition: "from-font",
+        textDecorationSkipInk: "none",
       }}
       data={tableData}
       columns={tableColumns}

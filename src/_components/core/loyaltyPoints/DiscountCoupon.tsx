@@ -78,8 +78,8 @@ const DiscountCoupon = () => {
           <CustomTypography
             sx={{
               fontFamily: "var(--font-avenir-medium)",
-              fontSize: "24px",
-              fontWeight: 800,
+              fontSize: "20px",
+              fontWeight: 600,
               lineHeight: "28.8px",
               textAlign: "left",
               textUnderlinePosition: "from-font",
@@ -101,7 +101,6 @@ const DiscountCoupon = () => {
             display="flex"
             alignItems="start"
             flexDirection="column"
-            gap="15px"
             justifyContent="space-between"
             marginTop="19px"
           >
@@ -121,10 +120,11 @@ const DiscountCoupon = () => {
 
             <CustomTypography
               sx={{
+                marginTop: "25px",
                 fontFamily: "var(--font-avenir-medium)",
-                fontSize: "22px",
                 width: "70%",
-                fontWeight: 800,
+                fontSize: "20px",
+                fontWeight: 600,
                 lineHeight: "28.8px",
                 textAlign: "left",
                 textUnderlinePosition: "from-font",

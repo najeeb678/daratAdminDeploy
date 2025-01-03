@@ -100,9 +100,12 @@ const EditModal = () => {
           sx={{
             fontFamily: "var(--font-avenir-medium)",
             fontSize: "12px",
-            fontWeight: 400,
+            fontWeight: 500,
             lineHeight: "16.39px",
             letterSpacing: "0.01em",
+            textAlign: "left",
+            textUnderlinePosition: "from-font",
+            textDecorationSkipInk: "none",
             color: "rgba(255, 255, 255, 1)",
           }}
         >

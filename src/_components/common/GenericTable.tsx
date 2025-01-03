@@ -39,6 +39,7 @@ interface GenericTableProps<T> {
   customContent?: React.ReactNode;
 
   sx?: SxProps<Theme>;
+  titleStyles?: SxProps<Theme>;
   customTableStyles?: SxProps<Theme>;
 }
 
@@ -54,6 +55,7 @@ const GenericTable = <T extends {}>({
   searchStyle = {},
   customContent,
   customTableStyles,
+  titleStyles,
   sx,
 }: GenericTableProps<T>) => {
   const [page, setPage] = useState(0);
@@ -138,6 +140,7 @@ const GenericTable = <T extends {}>({
                 lineHeight: "19px",
                 whiteSpace: "nowrap",
                 marginRight: "25px",
+                ...titleStyles,
               }}
             >
               {title}
