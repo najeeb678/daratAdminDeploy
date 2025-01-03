@@ -13,7 +13,6 @@ import {
 import { RootState } from "@/redux/store";
 import SingleSelect from "@/_components/common/AdvancedUiElements/SingleSelect";
 import GenericInput from "@/_components/common/InputField/GenericInput";
-import MultipleSelectChip from "@/_components/common/AdvancedUiElements/MultiSelect";
 import MultiSelect from "@/_components/common/AdvancedUiElements/MultiSelect";
 interface Option {
   id: string; // Ensure id is a string as per your data

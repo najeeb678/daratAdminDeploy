@@ -14,7 +14,7 @@ const DiscountCoupon = () => {
   const { getCouponCode, gifts, loading } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
-// console.log("getCouponCode",getCouponCode)
+  // console.log("getCouponCode",getCouponCode)
   useEffect(() => {
     dispatch(getDiscounts());
     dispatch(getGiftsSlice());
@@ -25,8 +25,18 @@ const DiscountCoupon = () => {
 
   return (
     <Grid container spacing={1.5}>
-      <Grid size={{ xs: 12, sm: 6 }} component="div">
-        <GenericCard height="140px">
+      <Grid size={{ xs: 12, md: 6 }} component="div">
+        <Box
+          sx={{
+            boxShadow: "none",
+            borderRadius: "10px",
+            border: "1px solid #D9D9D9",
+            background: "#FFFFFF",
+            padding: "20px",
+            minHeight: "140px",
+            overflow: "auto",
+          }}
+        >
           <CustomTypography
             sx={{
               marginTop: "15px",
@@ -44,7 +54,7 @@ const DiscountCoupon = () => {
 
           <CustomTypography
             sx={{
-              marginTop: "18px",
+              marginTop: "12px",
               marginBottom: "5px",
               fontFamily: "var(--font-avenir-medium)",
               fontSize: "16px",
@@ -75,15 +85,23 @@ const DiscountCoupon = () => {
           <Box>
             <DiscountModal />
           </Box>
-        </GenericCard>
+        </Box>
       </Grid>
 
-      <Grid size={{ xs: 12, sm: 6 }} component="div">
+      <Grid size={{ xs: 12, md: 6 }} component="div">
         <GenericCard height="140px">
+        <Box
+            display="flex"
+            alignItems="start"
+            flexDirection="column"
+            gap="15px"
+            justifyContent="space-between"
+            marginTop="15px"
+          >
           <CustomTypography
             sx={{
-              marginTop: "18px",
-              marginBottom: "35px",
+              // marginTop: "12px",
+              // marginBottom: "10px",
               fontFamily: "var(--font-avenir-medium)",
               fontSize: "16px",
               fontWeight: 500,
@@ -99,7 +117,8 @@ const DiscountCoupon = () => {
           <CustomTypography
             sx={{
               fontFamily: "var(--font-avenir-medium)",
-              fontSize: "22px",
+                fontSize: "22px",
+              width:"70%",
               fontWeight: 800,
               lineHeight: "28.8px",
               textAlign: "left",
@@ -112,7 +131,7 @@ const DiscountCoupon = () => {
               ? `Free ${gifts[0].subService.name} on Birthday`
               : "No Gift"}
           </CustomTypography>
-
+          </Box>
           <Box>
             <GiftModal />
           </Box>
