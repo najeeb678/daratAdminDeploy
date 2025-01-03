@@ -4,10 +4,9 @@ import Grid from "@mui/material/Grid2";
 
 // Define a generic Option interface to allow flexibility in the data passed to MultiSelect
 interface Option {
-    id: string; // Ensure id is a string as per your data
-    name: string;
-  }
-  
+  id: string; // Ensure id is a string as per your data
+  name: string;
+}
 
 interface MultiSelectProps {
   typo?: string;
@@ -72,7 +71,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           noOptionsText={"No Options"}
           onChange={(event, newValue) => onChange(newValue)}
           isOptionEqualToValue={(option, values) =>
-            Array.isArray(values) && values.some(v => v.id === option.id)
+            Array.isArray(values) && values.some((v) => v.id === option.id)
           }
           autoHighlight
           multiple
@@ -80,7 +79,7 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           sx={{
             "& .MuiOutlinedInput-root": {
               borderRadius: "8px",
-              height: "40px",
+              height: "40px", //TODO:chane height to adjust dynamically
               ...sx,
             },
             "& .MuiInputBase-root": {
