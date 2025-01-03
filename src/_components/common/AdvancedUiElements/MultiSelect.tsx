@@ -79,8 +79,8 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           getOptionLabel={(option) => option?.name || ""} 
           sx={{
             "& .MuiOutlinedInput-root": {
-              borderRadius: "8px",
-              minHeight: "40px",
+              borderRadius: "5px",
+              minHeight: "45px",
               height: "auto",
               ...sx,
             },

@@ -194,7 +194,7 @@ const EditModal = () => {
               ) || []
             }
             onBlur={formik.handleBlur("subServiceIds")}
-            sx={{ height: "45px", borderRadius: "5px", marginBottom: "6px" }}
+
           />
 
           {formik.touched.subServiceIds && formik.errors.subServiceIds && (
