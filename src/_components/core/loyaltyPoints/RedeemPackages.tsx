@@ -36,7 +36,7 @@ const RedeemPackages = () => {
   }, [dispatch]);
 
   const handleStatusChange = async (id: string, val: string) => {
-    setLoading(true); // Ensure loading state is set to true before dispatch
+    setLoading(true);
 
     dispatch(
       changeUserRedeemedPackageStatus({
@@ -45,13 +45,12 @@ const RedeemPackages = () => {
       })
     )
       .unwrap()
-      .then(() => {
-        console.log("Status updated successfully");
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error updating status:", error);
-        setLoading(false);
+      .finally(() => {
+        dispatch(getRedeemPackages())
+          .unwrap()
+          .then(() => {
+            setLoading(false);
+          });
       });
   };
 
