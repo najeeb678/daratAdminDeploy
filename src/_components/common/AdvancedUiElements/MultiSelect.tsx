@@ -24,6 +24,7 @@ interface MultiSelectProps {
   disabled?: boolean;
   sx?: object;
   titleStyle?: object;
+  
 }
 
 const MultiSelect: React.FC<MultiSelectProps> = ({
@@ -75,12 +76,13 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           }
           autoHighlight
           multiple
-          getOptionLabel={(option) => option?.name || ""} // Default to `name` key
+          getOptionLabel={(option) => option?.name || ""} 
           sx={{
             "& .MuiOutlinedInput-root": {
               borderRadius: "8px",
               minHeight: "40px",
               height: "auto",
+              ...sx,
             },
 
             "& .MuiInputBase-root": {
