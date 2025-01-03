@@ -127,23 +127,6 @@ const ManageLoyaltyOffers = () => {
       columns={tableColumns}
       loading={loading}
       showPagination={false}
-      // buttons={[
-      //   {
-      //     label: "Add New Offer",
-      //     variant: "contained",
-      //     onClick: handleAddNewOffer,
-      //     sx: {
-      //       fontFamily: "var(--font-avenir-medium)",
-      //       width: "114px !important",
-      //       height: "29px !important",
-      //       padding: "1.47px 14px",
-      //       borderRadius: "100px !important",
-      //       opacity: 1,
-      //       backgroundColor: "rgba(251, 192, 45, 1) !important",
-      //       fontSize: "12px !important",
-      //     },
-      //   },
-      // ]}
     />
   );
 };

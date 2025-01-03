@@ -9,6 +9,7 @@ import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import LoyaltyCards from "./loyaltyCards";
 import LoyaltyOffers from "./LoyaltyOffers";
 import ManageLoyaltyOffers from "./LoyaltyOffers";
+import RedeemPackages from "./RedeemPackages";
 
 const LoyaltyPoints = () => {
   const router = useRouter();
@@ -21,6 +22,9 @@ const LoyaltyPoints = () => {
 
       <Grid size={{ xs: 12 }} component="div">
         <DiscountCoupon />
+      </Grid>
+      <Grid size={{ xs: 12 }} component="div">
+        <RedeemPackages/>
       </Grid>
       <Grid size={{ xs: 12 }} component="div">
         <ManageLoyaltyOffers/>
