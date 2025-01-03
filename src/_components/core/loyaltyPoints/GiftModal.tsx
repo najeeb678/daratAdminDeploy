@@ -1,22 +1,9 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Box,
-  MenuItem,
-  Select,
-  InputLabel,
-  FormControl,
-  SelectChangeEvent,
-} from "@mui/material";
+import { Button, Box } from "@mui/material";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
-import { useDispatch } from "react-redux";
-import {
-  createGiftSlice,
-  getGiftsSlice,
-} from "@/redux/slices/loyaltyPointSlice";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
-import { RootState } from "@/redux/store";
+import { createGiftSlice } from "@/redux/slices/loyaltyPointSlice";
 import SingleSelect from "@/_components/common/AdvancedUiElements/SingleSelect";
 import { ThreeDots } from "react-loader-spinner";
 
@@ -27,25 +14,21 @@ const GiftModal = () => {
   const [formData, setFormData] = useState({
     subServiceId: "",
   });
+  const [error, setError] = useState("");
 
-  const { subServices } = useAppSelector(
-    (state: RootState) => state.loyaltyPoints
-  );
+  const { subServices } = useAppSelector((state) => state.loyaltyPoints);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+  const handleClose = () => {
+    setOpen(false);
+    setError(""); // Reset error when modal closes
   };
 
-  const handleSelectChange = (e: SelectChangeEvent) => {
-    setFormData({ ...formData, subServiceId: e.target.value });
-  };
   const handleSinleSelectChange = (value: any) => {
-    console.log("vvv", value);
     setFormData({ ...formData, subServiceId: value?.id });
+    if (value?.id) {
+      setError(""); // Clear error when a valid selection is made
+    }
   };
 
   const handleSaveChanges = () => {
@@ -54,11 +37,16 @@ const GiftModal = () => {
       subServiceId: formData.subServiceId,
     };
 
+    if (!formData.subServiceId) {
+      setError("Please select a Sub-Service."); // Set error message
+      setLoading(false);
+      return;
+    }
+
     dispatch(createGiftSlice(payload)).finally(() => {
       setLoading(false);
+      handleClose();
     });
-
-    handleClose();
   };
 
   return (
@@ -105,17 +93,25 @@ const GiftModal = () => {
             textFieldLabel="Select Sub-Service"
             name="subServiceId"
             data={subServices || []}
-            onChange={(value) => {
-              handleSinleSelectChange(value);
-            }}
+            onChange={handleSinleSelectChange}
             value={
               subServices?.find(
                 (service) => service.id === formData.subServiceId
               ) || null
             }
-            onBlur={() => {}}
-            sx={{ height: "48px", borderRadius: "5px", marginBottom: "16px" }}
+            sx={{ height: "48px", borderRadius: "5px", marginBottom: "8px" }}
           />
+          {error && (
+            <CustomTypography
+              sx={{
+                color: "red",
+                fontSize: "12px",
+                marginBottom: "16px",
+              }}
+            >
+              {error}
+            </CustomTypography>
+          )}
           <Box display="flex" justifyContent="flex-end" marginTop="16px">
             <Button
               variant="contained"
@@ -127,13 +123,14 @@ const GiftModal = () => {
                 borderRadius: "50px",
                 backgroundColor: "rgba(251, 192, 45, 1)",
                 "&:hover": {
-                  backgroundColor: "#FBC02D !important",
+                  backgroundColor: "#FBC 02D !important",
                   color: "white !important",
                   boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
                   transform: "scale(1.005)",
                 },
               }}
               onClick={handleSaveChanges}
+              disabled={!formData.subServiceId} 
             >
               {loading ? (
                 <ThreeDots

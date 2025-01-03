@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import { Button, Box, TextField } from "@mui/material";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
-import { createDiscount, getDiscounts } from "@/redux/slices/loyaltyPointSlice";
+import { createDiscount } from "@/redux/slices/loyaltyPointSlice";
 import { useAppDispatch } from "@/utils/hook";
-import GenericInput from "@/_components/common/InputField/GenericInput";
 import { ThreeDots } from "react-loader-spinner";
 
 const DiscountModal = () => {
@@ -15,13 +14,20 @@ const DiscountModal = () => {
     type: "VALUE",
     value: "",
   });
+  const [error, setError] = useState("");
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setError(""); // Reset error when modal closes
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    if (name === "value") {
+      setError(""); // Clear error when user types
+    }
   };
 
   const handleSaveChanges = () => {
@@ -34,11 +40,11 @@ const DiscountModal = () => {
         .unwrap()
         .finally(() => {
           setLoading(false);
+          handleClose();
         });
-
-      handleClose();
     } else {
-      alert("Please fill in both points and metal name.");
+      setError("Please fill in Value."); // Set error message
+      setLoading(false);
     }
   };
 
@@ -89,6 +95,8 @@ const DiscountModal = () => {
             value={formData.value}
             onChange={handleInputChange}
             placeholder="Add Discount"
+            error={!!error} // Show error state
+            helperText={error} // Display error message
             sx={{
               marginBottom: "16px",
               width: "100%",
@@ -135,6 +143,7 @@ const DiscountModal = () => {
                 },
               }}
               onClick={handleSaveChanges}
+              disabled={!formData.value} // Disable button if value is empty
             >
               {loading ? (
                 <ThreeDots
