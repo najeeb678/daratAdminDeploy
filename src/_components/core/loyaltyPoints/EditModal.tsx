@@ -14,6 +14,7 @@ import { RootState } from "@/redux/store";
 import SingleSelect from "@/_components/common/AdvancedUiElements/SingleSelect";
 import GenericInput from "@/_components/common/InputField/GenericInput";
 import MultiSelect from "@/_components/common/AdvancedUiElements/MultiSelect";
+import { ThreeDots } from "react-loader-spinner";
 interface Option {
   id: string; // Ensure id is a string as per your data
   name: string;
@@ -28,6 +29,7 @@ const packageOptions = [
 const EditModal = () => {
   const [open, setOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const [loading, setLoading] = useState(false);
   const { subServices } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
@@ -39,9 +41,9 @@ const EditModal = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   interface FormValues {
-    metalName: string; // metalName is a string
-    subServiceIds: string[]; // subServiceIds is an array of strings
-    expiryDate: string; // expiryDate is a string
+    metalName: string;
+    subServiceIds: string[];
+    expiryDate: string;
   }
   const formik = useFormik<FormValues>({
     initialValues: {
@@ -57,6 +59,7 @@ const EditModal = () => {
         .positive("Must be a positive number"),
     }),
     onSubmit: async (values) => {
+      setLoading(true);
       try {
         await dispatch(
           createLoyaltyPackage({
@@ -64,7 +67,11 @@ const EditModal = () => {
             subServiceIds: values.subServiceIds, // This should be an array
             expiryDate: values.expiryDate,
           })
-        ).unwrap();
+        )
+          .unwrap()
+          .finally(() => {
+            setLoading(false);
+          });
 
         toast.success("Loyalty package updated successfully!");
         handleClose();
@@ -181,9 +188,27 @@ const EditModal = () => {
                 gap: "7.35px",
                 borderRadius: "50px",
                 backgroundColor: "rgba(251, 192, 45, 1)",
+
+                "&:hover": {
+                  backgroundColor: "#FBC02D !important",
+                  color: "white !important",
+                  boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
+                  transform: "scale(1.005)",
+                },
               }}
             >
-              Save
+              {loading ? (
+                <ThreeDots
+                  height="28"
+                  width="40"
+                  radius="9"
+                  color="#FFFFFF"
+                  ariaLabel="three-dots-loading"
+                  visible
+                />
+              ) : (
+                "Save"
+              )}
             </Button>
           </Box>
         </Box>

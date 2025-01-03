@@ -90,7 +90,7 @@ const DiscountCoupon = () => {
 
       <Grid size={{ xs: 12, md: 6 }} component="div">
         <GenericCard height="140px">
-        <Box
+          <Box
             display="flex"
             alignItems="start"
             flexDirection="column"
@@ -98,39 +98,39 @@ const DiscountCoupon = () => {
             justifyContent="space-between"
             marginTop="15px"
           >
-          <CustomTypography
-            sx={{
-              // marginTop: "12px",
-              // marginBottom: "10px",
-              fontFamily: "var(--font-avenir-medium)",
-              fontSize: "16px",
-              fontWeight: 500,
-              lineHeight: "19.2px",
-              textAlign: "left",
-              textUnderlinePosition: "from-font",
-              textDecorationSkipInk: "none",
-            }}
-          >
-            Gift
-          </CustomTypography>
+            <CustomTypography
+              sx={{
+                // marginTop: "12px",
+                // marginBottom: "10px",
+                fontFamily: "var(--font-avenir-medium)",
+                fontSize: "16px",
+                fontWeight: 500,
+                lineHeight: "19.2px",
+                textAlign: "left",
+                textUnderlinePosition: "from-font",
+                textDecorationSkipInk: "none",
+              }}
+            >
+              Gift
+            </CustomTypography>
 
-          <CustomTypography
-            sx={{
-              fontFamily: "var(--font-avenir-medium)",
+            <CustomTypography
+              sx={{
+                fontFamily: "var(--font-avenir-medium)",
                 fontSize: "22px",
-              width:"70%",
-              fontWeight: 800,
-              lineHeight: "28.8px",
-              textAlign: "left",
-              textUnderlinePosition: "from-font",
-              textDecorationSkipInk: "none",
-              color: "rgba(251, 192, 45, 1)",
-            }}
-          >
-            {gifts?.length > 0 && gifts[0]?.subService?.name
-              ? `Free ${gifts[0].subService.name} on Birthday`
-              : "No Gift"}
-          </CustomTypography>
+                width: "70%",
+                fontWeight: 800,
+                lineHeight: "28.8px",
+                textAlign: "left",
+                textUnderlinePosition: "from-font",
+                textDecorationSkipInk: "none",
+                color: "rgba(251, 192, 45, 1)",
+              }}
+            >
+              {gifts?.length > 0 && gifts[0]?.subService?.name
+                ? `Free ${gifts[0].subService.name} on Birthday`
+                : "No Gift"}
+            </CustomTypography>
           </Box>
           <Box>
             <GiftModal />
