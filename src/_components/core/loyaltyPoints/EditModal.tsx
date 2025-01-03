@@ -13,6 +13,12 @@ import {
 import { RootState } from "@/redux/store";
 import SingleSelect from "@/_components/common/AdvancedUiElements/SingleSelect";
 import GenericInput from "@/_components/common/InputField/GenericInput";
+import MultipleSelectChip from "@/_components/common/AdvancedUiElements/MultiSelect";
+import MultiSelect from "@/_components/common/AdvancedUiElements/MultiSelect";
+interface Option {
+  id: string; // Ensure id is a string as per your data
+  name: string;
+}
 
 const packageOptions = [
   { id: "Silver", name: "Silver" },
@@ -33,8 +39,12 @@ const EditModal = () => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-
-  const formik = useFormik({
+  interface FormValues {
+    metalName: string; // metalName is a string
+    subServiceIds: string[]; // subServiceIds is an array of strings
+    expiryDate: string; // expiryDate is a string
+  }
+  const formik = useFormik<FormValues>({
     initialValues: {
       metalName: "",
       subServiceIds: [],
@@ -113,29 +123,31 @@ const EditModal = () => {
               ) || null
             }
             onBlur={formik.handleBlur("metalName")}
-            sx={{ height:"45px",borderRadius:"5px" ,marginBottom:"6px"}}
+            sx={{ height: "45px", borderRadius: "5px", marginBottom: "6px" }}
           />
           {formik.touched.metalName && formik.errors.metalName && (
             <span className="error-message">{formik.errors.metalName}</span>
           )}
 
-          <SingleSelect
+        
+          <MultiSelect
             title="Sub Service"
             textFieldLabel="Select Sub-Service"
             name="subServiceIds"
-            data={subServices || []}
-            onChange={(value) => {
-              const selectedIds = value ? [value.id] : [];
+            data={(subServices as Option[]) || []}
+            onChange={(value: Option[] | null) => {
+              const selectedIds = value ? value.map((v) => v.id) : []; 
               formik.setFieldValue("subServiceIds", selectedIds);
             }}
             value={
-              subServices?.find(
-                (service) => service.id === formik.values.subServiceIds[0]
-              ) || null
+              subServices?.filter((service: Option) =>
+                formik.values.subServiceIds.includes(service.id)
+              ) || []
             }
             onBlur={formik.handleBlur("subServiceIds")}
-            sx={{ height:"45px",borderRadius:"5px" ,marginBottom:"6px"}}
+            sx={{ height: "45px", borderRadius: "5px", marginBottom: "6px" }}
           />
+
           {formik.touched.subServiceIds && formik.errors.subServiceIds && (
             <span className="error-message">{formik.errors.subServiceIds}</span>
           )}
@@ -157,7 +169,6 @@ const EditModal = () => {
                 : undefined
             }
             inputfieldHeight="45px"
-            
           />
 
           <Box display="flex" justifyContent="flex-end" marginTop="16px">
