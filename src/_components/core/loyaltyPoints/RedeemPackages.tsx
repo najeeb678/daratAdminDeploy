@@ -18,13 +18,14 @@ const RedeemPackages = () => {
   const { userRedeemPackages } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
-  console.log("RedeemPackages", userRedeemPackages);
+
   const statusDropdownoptions = [
     { value: true, label: "Redeemed", color: "#28A745" }, // Green for success
     { value: false, label: "Not Redeemed", color: "#DC3545" }, // Red for not redeemed
   ];
 
   useEffect(() => {
+    setLoading(true);
     dispatch(getRedeemPackages())
       .unwrap()
       .then(() => {

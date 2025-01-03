@@ -20,7 +20,7 @@ const LoyaltyCards = () => {
   const { loyaltyPackages, loading } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
-console.log("loyaltyPackages",loyaltyPackages)
+
 
 
   return (

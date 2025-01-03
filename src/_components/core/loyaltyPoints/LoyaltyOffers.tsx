@@ -55,6 +55,7 @@ const ManageLoyaltyOffers = () => {
   );
 
   useEffect(() => {
+    setLoading(true);
     dispatch(getLoyaltyPackages())
       .unwrap()
       .then(() => {
@@ -65,9 +66,7 @@ const ManageLoyaltyOffers = () => {
       });
   }, [dispatch]);
 
-  const handleAddNewOffer = () => {
-    // console.log("Add New Offer Clicked");
-  };
+
 
   // Step 1: Group subservices by their name
   const groupedData = loyaltyPackages

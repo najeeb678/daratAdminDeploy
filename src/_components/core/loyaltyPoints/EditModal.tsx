@@ -8,6 +8,7 @@ import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
 import {
   createLoyaltyPackage,
+  getLoyaltyPackages,
   getSubservices,
 } from "@/redux/slices/loyaltyPointSlice";
 import { RootState } from "@/redux/store";
@@ -101,7 +102,11 @@ const EditModal = () => {
         )
           .unwrap()
           .finally(() => {
-            setLoading(false);
+            dispatch(getLoyaltyPackages())
+              .unwrap()
+              .then(() => {
+                setLoading(false);
+              });
           });
 
         toast.success("Loyalty package updated successfully!");
@@ -194,7 +199,6 @@ const EditModal = () => {
               ) || []
             }
             onBlur={formik.handleBlur("subServiceIds")}
-
           />
 
           {formik.touched.subServiceIds && formik.errors.subServiceIds && (
