@@ -79,11 +79,12 @@ const MultiSelect: React.FC<MultiSelectProps> = ({
           sx={{
             "& .MuiOutlinedInput-root": {
               borderRadius: "8px",
-              height: "40px", //TODO:chane height to adjust dynamically
-              ...sx,
+              minHeight: "40px",
+              height: "auto",
             },
+
             "& .MuiInputBase-root": {
-              padding: "8px 8px", // Adjust the padding here as needed
+              padding: "4px 8px",
             },
           }}
           renderOption={(props, option) => (
