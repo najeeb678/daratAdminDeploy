@@ -129,14 +129,13 @@ const EditModal = () => {
             <span className="error-message">{formik.errors.metalName}</span>
           )}
 
-        
           <MultiSelect
             title="Sub Service"
             textFieldLabel="Select Sub-Service"
             name="subServiceIds"
             data={(subServices as Option[]) || []}
             onChange={(value: Option[] | null) => {
-              const selectedIds = value ? value.map((v) => v.id) : []; 
+              const selectedIds = value ? value.map((v) => v.id) : [];
               formik.setFieldValue("subServiceIds", selectedIds);
             }}
             value={
