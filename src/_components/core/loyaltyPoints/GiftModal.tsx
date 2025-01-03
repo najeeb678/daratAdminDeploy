@@ -18,15 +18,17 @@ import {
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
 import { RootState } from "@/redux/store";
 import SingleSelect from "@/_components/common/AdvancedUiElements/SingleSelect";
+import { ThreeDots } from "react-loader-spinner";
 
 const GiftModal = () => {
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     subServiceId: "",
   });
 
-  const { subServices, loading } = useAppSelector(
+  const { subServices } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
 
@@ -47,11 +49,14 @@ const GiftModal = () => {
   };
 
   const handleSaveChanges = () => {
+    setLoading(true);
     const payload = {
       subServiceId: formData.subServiceId,
     };
 
-    dispatch(createGiftSlice(payload));
+    dispatch(createGiftSlice(payload)).finally(() => {
+      setLoading(false);
+    });
 
     handleClose();
   };
@@ -121,10 +126,27 @@ const GiftModal = () => {
                 gap: "7.35px",
                 borderRadius: "50px",
                 backgroundColor: "rgba(251, 192, 45, 1)",
+                "&:hover": {
+                  backgroundColor: "#FBC02D !important",
+                  color: "white !important",
+                  boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
+                  transform: "scale(1.005)",
+                },
               }}
               onClick={handleSaveChanges}
             >
-              Save
+              {loading ? (
+                <ThreeDots
+                  height="28"
+                  width="40"
+                  radius="9"
+                  color="#FFFFFF"
+                  ariaLabel="three-dots-loading"
+                  visible
+                />
+              ) : (
+                "Save"
+              )}
             </Button>
           </Box>
         </Box>

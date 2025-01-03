@@ -5,10 +5,12 @@ import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import { createDiscount, getDiscounts } from "@/redux/slices/loyaltyPointSlice";
 import { useAppDispatch } from "@/utils/hook";
 import GenericInput from "@/_components/common/InputField/GenericInput";
+import { ThreeDots } from "react-loader-spinner";
 
 const DiscountModal = () => {
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     type: "VALUE",
     value: "",
@@ -23,12 +25,17 @@ const DiscountModal = () => {
   };
 
   const handleSaveChanges = () => {
+    setLoading(true);
     const { type, value } = formData;
 
     if (type && value) {
       const data = { type: type, value: value };
-      dispatch(createDiscount(data));
-      dispatch(getDiscounts());
+      dispatch(createDiscount(data))
+        .unwrap()
+        .finally(() => {
+          setLoading(false);
+        });
+
       handleClose();
     } else {
       alert("Please fill in both points and metal name.");
@@ -120,10 +127,27 @@ const DiscountModal = () => {
                 gap: "7.35px",
                 borderRadius: "50px",
                 backgroundColor: "rgba(251, 192, 45, 1)",
+                "&:hover": {
+                  backgroundColor: "#FBC02D !important",
+                  color: "white !important",
+                  boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
+                  transform: "scale(1.005)",
+                },
               }}
               onClick={handleSaveChanges}
             >
-              Save
+              {loading ? (
+                <ThreeDots
+                  height="28"
+                  width="40"
+                  radius="9"
+                  color="#FFFFFF"
+                  ariaLabel="three-dots-loading"
+                  visible
+                />
+              ) : (
+                "Save"
+              )}
             </Button>
           </Box>
         </Box>
