@@ -37,36 +37,44 @@ const DiscountCoupon = () => {
             overflow: "auto",
           }}
         >
-          <CustomTypography
-            sx={{
-              marginTop: "15px",
-              fontFamily: "var(--font-avenir-medium)",
-              fontSize: "16px",
-              fontWeight: 500,
-              lineHeight: "19.2px",
-              textAlign: "left",
-              textUnderlinePosition: "from-font",
-              textDecorationSkipInk: "none",
-            }}
+          <Box
+            display="flex"
+            gap="15px"
+            justifyContent="space-between"
+            marginBottom="25px"
           >
-            Current Coupon Discount
-          </CustomTypography>
+            <CustomTypography
+              sx={{
+                marginTop: "15px",
+                fontFamily: "var(--font-avenir-medium)",
+                fontSize: "16px",
+                fontWeight: 500,
+                lineHeight: "19.2px",
+                textAlign: "left",
+                textUnderlinePosition: "from-font",
+                textDecorationSkipInk: "none",
+              }}
+            >
+              Current Coupon Discount
+            </CustomTypography>
 
-          <CustomTypography
-            sx={{
-              marginTop: "12px",
-              marginBottom: "5px",
-              fontFamily: "var(--font-avenir-medium)",
-              fontSize: "16px",
-              fontWeight: 400,
-              lineHeight: "19.2px",
-              textAlign: "left",
-              textUnderlinePosition: "from-font",
-              textDecorationSkipInk: "none",
-            }}
-          >
-            5%
-          </CustomTypography>
+            <CustomTypography
+              sx={{
+                marginTop: "12px",
+                marginBottom: "5px",
+                marginRight: "5px",
+                fontFamily: "var(--font-avenir-medium)",
+                fontSize: "16px",
+                fontWeight: 500,
+                lineHeight: "19.2px",
+                textAlign: "left",
+                textUnderlinePosition: "from-font",
+                textDecorationSkipInk: "none",
+              }}
+            >
+              5 %
+            </CustomTypography>
+          </Box>
 
           <CustomTypography
             sx={{
