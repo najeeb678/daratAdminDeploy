@@ -13,7 +13,7 @@ import {
   markAsReadDoctorNotifications,
 } from "@/redux/slices/authSlice";
 import { AppDispatch } from "@/redux/store";
-import { getRole, getUserId } from "@/utils/utils";
+import { formatRelativeTime, getRole, getUserId } from "@/utils/utils";
 
 const NotificationDetail = () => {
   const router = useRouter();
@@ -240,9 +240,7 @@ const NotificationDetail = () => {
                     color: "black",
                     fontFamily: "Avenir",
                   }}
-                >
-                  
-                </Typography>
+                ></Typography>
               </CustomTypography>
             </Box>
           ))
@@ -319,8 +317,11 @@ const NotificationDetail = () => {
                 }}
               >
                 {notif.type === "order"
+                  ? formatRelativeTime(notif.createdAt)
+                  : formatRelativeTime(notif.Appointment.createdAt)}
+                {/* {notif.type === "order"
                   ? format(new Date(notif.createdAt), "hh:mm a")
-                  : format(new Date(notif.Appointment.createdAt), "hh:mm a")}
+                  : format(new Date(notif.Appointment.createdAt), "hh:mm a")} */}
               </CustomTypography>
 
               <CustomTypography

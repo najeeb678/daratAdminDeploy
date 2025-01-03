@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import { AppDispatch } from "@/redux/store";
-import { getRole, getUserId } from "@/utils/utils";
+import { formatRelativeTime, getRole, getUserId } from "@/utils/utils";
 import { format } from "date-fns";
 import {
   getNotificationByRole,
@@ -276,6 +276,7 @@ const Notifications = () => {
                       {formatDateTime(notif?.Appointment?.startTime)}
                     </Typography>
                   </CustomTypography>
+
                   <Typography
                     component="span"
                     sx={{
@@ -285,7 +286,8 @@ const Notifications = () => {
                       fontFamily: "Avenir",
                     }}
                   >
-                    {format(new Date(notif.createdAt), "hh:mm a")}
+                    {formatRelativeTime(notif.createdAt)}
+                    {/* {format(new Date(notif.createdAt), "hh:mm a")} */}
                   </Typography>
                 </Box>
               </MenuItem>
@@ -427,12 +429,15 @@ const Notifications = () => {
                       fontFamily: "Avenir",
                     }}
                   >
-                    {notif.type === "order"
+                    {/* {notif.type === "order"
                       ? format(new Date(notif.createdAt), "hh:mm a")
                       : format(
                           new Date(notif.Appointment.createdAt),
                           "hh:mm a"
-                        )}
+                        )} */}
+                    {notif.type === "order"
+                      ? formatRelativeTime(notif.createdAt)
+                      : formatRelativeTime(notif.Appointment.createdAt)}
                   </Typography>
                 </Box>
               </MenuItem>
