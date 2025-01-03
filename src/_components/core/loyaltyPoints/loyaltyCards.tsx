@@ -20,12 +20,8 @@ const LoyaltyCards = () => {
   const { loyaltyPackages, loading } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
+console.log("loyaltyPackages",loyaltyPackages)
 
-  if (loyaltyPackages && loyaltyPackages.length > 0) {
-    // console.log(loyaltyPackages[0].expiryDate);
-  } else {
-    // console.log('No loyalty packages available');
-  }
 
   return (
     <Grid container spacing={2}>

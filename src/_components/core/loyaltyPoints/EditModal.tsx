@@ -33,7 +33,9 @@ const EditModal = () => {
   const { subServices } = useAppSelector(
     (state: RootState) => state.loyaltyPoints
   );
-
+  const { loyaltyPackages } = useAppSelector(
+    (state: RootState) => state.loyaltyPoints
+  );
   useEffect(() => {
     dispatch(getSubservices());
   }, [dispatch]);
