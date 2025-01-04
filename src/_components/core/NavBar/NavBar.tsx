@@ -4,6 +4,7 @@ import ProfileMenu from "./ProfileMenu";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import AccessPanel from "../AccessPanel/AccessPanel";
+import CloseIcon from "@mui/icons-material/Close";
 
 const NavBar = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
@@ -74,6 +75,17 @@ const NavBar = () => {
           },
         }}
       >
+        <IconButton
+          onClick={toggleDrawer(false)}
+          sx={{
+            position: "absolute",
+            top: "-5px",
+            right: "-5px",
+            zIndex: 20,
+          }}
+        >
+          <CloseIcon sx={{ color: "#fbc02d", fontSize: "20px" }} />
+        </IconButton>
         {/* Sidebar Header */}
         <Box
           sx={{
