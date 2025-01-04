@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  FormControlLabel,
+  Switch,
+  ToggleButton,
+  Typography,
+} from "@mui/material";
 import { format } from "date-fns";
 import { useRouter } from "next/router";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
@@ -9,6 +16,8 @@ import { useDispatch, useSelector } from "react-redux";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import NotificationModal from "@/_components/core/NavBar/NotificationsModal";
 import {
+  markAllAdminNotificationAsRead,
+  markAllDoctorNotificationAsRead,
   markAsReadAdminNotifications,
   markAsReadDoctorNotifications,
 } from "@/redux/slices/authSlice";
@@ -21,7 +30,11 @@ const NotificationDetail = () => {
   const [role, setRole] = useState<string | null>(null);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isChecked, setIsChecked] = useState(false);
 
+  // markallasRead
+  // markAllAdminNotificationAsRead,
+  //   markAllDoctorNotificationAsRead
   const notificationsData = useSelector(
     (state: any) => state.auth.notifications
   );
@@ -51,6 +64,31 @@ const NotificationDetail = () => {
   const handleModalClose = () => {
     setIsModalOpen(false);
   };
+
+  const handleMarkAllAsRead = (event: any) => {
+    const checked = event.target.checked;
+
+    setIsChecked(!checked);
+    if (!isChecked) {
+      return;
+    }
+
+    const markAllAction =
+      role === "Admin"
+        ? markAllAdminNotificationAsRead
+        : markAllDoctorNotificationAsRead;
+
+    dispatch(markAllAction())
+      .unwrap()
+      .then(() => {
+        setNotifications((prev) =>
+          prev.map((notif) => ({ ...notif, read: true }))
+        );
+      })
+      .catch((error) =>
+        console.error("Failed to mark all notifications as read:", error)
+      );
+  };
   return (
     <Box
       sx={{
@@ -63,17 +101,72 @@ const NotificationDetail = () => {
         backgroundColor: "white",
       }}
     >
-      <CustomTypography
-        sx={{
-          fontWeight: "450",
-          fontSize: "16px",
-          lineHeight: "20px",
-          marginBottom: "8px",
-        }}
-      >
-        Notifications
-      </CustomTypography>
-  
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <CustomTypography
+          sx={{
+            fontWeight: "450",
+            fontSize: "16px",
+            lineHeight: "20px",
+            marginBottom: "8px",
+          }}
+        >
+          Notifications
+        </CustomTypography>
+        <Box sx={{ display: "flex" }}>
+          <CustomTypography
+            sx={{
+              fontWeight: "450",
+              fontSize: "16px",
+              lineHeight: "20px",
+            }}
+          >
+            Mark All as Read
+          </CustomTypography>
+          <Switch
+            value="markAllAsRead"
+            onChange={handleMarkAllAsRead}
+            sx={{
+              marginTop: "-8px",
+              color: "#F0A000",
+              "&.Mui-checked": {
+                color: "#F0A000",
+              },
+              "&.Mui-checked + .MuiFormControlLabel-label": {
+                color: "#F0A000", // Ensures label color changes too
+              },
+              "&.Mui-checked:hover": {
+                backgroundColor: "#F0A000",
+              },
+              "&.Mui-checked.Mui-selected": {
+                backgroundColor: "#F0A000",
+              },
+            }}
+          />
+        </Box>
+        {/* <FormControlLabel
+          control={
+            <Switch
+              value="markAllAsRead"
+              onChange={handleMarkAllAsRead}
+              sx={{
+                color: "#F0A000",
+                "&.Mui-checked": {
+                  color: "#F0A000",
+                },
+                "&.Mui-checked:hover": {
+                  backgroundColor: "#F0A000",
+                },
+                "&.Mui-checked.Mui-selected": {
+                  backgroundColor: "#A6A6A6",
+                },
+                marginBottom: "16px",
+              }}
+            />
+          }
+          label=""
+          labelPlacement="start"
+        /> */}
+      </Box>
       {notifications?.length === 0 && (
         <Box
           sx={{
