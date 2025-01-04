@@ -73,6 +73,7 @@ const NotificationDetail = () => {
       >
         Notifications
       </CustomTypography>
+  
       {notifications?.length === 0 && (
         <Box
           sx={{
@@ -275,6 +276,7 @@ const NotificationDetail = () => {
               sx={{
                 display: "flex",
                 alignItems: "center",
+                minWidth: "500px",
                 gap: "20px",
                 padding: "10px 0",
                 backgroundColor: notif.read ? "#F5F5F5" : "#FBC02D1F",
