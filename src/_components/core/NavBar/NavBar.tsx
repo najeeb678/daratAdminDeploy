@@ -1,8 +1,16 @@
-import { Box } from "@mui/material";
+import { Box, Drawer, IconButton, useTheme } from "@mui/material";
 import Notifications from "./Notifications";
 import ProfileMenu from "./ProfileMenu";
+import { useState } from "react";
+import MenuIcon from "@mui/icons-material/Menu";
+import AccessPanel from "../AccessPanel/AccessPanel";
 
 const NavBar = () => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const toggleDrawer = (open: boolean) => () => {
+    setIsDrawerOpen(open);
+  };
   return (
     <Box
       sx={{
@@ -27,7 +35,24 @@ const NavBar = () => {
       </Box>
       <Box
         sx={{
-          display: "flex",
+          display: { xs: "flex", md: "none" },
+          alignItems: "center",
+          justifyContent: "flex-end",
+          width: "100%",
+        }}
+      >
+        <IconButton
+          color="inherit"
+          edge="start"
+          onClick={toggleDrawer(true)}
+          sx={{ padding: "8px" }}
+        >
+          <MenuIcon />
+        </IconButton>
+      </Box>
+      <Box
+        sx={{
+          display: { xs: "none", md: "flex" },
           alignItems: "center",
           justifyContent: "flex-end",
           width: "100%",
@@ -37,6 +62,20 @@ const NavBar = () => {
         <Notifications />
         <ProfileMenu />
       </Box>
+      <Drawer
+        anchor="left"
+        open={isDrawerOpen}
+        onClose={toggleDrawer(false)}
+        sx={{
+          "& .MuiDrawer-paper": {
+            width: "200px",
+            padding: "16px",
+            backgroundColor: "#FFFFFF",
+          },
+        }}
+      >
+        <AccessPanel />
+      </Drawer>
     </Box>
   );
 };

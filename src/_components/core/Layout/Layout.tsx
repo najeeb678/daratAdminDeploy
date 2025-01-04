@@ -63,7 +63,7 @@ const Layout = ({ children }: LayoutProps) => {
           borderTopRightRadius: "10px",
           minHeight: "100vh",
           position: "fixed",
-
+          display: { xs: "none", md: "block" },
           marginTop: "72px",
           left: 0,
           overflowY: "auto",
@@ -79,9 +79,9 @@ const Layout = ({ children }: LayoutProps) => {
       <Box
         sx={{
           flexGrow: 1,
-          padding: "2px 16px 14px 0px",
+          padding: "2px 16px 14px 16px",
 
-          ml: { xs: "215px" },
+          ml: { xs: "0px", md: "200px" },
           marginTop: "72px",
           overflow: "auto",
           position: "relative",
