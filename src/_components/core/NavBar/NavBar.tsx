@@ -74,6 +74,32 @@ const NavBar = () => {
           },
         }}
       >
+        {/* Sidebar Header */}
+        <Box
+          sx={{
+            display: "flex",
+            position: "fixed",
+            width: { xs: "180px" },
+            zIndex: 10,
+            alignItems: "center",
+            padding: "0 0 0 20px",
+            height: "70px",
+            bgcolor: "#FFFFFF",
+            cursor: "pointer",
+          }}
+        >
+          <Box>
+            <img
+              src="/images/weblogo%201.svg"
+              alt="web logo"
+              style={{
+                width: "130px",
+                height: "40px",
+                marginTop: "0px",
+              }}
+            />
+          </Box>
+        </Box>
         <AccessPanel />
       </Drawer>
     </Box>

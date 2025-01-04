@@ -60,10 +60,10 @@ const AccessPanel = () => {
   return (
     <Box
       sx={{
-        width: "170px",
-        height: "calc(100vh - 70px)",
+        width: "180px",
+        height: "calc(100vh - 100px)",
         position: "fixed",
-        top: "80px",
+        top: "90px",
         left: "25px",
         gap: "10px",
         display: "flex",
