@@ -32,9 +32,7 @@ const NotificationDetail = () => {
   const [userId, setUserId] = useState<string | null>(null);
   const [isChecked, setIsChecked] = useState(false);
 
-  // markallasRead
-  // markAllAdminNotificationAsRead,
-  //   markAllDoctorNotificationAsRead
+ 
   const notificationsData = useSelector(
     (state: any) => state.auth.notifications
   );
@@ -127,45 +125,25 @@ const NotificationDetail = () => {
             onChange={handleMarkAllAsRead}
             sx={{
               marginTop: "-8px",
-              color: "#F0A000",
-              "&.Mui-checked": {
-                color: "#F0A000",
-              },
-              "&.Mui-checked + .MuiFormControlLabel-label": {
-                color: "#F0A000", // Ensures label color changes too
-              },
-              "&.Mui-checked:hover": {
-                backgroundColor: "#F0A000",
-              },
-              "&.Mui-checked.Mui-selected": {
-                backgroundColor: "#F0A000",
+              //   ".MuiSwitch-thumb": {
+              //     backgroundColor: "#F0A000",
+              //   },
+              //   ".MuiSwitch-track": {
+              //     backgroundColor: "#F0A000",
+              //   },
+              "& .MuiSwitch-switchBase": {
+                "&.Mui-checked": {
+                  "+ .MuiSwitch-track": {
+                    backgroundColor: "#9e9e9e",
+                  },
+                  ".MuiSwitch-thumb": {
+                    backgroundColor: "#fbc02d",
+                  },
+                },
               },
             }}
           />
         </Box>
-        {/* <FormControlLabel
-          control={
-            <Switch
-              value="markAllAsRead"
-              onChange={handleMarkAllAsRead}
-              sx={{
-                color: "#F0A000",
-                "&.Mui-checked": {
-                  color: "#F0A000",
-                },
-                "&.Mui-checked:hover": {
-                  backgroundColor: "#F0A000",
-                },
-                "&.Mui-checked.Mui-selected": {
-                  backgroundColor: "#A6A6A6",
-                },
-                marginBottom: "16px",
-              }}
-            />
-          }
-          label=""
-          labelPlacement="start"
-        /> */}
       </Box>
       {notifications?.length === 0 && (
         <Box
