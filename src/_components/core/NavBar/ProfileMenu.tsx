@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import {
   Avatar,
@@ -10,7 +11,8 @@ import {
 import { useRouter } from "next/router";
 import { getUserDetails } from "@/utils/utils";
 
-const ProfileMenu = () => {
+
+const ProfileMenu = ({ showText = false }: { showText?: boolean }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
@@ -23,6 +25,7 @@ const ProfileMenu = () => {
       setProfilePic(user.profilePic);
     }
   }, []);
+
   const handleMenuOpen = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -33,7 +36,7 @@ const ProfileMenu = () => {
 
   const handleSettings = () => {
     handleMenuClose();
-    router.push("/settings"); // Navigate to the settings page
+    router.push("/settings");
   };
 
   const handleLogout = () => {
@@ -41,23 +44,72 @@ const ProfileMenu = () => {
     localStorage.clear();
     router.push("/authentication/sign-in");
   };
-  if (!isClient) return null; 
+
+  if (!isClient) return null;
+
   return (
     <Box>
-      <IconButton onClick={handleMenuOpen} sx={{ padding: 0 }}>
-        <Avatar
-          alt="Avatar"
-          src={profilePic}
+      {showText ? (
+        <Box
           sx={{
-            width: "40.23px",
-            height: "40.23px",
-            border: "2px solid rgba(251, 192, 45, 1)",
+            width: "120px",
+            padding: "2px 1px",
+            borderRadius: "8px",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
             "&:hover": {
-              borderColor: "rgba(33, 150, 243, 1)",
+              backgroundColor: "#F5F5F5",
+              "& .icon, & .text": {
+                color: "#FBC02D",
+              },
             },
           }}
-        />
-      </IconButton>
+          onClick={handleMenuOpen}
+        >
+          <IconButton onClick={handleMenuOpen} sx={{ padding: 0 }}>
+            <Avatar
+              alt="Avatar"
+              src={profilePic}
+              sx={{
+                width: "30.23px",
+                height: "30.23px",
+                border: "2px solid rgba(251, 192, 45, 1)",
+                "&:hover": {
+                  borderColor: "rgba(33, 150, 243, 1)",
+                },
+              }}
+            />
+          </IconButton>
+          <Typography
+            className="text"
+            sx={{
+              fontWeight: "500",
+              fontSize: "12px",
+              lineHeight: "16.39px",
+              color: "#7B7B7B",
+              transition: "color 0.3s",
+            }}
+          >
+            Profile
+          </Typography>
+        </Box>
+      ) : (
+        <IconButton onClick={handleMenuOpen} sx={{ padding: 0 }}>
+          <Avatar
+            alt="Avatar"
+            src={profilePic}
+            sx={{
+              width: "40.23px",
+              height: "40.23px",
+              border: "2px solid rgba(251, 192, 45, 1)",
+              "&:hover": {
+                borderColor: "rgba(33, 150, 243, 1)",
+              },
+            }}
+          />
+        </IconButton>
+      )}
 
       <Menu
         anchorEl={anchorEl}

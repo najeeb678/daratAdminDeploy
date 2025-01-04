@@ -79,8 +79,8 @@ const NavBar = () => {
           onClick={toggleDrawer(false)}
           sx={{
             position: "absolute",
-            top: "-5px",
-            right: "-5px",
+            top: "-3px",
+            right: "-3px",
             zIndex: 20,
           }}
         >

@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Box } from "@mui/material";
+import { Badge, Box } from "@mui/material";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { getSidebarData } from "@/utils/SidebarData";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import { RiArrowDropDownLine, RiArrowDropRightLine } from "react-icons/ri";
 import { getRole } from "@/utils/utils";
+
+import ProfileMenu from "../NavBar/ProfileMenu";
+
+import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
+import { useSelector } from "react-redux";
 
 const AccessPanel = () => {
   const router = useRouter();
@@ -14,6 +19,9 @@ const AccessPanel = () => {
   const [isClient, setIsClient] = useState(false);
   const [role, setRole] = useState<string | null>(null);
 
+  const unreadNotificationCount = useSelector(
+    (state: any) => state.auth.unreadNotificationCount
+  );
   useEffect(() => {
     const fetchRole = async () => {
       const fetchedRole = await getRole();
@@ -238,6 +246,72 @@ const AccessPanel = () => {
           </Box>
         );
       })}
+
+      <Box
+        sx={{
+          display: { xs: "flex", md: "none" },
+          flexDirection: "column",
+        }}
+      >
+        {/* Notifications */}
+        <Box
+          onClick={() => {
+            router.push("/notifications");
+          }}
+          sx={{
+            width: "150px",
+            padding: "10px 14.9px",
+            borderRadius: "8px",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            "&:hover": {
+              backgroundColor: "#F5F5F5",
+              "& .icon, & .text": {
+                color: "#FBC02D",
+              },
+            },
+          }}
+        >
+          <Badge badgeContent={unreadNotificationCount} color="warning">
+            <NotificationsNoneOutlinedIcon
+              sx={{ color: "#7B7B7B", width: "26px", height: "26px" }}
+            />
+          </Badge>
+          <CustomTypography
+            className="text"
+            sx={{
+              fontWeight: "500",
+              fontSize: "12px",
+              lineHeight: "16.39px",
+              color: "#7B7B7B",
+              transition: "color 0.3s",
+            }}
+          >
+            Notifications
+          </CustomTypography>
+        </Box>
+
+        {/* Profile */}
+        <Box
+          sx={{
+            width: "150px",
+            padding: "10px 14.9px",
+            borderRadius: "8px",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            "&:hover": {
+              backgroundColor: "#F5F5F5",
+              "& .icon, & .text": {
+                color: "#FBC02D",
+              },
+            },
+          }}
+        >
+          <ProfileMenu showText />
+        </Box>
+      </Box>
     </Box>
   );
 };
