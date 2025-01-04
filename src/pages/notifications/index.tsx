@@ -13,7 +13,7 @@ import {
   markAsReadDoctorNotifications,
 } from "@/redux/slices/authSlice";
 import { AppDispatch } from "@/redux/store";
-import { getRole } from "@/utils/utils";
+import { formatRelativeTime, getRole, getUserId } from "@/utils/utils";
 
 const NotificationDetail = () => {
   const router = useRouter();
@@ -94,15 +94,162 @@ const NotificationDetail = () => {
           </Typography>
         </Box>
       )}
-      {notifications?.map((notif: any) => (
-        <Box
-          key={notif.id}
-          onClick={() => {
-            if (!notif.read) {
-              const markAsReadAction =
-                role === "Admin"
-                  ? markAsReadAdminNotifications
-                  : markAsReadDoctorNotifications;
+      {role === "Doctor"
+        ? notifications?.map((notif: any) => (
+            <Box
+              key={notif.id}
+              onClick={() => {
+                if (!notif.read) {
+                  dispatch(
+                    markAsReadDoctorNotifications({
+                      notificationId: notif.id,
+                      doctorId: userId,
+                    })
+                  )
+                    .unwrap()
+                    .then(() => {
+                      setNotifications((prev) =>
+                        prev.map((n) =>
+                          n.id === notif.id ? { ...n, read: true } : n
+                        )
+                      );
+                    })
+                    .catch((error) =>
+                      console.error(
+                        "Failed to mark notification as read:",
+                        error
+                      )
+                    );
+                }
+                handleNotificationClick(notif);
+              }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "20px",
+                padding: "10px 0",
+                backgroundColor: notif.read ? "#F5F5F5" : "#FBC02D1F",
+                marginBottom: "8px",
+                "&:hover": {
+                  backgroundColor: notif.read ? "#E0E0E0" : "#F0F0F0", // Adjust hover color
+                  color: "inherit",
+                },
+                ":hover": {
+                  cursor: "pointer",
+                },
+              }}
+            >
+              <CircleIcon
+                sx={{
+                  color: notif.read ? "#A6A6A6" : "#FBC02D", // Gray for read, highlighted for unread
+                  fontSize: "12px",
+                  margin: "0px 8px",
+                }}
+              />
+
+              <CustomTypography
+                sx={{
+                  fontWeight: "400",
+                  fontSize: "12px",
+                  fontFamily: "Avenir",
+                  minWidth: "130px",
+                }}
+              >
+                {formatDate(notif?.Appointment?.startTime)}
+              </CustomTypography>
+              <CustomTypography
+                sx={{
+                  fontWeight: "400",
+                  fontSize: "12px",
+                  fontFamily: "Avenir",
+                  minWidth: "70px",
+                }}
+              >
+                {format(new Date(notif?.Appointment?.createdAt), "hh:mm a")}
+              </CustomTypography>
+
+              <CustomTypography
+                sx={{
+                  fontWeight: "400",
+                  fontSize: "12px",
+                }}
+              >
+                <Typography
+                  component="span"
+                  sx={{
+                    fontWeight: "bold",
+                    fontSize: "12px",
+                    fontFamily: "Avenir",
+                  }}
+                >
+                  {notif?.Appointment?.patientId?.name}{" "}
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{
+                    color: "#A6A6A6",
+                    fontWeight: "400",
+                    fontSize: "12px",
+                    fontFamily: "Avenir",
+                  }}
+                >
+                  has booked an appointment for the{" "}
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{
+                    fontWeight: "400",
+                    fontSize: "12px",
+                    color: "black",
+                    fontFamily: "Avenir",
+                  }}
+                >
+                  {notif?.Appointment?.subService?.name}
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{
+                    color: "#A6A6A6",
+                    fontWeight: "400",
+                    fontSize: "12px",
+                    fontFamily: "Avenir",
+                  }}
+                >
+                  {" "}
+                  on{" "}
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{
+                    fontWeight: "400",
+                    fontSize: "12px",
+                    color: "black",
+                    fontFamily: "Avenir",
+                  }}
+                >
+                  {formatDateTime(notif?.Appointment?.startTime)}
+                </Typography>
+                <Typography
+                  component="span"
+                  sx={{
+                    fontWeight: "400",
+                    fontSize: "12px",
+                    color: "black",
+                    fontFamily: "Avenir",
+                  }}
+                ></Typography>
+              </CustomTypography>
+            </Box>
+          ))
+        : notifications?.map((notif: any) => (
+            <Box
+              key={notif.id}
+              onClick={() => {
+                if (!notif.read) {
+                  const markAsReadAction =
+                    role === "Admin"
+                      ? markAsReadAdminNotifications
+                      : markAsReadDoctorNotifications;
 
               dispatch(markAsReadAction({ notificationId: notif.id }))
                 .unwrap()
@@ -143,30 +290,33 @@ const NotificationDetail = () => {
             }}
           />
 
-          <CustomTypography
-            sx={{
-              fontWeight: "400",
-              fontSize: "12px",
-              fontFamily: "Avenir",
-              minWidth: "130px",
-            }}
-          >
-            {notif.type === "order"
-              ? formatDate(notif.Orders?.created_at)
-              : formatDate(notif.Appointment?.startTime)}
-          </CustomTypography>
-          <CustomTypography
-            sx={{
-              fontWeight: "400",
-              fontSize: "12px",
-              fontFamily: "Avenir",
-              minWidth: "70px",
-            }}
-          >
-            {notif.type === "order"
-              ? format(new Date(notif.createdAt), "hh:mm a")
-              : format(new Date(notif.Appointment.createdAt), "hh:mm a")}
-          </CustomTypography>
+              <CustomTypography
+                sx={{
+                  fontWeight: "400",
+                  fontSize: "12px",
+                  fontFamily: "Avenir",
+                  minWidth: "130px",
+                }}
+              >
+                {notif.type === "order"
+                  ? formatDate(notif.Orders?.created_at)
+                  : formatDate(notif.Appointment?.startTime)}
+              </CustomTypography>
+              <CustomTypography
+                sx={{
+                  fontWeight: "400",
+                  fontSize: "12px",
+                  fontFamily: "Avenir",
+                  minWidth: "70px",
+                }}
+              >
+                {notif.type === "order"
+                  ? formatRelativeTime(notif.createdAt)
+                  : formatRelativeTime(notif.Appointment.createdAt)}
+                {/* {notif.type === "order"
+                  ? format(new Date(notif.createdAt), "hh:mm a")
+                  : format(new Date(notif.Appointment.createdAt), "hh:mm a")} */}
+              </CustomTypography>
 
           <CustomTypography
             sx={{

@@ -4,32 +4,47 @@ import CustomTypography from "@/_components/common/CustomTypography/CustomTypogr
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import { createDiscount } from "@/redux/slices/loyaltyPointSlice";
 import { useAppDispatch } from "@/utils/hook";
+import { ThreeDots } from "react-loader-spinner";
 
 const DiscountModal = () => {
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     type: "VALUE",
     value: "",
   });
+  const [error, setError] = useState("");
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setError(""); // Reset error when modal closes
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+    if (name === "value") {
+      setError(""); // Clear error when user types
+    }
   };
 
   const handleSaveChanges = () => {
+    setLoading(true);
     const { type, value } = formData;
 
     if (type && value) {
       const data = { type: type, value: value };
-      dispatch(createDiscount(data));
-      handleClose();
+      dispatch(createDiscount(data))
+        .unwrap()
+        .finally(() => {
+          setLoading(false);
+          handleClose();
+        });
     } else {
-      alert("Please fill in both points and metal name.");
+      setError("Please fill in Value."); // Set error message
+      setLoading(false);
     }
   };
 
@@ -79,9 +94,37 @@ const DiscountModal = () => {
             name="value"
             value={formData.value}
             onChange={handleInputChange}
-            sx={{ marginBottom: "16px", width: "100%" }}
+            placeholder="Add Discount"
+            error={!!error} // Show error state
+            helperText={error} // Display error message
+            sx={{
+              marginBottom: "16px",
+              width: "100%",
+              "& .MuiOutlinedInput-root": {
+                borderRadius: "5px",
+                height: "55px",
+                "&:hover fieldset": {
+                  borderColor: "#D7D7D7",
+                },
+                "&.Mui-focused fieldset": {
+                  borderColor: "#D7D7D7",
+                },
+              },
+              "& .MuiInputBase-input::placeholder": {
+                color: "#7B7B7B",
+                fontSize: "12px",
+              },
+              "& .MuiInputLabel-root": {
+                color: "#B2B2B2", // Default label color
+                "&.Mui-focused": {
+                  color: "#FBC02D", // Change color when focused
+                },
+                "&:hover": {
+                  color: "#FBC02D", // Change color on hover
+                },
+              },
+            }}
           />
-
           <Box display="flex" justifyContent="flex-end" marginTop="16px">
             <Button
               variant="contained"
@@ -92,10 +135,28 @@ const DiscountModal = () => {
                 gap: "7.35px",
                 borderRadius: "50px",
                 backgroundColor: "rgba(251, 192, 45, 1)",
+                "&:hover": {
+                  backgroundColor: "#FBC02D !important",
+                  color: "white !important",
+                  boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
+                  transform: "scale(1.005)",
+                },
               }}
               onClick={handleSaveChanges}
+              disabled={!formData.value} // Disable button if value is empty
             >
-              Save
+              {loading ? (
+                <ThreeDots
+                  height="28"
+                  width="40"
+                  radius="9"
+                  color="#FFFFFF"
+                  ariaLabel="three-dots-loading"
+                  visible
+                />
+              ) : (
+                "Save"
+              )}
             </Button>
           </Box>
         </Box>

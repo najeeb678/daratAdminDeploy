@@ -39,12 +39,18 @@ const ManageLoyaltyOffers = () => {
   );
 
   useEffect(() => {
-    dispatch(getLoyaltyPackages());
+    setLoading(true);
+    dispatch(getLoyaltyPackages())
+      .unwrap()
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+      });
   }, [dispatch]);
 
-  const handleAddNewOffer = () => {
-    // console.log("Add New Offer Clicked");
-  };
+
 
   // Step 1: Group subservices by their name
   const groupedData = loyaltyPackages
@@ -89,27 +95,19 @@ const ManageLoyaltyOffers = () => {
         textDecorationSkipInk: "none",
         color: "rgba(123, 123, 123, 1)",
       }}
+      titleStyles={{
+        fontFamily: "var(--font-avenir-medium)",
+        fontSize: "16px",
+        fontWeight: 500,
+        lineHeight: "19.2px",
+        textAlign: "left",
+        textUnderlinePosition: "from-font",
+        textDecorationSkipInk: "none",
+      }}
       data={tableData}
       columns={tableColumns}
       loading={loading}
       showPagination={false}
-      buttons={[
-        {
-          label: "Add New Offer",
-          variant: "contained",
-          onClick: handleAddNewOffer,
-          sx: {
-            fontFamily: "var(--font-avenir-medium)",
-            width: "114px !important",
-            height: "29px !important",
-            padding: "1.47px 14px",
-            borderRadius: "100px !important",
-            opacity: 1,
-            backgroundColor: "rgba(251, 192, 45, 1) !important",
-            fontSize: "12px !important",
-          },
-        },
-      ]}
     />
   );
 };
