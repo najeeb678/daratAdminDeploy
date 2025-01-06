@@ -30,9 +30,7 @@ const NotificationDetail = () => {
   const [role, setRole] = useState<string | null>(null);
   const [notifications, setNotifications] = useState<any[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
-  const [isChecked, setIsChecked] = useState(false);
 
- 
   const notificationsData = useSelector(
     (state: any) => state.auth.notifications
   );
@@ -66,26 +64,33 @@ const NotificationDetail = () => {
   const handleMarkAllAsRead = (event: any) => {
     const checked = event.target.checked;
 
-    setIsChecked(!checked);
-    if (!isChecked) {
+    if (!checked) {
       return;
     }
 
-    const markAllAction =
-      role === "Admin"
-        ? markAllAdminNotificationAsRead
-        : markAllDoctorNotificationAsRead;
-
-    dispatch(markAllAction())
-      .unwrap()
-      .then(() => {
-        setNotifications((prev) =>
-          prev.map((notif) => ({ ...notif, read: true }))
+    if (role === "Admin") {
+      dispatch(markAllAdminNotificationAsRead())
+        .unwrap()
+        .then(() => {
+          setNotifications((prev) =>
+            prev.map((notif) => ({ ...notif, read: true }))
+          );
+        })
+        .catch((error) =>
+          console.error("Failed to mark all notifications as read:", error)
         );
-      })
-      .catch((error) =>
-        console.error("Failed to mark all notifications as read:", error)
-      );
+    } else if (role === "Doctor") {
+      dispatch(markAllDoctorNotificationAsRead({ doctorId: userId }))
+        .unwrap()
+        .then(() => {
+          setNotifications((prev) =>
+            prev.map((notif) => ({ ...notif, read: true }))
+          );
+        })
+        .catch((error) =>
+          console.error("Failed to mark all notifications as read:", error)
+        );
+    }
   };
   return (
     <Box

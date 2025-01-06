@@ -39,7 +39,7 @@ const Notifications = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedNotification, setSelectedNotification] = useState<any>(null);
-  const [isChecked, setIsChecked] = useState(false);
+
   const unreadNotificationCount = useSelector(
     (state: any) => state.auth.unreadNotificationCount
   );
@@ -102,9 +102,8 @@ const Notifications = () => {
   const handleMarkAllAsRead = (event: any) => {
     const checked = event.target.checked;
 
-    setIsChecked(!checked);
-    if (!isChecked) {
-      return;
+    if (!checked) {
+      return; // If toggled off, do nothing
     }
 
     if (role === "Admin") {
