@@ -86,12 +86,8 @@ const appointmentSlice = createSlice({
         state.loadingappointmentsData = false;
         state.appointmentsData = action.payload;
       })
-      .addCase(bookAppointment.fulfilled, (state, action) => {
-        // console.log("bookAppointment", action.payload?.payment?.data);
-        // console.log("state.appointmentsData", state.appointmentsData);
+      .addCase(bookAppointment.fulfilled, (state, action) => {})
 
-        state.appointmentsData.push(action.payload?.payment?.data);
-      })
       .addCase(deleteAppointment.fulfilled, (state, action): any => {
         state.appointmentsData = state.appointmentsData.filter(
           (schedule: any) => schedule.id !== action.payload.id
