@@ -83,9 +83,10 @@ export const markAllAdminNotificationAsReadApi = async () => {
   );
   return response.data;
 };
-export const markAllDoctorNotificationAsReadApi = async () => {
+export const markAllDoctorNotificationAsReadApi = async (data: any) => {
   const response = await api.post(
-    `notifications/markAllDoctorNotificationAsRead`
+    `notifications/markAllDoctorNotificationAsRead`,
+    data
   );
   return response.data;
 };

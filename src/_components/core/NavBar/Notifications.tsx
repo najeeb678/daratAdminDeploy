@@ -107,21 +107,29 @@ const Notifications = () => {
       return;
     }
 
-    const markAllAction =
-      role === "Admin"
-        ? markAllAdminNotificationAsRead
-        : markAllDoctorNotificationAsRead;
-
-    dispatch(markAllAction())
-      .unwrap()
-      .then(() => {
-        setNotifications((prev) =>
-          prev.map((notif) => ({ ...notif, read: true }))
+    if (role === "Admin") {
+      dispatch(markAllAdminNotificationAsRead())
+        .unwrap()
+        .then(() => {
+          setNotifications((prev) =>
+            prev.map((notif) => ({ ...notif, read: true }))
+          );
+        })
+        .catch((error) =>
+          console.error("Failed to mark all notifications as read:", error)
         );
-      })
-      .catch((error) =>
-        console.error("Failed to mark all notifications as read:", error)
-      );
+    } else if (role === "Doctor") {
+      dispatch(markAllDoctorNotificationAsRead({ doctorId: userId }))
+        .unwrap()
+        .then(() => {
+          setNotifications((prev) =>
+            prev.map((notif) => ({ ...notif, read: true }))
+          );
+        })
+        .catch((error) =>
+          console.error("Failed to mark all notifications as read:", error)
+        );
+    }
   };
   return (
     <>

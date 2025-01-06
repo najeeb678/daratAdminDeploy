@@ -196,18 +196,19 @@ export const markAllAdminNotificationAsRead = createAsyncThunk(
     }
   }
 ); 
+
 export const markAllDoctorNotificationAsRead = createAsyncThunk(
   "auth/markAllDoctorNotificationAsRead",
-  async (_, { rejectWithValue }) => {
+  async (data: any, { rejectWithValue }) => {
     try {
-      const res = await markAllDoctorNotificationAsReadApi();
-
+      const res = await markAllDoctorNotificationAsReadApi(data);
       return res;
     } catch (err: any) {
       return rejectWithValue(err.response?.data || "Something went wrong");
     }
   }
 );
+
 
 
 const authSlice = createSlice({
