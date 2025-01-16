@@ -11,7 +11,7 @@ import { RootState } from "@/redux/store";
 const loyaltyLevels = [
   { level: "Silver", points: 500 },
   { level: "Gold", points: 1000 },
-  { level: "Platinum", points: 2000 },
+  { level: "Platinum", points: 1500 },
 ];
 
 const LoyaltyCards = () => {
