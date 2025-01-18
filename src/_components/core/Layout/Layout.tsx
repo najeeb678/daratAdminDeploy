@@ -76,6 +76,7 @@ const Layout = ({ children }: LayoutProps) => {
           borderTopRightRadius: "10px",
           minHeight: "100vh",
           position: "fixed",
+          display: { xs: "none", md: "block" },
           marginTop: "72px",
           display: { xs: "block", sm: "block", md: "block", lg: "block" }, // Show on small and medium screens, hide on large screens
           left: 0,
@@ -92,8 +93,9 @@ const Layout = ({ children }: LayoutProps) => {
       <Box
         sx={{
           flexGrow: 1,
-          padding: "2px 16px 14px 0px",
-          ml: { xs: "15px", sm: "215px", md: "215px", lg: "215px", xl: "215px" },
+          padding: "2px 16px 14px 16px",
+
+          ml: { xs: "0px", md: "200px" },
           marginTop: "72px",
           overflow: "auto",
           position: "relative",

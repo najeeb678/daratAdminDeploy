@@ -22,6 +22,7 @@ import { createSchedule, getSchedule } from "@/redux/slices/ScheduleSlice";
 import { getDoctorsofSubService } from "@/redux/slices/ServicesSlice";
 import {
   bookAppointment,
+  getAllAppointments,
   getAppointmentsSlotsOfDoctor,
 } from "@/redux/slices/AppointmentSlice";
 import SlotSelect from "./SlotSelect";
@@ -102,10 +103,10 @@ const AddAppointment: React.FC<AddAppointmentProps> = ({
         } else {
           // Create new doctor
           const res = await dispatch(bookAppointment(payload)).unwrap();
-          toast("Appointment created successfully", { type: "success" });
+
           if (res) {
             handleClose();
-            dispatch(getSchedule({ search: "", filter: "" }));
+            dispatch(getAllAppointments({ search: "", filter: "" }));
             toast("Appointment created successfully", { type: "success" });
           }
         }

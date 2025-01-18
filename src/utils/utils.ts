@@ -1,6 +1,29 @@
 import { jwtDecode, JwtPayload } from "jwt-decode";
 
 import { format } from "date-fns";
+export const formatRelativeTime = (dateString: string): string => {
+  const date = new Date(dateString);
+  const now = new Date();
+  const seconds = Math.floor((now.getTime() - date.getTime()) / 1000);
+
+  let interval = Math.floor(seconds / 31536000); // Years
+  if (interval >= 1) return `${interval} yr${interval > 1 ? 's' : ''} ago`;
+
+  interval = Math.floor(seconds / 2592000); // Months
+  if (interval >= 1) return `${interval} mo${interval > 1 ? 's' : ''} ago`;
+
+  interval = Math.floor(seconds / 86400); // Days
+  if (interval >= 1) return `${interval} day${interval > 1 ? 's' : ''} ago`;
+
+  interval = Math.floor(seconds / 3600); // Hours
+  if (interval >= 1) return `${interval} hr${interval > 1 ? 's' : ''} ago`;
+
+  interval = Math.floor(seconds / 60); // Minutes
+  if (interval >= 1) return `${interval} min${interval > 1 ? 's' : ''} ago`;
+
+  return `${seconds} sec${seconds > 1 ? 's' : ''} ago`;
+};
+
 interface CustomJwtPayload extends JwtPayload {
   userId: string; // Add any other properties you expect in the token
 }
@@ -24,7 +47,8 @@ export const getUserId = (): string | null => {
     const token = localStorage.getItem("token");
     if (token) {
       try {
-        const decodedToken: CustomJwtPayload | null = jwtDecode<CustomJwtPayload>(token);
+        const decodedToken: CustomJwtPayload | null =
+          jwtDecode<CustomJwtPayload>(token);
         return decodedToken?.userId || null; // Return userId or null if not found
       } catch (error) {
         console.error("Invalid token", error);
@@ -70,7 +94,6 @@ export const getGreeting = (): string => {
     return "Good Night !";
   }
 };
-
 
 /**
  * Formats a time string or Date object into "hh:mm:ss a" format.

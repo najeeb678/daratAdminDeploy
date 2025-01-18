@@ -1,5 +1,15 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
-import { createDiscountsApi, createGiftApi, createLoyaltyBenefitsApi, getAllSubServicesApi, getDiscountsApi, getGiftApi, getLoyaltyPackagesApi } from "../api/loyaltyPointsApi";
+import {
+  changeUserRedeemedPackageStatusApi,
+  createDiscountsApi,
+  createGiftApi,
+  createLoyaltyBenefitsApi,
+  getAllSubServicesApi,
+  getDiscountsApi,
+  getGiftApi,
+  getLoyaltyPackagesApi,
+  getRedeemPackagesApi,
+} from "../api/loyaltyPointsApi";
 
 interface LoyaltyPointsState {
   createLoyaltyPoints: any[] | null;
@@ -11,6 +21,7 @@ interface LoyaltyPointsState {
   gifts: any | null;
   loading: boolean;
   error: string | null;
+  userRedeemPackages: any[] | null;
 }
 
 const initialState: LoyaltyPointsState = {
@@ -23,6 +34,7 @@ const initialState: LoyaltyPointsState = {
   loyaltyPackages: null,
   loading: false,
   error: null,
+  userRedeemPackages: null,
 };
 
 
@@ -62,29 +74,51 @@ export const createLoyaltyPackage = createAsyncThunk(
     }
   );
 
-  export const getLoyaltyPackages = createAsyncThunk(
-    'loyalty/getLoyaltyPackages',
-    async (_, { rejectWithValue }) => {
-      try {
-        const data = await getLoyaltyPackagesApi();
-        return data;
-      } catch (error: any) {
-        return rejectWithValue(error.response?.data || 'An error occurred');
-      }
+export const getLoyaltyPackages = createAsyncThunk(
+  "loyalty/getLoyaltyPackages",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getLoyaltyPackagesApi();
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
     }
-  );
-
-  export const getGiftsSlice = createAsyncThunk(
-    'loyalty/getGiftsSlice',
-    async (_, { rejectWithValue }) => {
-      try {
-        const data = await getGiftApi();
-        return data;
-      } catch (error: any) {
-        return rejectWithValue(error.response?.data || 'An error occurred');
-      }
+  }
+);
+export const getRedeemPackages = createAsyncThunk(
+  "loyalty/getRedeemPackages",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getRedeemPackagesApi();
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
     }
-  );
+  }
+);
+export const changeUserRedeemedPackageStatus = createAsyncThunk(
+  "loyalty/changeUserRedeemedPackageStatus",
+  async (payload: any, { rejectWithValue }) => {
+    try {
+      console.log("payload", payload);
+      const data = await changeUserRedeemedPackageStatusApi(payload);
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+export const getGiftsSlice = createAsyncThunk(
+  "loyalty/getGiftsSlice",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getGiftApi();
+      return data;
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
 
   export const getSubservices = createAsyncThunk(
     'loyalty/getSubservices',
@@ -246,8 +280,11 @@ const loyaltyPointsSlice = createSlice({
         state.loading = false;
         state.error = (action.payload as string) || "An unknown error occurred";
       });
-
-     
+    builder
+      .addCase(getRedeemPackages.pending, (state) => {})
+      .addCase(getRedeemPackages.fulfilled, (state, action) => {
+        state.userRedeemPackages = action.payload;
+      });
   },
 });
 

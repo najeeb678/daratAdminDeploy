@@ -4,6 +4,8 @@ import {
   getAdminDetailsApi,
   getNotificationByRoleApi,
   loginApi,
+  markAllAdminNotificationAsReadApi,
+  markAllDoctorNotificationAsReadApi,
   markAsReadAdminNotificationsApi,
   markAsReadDoctorNotificationsApi,
   resendEmailOTPApi,
@@ -144,6 +146,32 @@ export const markAsReadDoctorNotifications = createAsyncThunk(
     }
   }
 );
+export const markAllAdminNotificationAsRead = createAsyncThunk(
+  "auth/markAllAdminNotificationAsRead",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await markAllAdminNotificationAsReadApi();
+
+      return res;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data || "Something went wrong");
+    }
+  }
+); 
+
+export const markAllDoctorNotificationAsRead = createAsyncThunk(
+  "auth/markAllDoctorNotificationAsRead",
+  async (data: any, { rejectWithValue }) => {
+    try {
+      const res = await markAllDoctorNotificationAsReadApi(data);
+      return res;
+    } catch (err: any) {
+      return rejectWithValue(err.response?.data || "Something went wrong");
+    }
+  }
+);
+
+
 
 const authSlice = createSlice({
   name: "auth",
