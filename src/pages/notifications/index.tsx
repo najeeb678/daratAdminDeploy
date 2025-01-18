@@ -328,48 +328,44 @@ const NotificationDetail = () => {
                       ? markAsReadAdminNotifications
                       : markAsReadDoctorNotifications;
 
-                  dispatch(markAsReadAction({ notificationId: notif.id }))
-                    .unwrap()
-                    .then(() => {
-                      setNotifications((prev) =>
-                        prev.map((n) =>
-                          n.id === notif.id ? { ...n, read: true } : n
-                        )
-                      );
-                    })
-                    .catch((error) =>
-                      console.error(
-                        "Failed to mark notification as read:",
-                        error
-                      )
-                    );
-                }
-                handleNotificationClick(notif);
-              }}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                minWidth: "500px",
-                gap: "20px",
-                padding: "10px 0",
-                backgroundColor: notif.read ? "#F5F5F5" : "#FBC02D1F",
-                marginBottom: "8px",
-                "&:hover": {
-                  backgroundColor: notif.read ? "#E0E0E0" : "#F0F0F0", // Adjust hover color
-                  color: "inherit",
-                },
-                ":hover": {
-                  cursor: "pointer",
-                },
-              }}
-            >
-              <CircleIcon
-                sx={{
-                  color: notif.read ? "#A6A6A6" : "#FBC02D", // Gray for read, highlighted for unread
-                  fontSize: "12px",
-                  margin: "0px 8px",
-                }}
-              />
+              dispatch(markAsReadAction({ notificationId: notif.id }))
+                .unwrap()
+                .then(() => {
+                  setNotifications((prev) =>
+                    prev.map((n) =>
+                      n.id === notif.id ? { ...n, read: true } : n
+                    )
+                  );
+                })
+                .catch((error) =>
+                  console.error("Failed to mark notification as read:", error)
+                );
+            }
+            handleNotificationClick(notif);
+          }}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: "20px",
+            padding: "10px 0",
+            backgroundColor: notif.read ? "#F5F5F5" : "#FBC02D1F",
+            marginBottom: "8px",
+            "&:hover": {
+              backgroundColor: notif.read ? "#E0E0E0" : "#F0F0F0", // Adjust hover color
+              color: "inherit",
+            },
+            ":hover": {
+              cursor: "pointer",
+            },
+          }}
+        >
+          <CircleIcon
+            sx={{
+              color: notif.read ? "#A6A6A6" : "#FBC02D", // Gray for read, highlighted for unread
+              fontSize: "12px",
+              margin: "0px 8px",
+            }}
+          />
 
               <CustomTypography
                 sx={{
