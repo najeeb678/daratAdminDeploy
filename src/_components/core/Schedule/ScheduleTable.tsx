@@ -216,7 +216,8 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
       sx: {
         backgroundColor: "#FBC02D !important",
         borderRadius: "50px !important",
-        width: "181px !important",
+        width: "auto !important",
+      
         boxShadow: "none",
         "&:hover": {
           color: "white !important",
