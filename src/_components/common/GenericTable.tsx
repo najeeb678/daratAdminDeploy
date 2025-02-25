@@ -158,7 +158,7 @@ const GenericTable = <T extends {}>({
 
         <Box
           sx={{
-            width: { xs: "100%", sm: "auto" },
+            width: "60%",
             display: "flex",
             justifyContent: "flex-end",
             gap: "10px",
