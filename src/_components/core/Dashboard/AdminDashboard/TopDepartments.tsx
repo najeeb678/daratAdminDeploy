@@ -19,7 +19,7 @@ const TopDepartments = () => {
   const serviceNameToFileMap = {
     "Dental Care": "dental-care.svg",
     Dermatologist: "dermatology.svg",
-    Gynocology: "gynocology.svg",
+    Gynecology: "gynocology.svg",
     Thin: "thin.svg",
   };
   type TopDepartment = {
@@ -80,9 +80,9 @@ const TopDepartments = () => {
             >
               <img
                 src={`icons/TopDepartments/${
-                  serviceNameToFileMap[item.serviceName] ||
-                  "icons/TopDepartments/dermatology.svg"
+                  serviceNameToFileMap[item.serviceName] || "dermatology.svg"
                 }`}
+                
                 alt={item.serviceName}
                 style={{
                   maxWidth: "100%",
@@ -112,7 +112,6 @@ const TopDepartments = () => {
                   //fontFamily: "Avenir",
                   fontFamily: "AvenirBook",
                   lineHeight: "14.4px",
-                  textAlign: "center",
                 }}
               >
                 {item.serviceName}

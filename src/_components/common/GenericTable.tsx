@@ -123,11 +123,10 @@ const GenericTable = <T extends {}>({
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          width: "100%",
+          minWidth: "max-content",
           justifyContent: "space-between",
           mb: 2,
 
-          //minWidth: 650,
         }}
       >
         <Box sx={{ width: "auto" }}>
@@ -159,7 +158,7 @@ const GenericTable = <T extends {}>({
 
         <Box
           sx={{
-            width: "60%",
+            width: { xs: "100%", sm: "auto" },
             display: "flex",
             justifyContent: "flex-end",
             gap: "10px",

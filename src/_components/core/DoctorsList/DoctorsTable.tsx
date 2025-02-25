@@ -220,8 +220,8 @@ const DoctorsTable = ({ doctorsData, loading }: any) => {
         handleSearchChange={handleSearchChange}
         filters={filters}
         searchStyle={{
-          width: "62%",
-          height: "29px",
+          width: "100%",
+          // height: "29px",
           top: "0px",
           borderRadius: "50px",
         }}
