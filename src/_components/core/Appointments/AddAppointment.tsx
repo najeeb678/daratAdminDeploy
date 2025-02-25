@@ -375,7 +375,17 @@ const AddAppointment: React.FC<AddAppointmentProps> = ({
           </Grid>
 
           <Box
-            sx={{ width: "100%", display: "flex", justifyContent: "flex-end" }}
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+              flexDirection: {
+                xs: "column",
+                sm: "column",
+                md: "row",
+                lg: "row",
+              },
+            }}
           >
             <Button
               variant="outlined"
@@ -390,6 +400,11 @@ const AddAppointment: React.FC<AddAppointmentProps> = ({
                 color: "#A6A6A6",
                 boxShadow: "none",
                 transition: "all 0.2s ease-in-out",
+                marginBottom: {
+                  xs: "15px",
+                  sm: "15px",
+                  md: "0px",
+                },
                 "&:hover": {
                   boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
                   transform: "scale(1.005)",

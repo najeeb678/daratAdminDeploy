@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Box, TextField } from "@mui/material";
+import { Button, Box, TextField, useMediaQuery } from "@mui/material";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import { createDiscount } from "@/redux/slices/loyaltyPointSlice";
@@ -48,6 +48,8 @@ const DiscountModal = () => {
     }
   };
 
+  const xs = useMediaQuery("(max-width:600px)");
+
   return (
     <Box marginTop="-28px" display="flex" justifyContent="flex-end">
       <Button
@@ -85,7 +87,7 @@ const DiscountModal = () => {
         open={open}
         title="Discount Information"
         handleClose={handleClose}
-        modalWidth="50%"
+        modalWidth={xs ? "100%" : "50%"}
       >
         <Box component="form">
           <TextField

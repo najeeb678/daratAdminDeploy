@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button } from "@mui/material";
-import Grid from "@mui/material/Grid2";
+import Grid from "@mui/material/Grid2"; // Correct import
+
 import { ThreeDots } from "react-loader-spinner";
 import { toast } from "react-toastify";
 
@@ -31,14 +32,14 @@ const AddService: React.FC<AddServiceProps> = ({
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
   const [serviceImage, setServiceImage] = useState(""); // Renamed from productImage to serviceImage
-  const [serviceId] = useState(serviceData?.id);    
+  const [serviceId] = useState(serviceData?.id);
 
   const handleImageChange = (url: string) => {
     formik.setFieldValue("picture", url);
     setServiceImage(url); // Save the uploaded image URL
   };
 
-  console.log('serviceData', serviceData)
+  console.log("serviceData", serviceData);
 
   useEffect(() => {
     if (serviceData) {
@@ -54,7 +55,6 @@ const AddService: React.FC<AddServiceProps> = ({
       formik.resetForm();
     }
   }, [serviceData]);
-  
 
   const formik = useFormik({
     initialValues: {
@@ -69,18 +69,18 @@ const AddService: React.FC<AddServiceProps> = ({
     onSubmit: async (data) => {
       setLoading(true);
       console.log("Form submitted with data:", data);
-  
+
       try {
         if (data.picture === "") {
           toast.error("Please upload an image before submitting.");
           setLoading(false);
           return;
         }
-  
+
         if (isUpdate) {
           const updateData = {
             ...data,
-            id: serviceData?.ID, 
+            id: serviceData?.ID,
           };
           await dispatch(updateServices(updateData)).unwrap();
           toast("Updated successfully", { type: "success" });
@@ -88,7 +88,7 @@ const AddService: React.FC<AddServiceProps> = ({
           await dispatch(createServices(data)).unwrap();
           toast("Service created successfully", { type: "success" });
         }
-  
+
         setLoading(false);
         handleClose();
       } catch (error: any) {
@@ -97,138 +97,130 @@ const AddService: React.FC<AddServiceProps> = ({
       }
     },
   });
-  
+
   return (
     <Box
-      style={{
+      sx={{
         width: "100%",
         backgroundColor: "#ffffff",
         borderRadius: "10px",
-        padding: "5px 20px",
+        padding: { xs: "10px", sm: "15px", md: "20px" },
       }}
     >
       <Box component="form" noValidate onSubmit={formik.handleSubmit}>
-        <Grid container spacing={1} direction="row">
+        <Grid container spacing={2}>
+          <Grid size={{ xs: 12, md: 8 }} component="div">
+            <Grid container spacing={2}>
+              <Grid size={{ xs: 12 }} component="div">
+                <GenericInput
+                  label="Enter Service Name"
+                  type="text"
+                  name="name"
+                  value={formik.values.name}
+                  onChange={formik.handleChange("name")}
+                  onBlur={formik.handleBlur("name")}
+                  placeholder="Enter Service Name"
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={formik.touched.name ? formik.errors.name : ""}
+                />
+              </Grid>
+              <Grid size={{ xs: 12 }} component="div">
+                <CustomMultilineInput
+                  name="description"
+                  noOflines={4}
+                  title="Description"
+                  value={formik.values.description}
+                  onChange={formik.handleChange("description")}
+                  onBlur={formik.handleBlur("description")}
+                  placeholder="Enter Description"
+                  error={
+                    formik.touched.description &&
+                    Boolean(formik.errors.description)
+                  }
+                  helperText={
+                    formik.touched.description ? formik.errors.description : ""
+                  }
+                />
+              </Grid>
+            </Grid>
+          </Grid>
           <Grid
-            container
-            rowSpacing={1}
-            columnSpacing={2}
-            direction="row"
-            size={8}
+            size={{ xs: 12, md: 4 }}
+            display="flex"
+            justifyContent="center"
+            component="div"
           >
-            <Grid size={{ xs: 12 }} component="div">
-              <GenericInput
-                label="Enter Service Name"
-                type="text"
-                name="name"
-                value={formik.values.name}
-                onChange={formik.handleChange("name")}
-                onBlur={formik.handleBlur("name")}
-                placeholder="Enter Service Name"
-                error={formik.touched.name && Boolean(formik.errors.name)}
-                helperText={
-                  formik.touched.name && formik.errors.name
-                    ? formik.errors.name
-                    : undefined
-                }
-              />
-            </Grid>
-
-            <Grid size={{ xs: 12 }} component="div">
-              <CustomMultilineInput
-                name="description"
- noOflines={4}
-                title="Description"
-                value={formik.values.description}
-                onChange={formik.handleChange("description")}
-                onBlur={formik.handleBlur("description")}
-                placeholder="Enter Description"
-                error={
-                  formik.touched.description &&
-                  Boolean(formik.errors.description)
-                }
-                helperText={
-                  formik.touched.description && formik.errors.description
-                    ? formik.errors.description
-                    : undefined
-                }
-              />
-            </Grid>
+            <ProductImageUploader
+              selectedImage={serviceImage}
+              onImageChange={handleImageChange}
+            />
           </Grid>
-          <Grid container size={4}>
-            <Grid size={{ xs: 12 }} component="div">
-              <ProductImageUploader
-                selectedImage={serviceImage} // Updated to use serviceImage
-                onImageChange={handleImageChange}
-              />
-            </Grid>
-          </Grid>
-          <Box
+        </Grid>
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: { md: "flex-end" },
+            marginTop: "20px",
+            flexWrap: "wrap",
+          }}
+        >
+          <Button
+            variant="outlined"
+            onClick={handleClose}
             sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "flex-end",
-              marginTop: "20px",
+              fontSize: "13px",
+              fontWeight: 400,
+              borderRadius: "50px",
+              borderColor: "#b2b2b2",
+              marginRight: "10px",
+              color: "#A6A6A6",
+              boxShadow: "none",
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
+                transform: "scale(1.005)",
+              },
             }}
           >
-            <Button
-              variant="outlined"
-              onClick={() => handleClose()}
-              style={{ marginLeft: "10px" }}
-              sx={{
-                fontSize: "13px !important",
-                fontWeight: "400 !important",
-                borderRadius: "50px !important",
-                borderColor: "#b2b2b2",
-                marginRight: "20px",
-                color: "#A6A6A6",
-                boxShadow: "none",
-                transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
-                  transform: "scale(1.005)",
-                },
-              }}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{
-                fontSize: "12px !important",
-                fontWeight: "700 !important",
-                fontFamily: "Avenir !important",
-                lineHeight: "18px !important",
-                borderRadius: "50px !important",
-                backgroundColor: "#FBC02D !important",
-                boxShadow: "none",
-                transition: "all 0.2s ease-in-out",
-                "&:hover": {
-                  backgroundColor: "#FBC02D !important",
-                  color: "white !important",
-                  boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
-                  transform: "scale(1.005)",
-                },
-              }}
-            >
-              {loading ? (
-                <ThreeDots
-                  height="28"
-                  width="40"
-                  radius="9"
-                  color="#FFFFFF"
-                  ariaLabel="three-dots-loading"
-                  visible
-                />
-              ) : isUpdate ? (
-                "Update Service" // Updated button text
-              ) : (
-                <>Add Service</>
-              )}
-            </Button>
-          </Box>
-        </Grid>
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              fontSize: "12px",
+              fontWeight: 700,
+              fontFamily: "Avenir",
+              lineHeight: "18px",
+              borderRadius: "50px",
+              backgroundColor: "#FBC02D",
+              boxShadow: "none",
+              transition: "all 0.2s ease-in-out",
+              "&:hover": {
+                backgroundColor: "#FBC02D",
+                color: "white",
+                boxShadow: "0px 1px 1px rgba(0, 0, 0, 0.05 )",
+                transform: "scale(1.005)",
+              },
+            }}
+          >
+            {loading ? (
+              <ThreeDots
+                height="28"
+                width="40"
+                radius="9"
+                color="#FFFFFF"
+                ariaLabel="three-dots-loading"
+                visible
+              />
+            ) : isUpdate ? (
+              "Update Service"
+            ) : (
+              "Add Service"
+            )}
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

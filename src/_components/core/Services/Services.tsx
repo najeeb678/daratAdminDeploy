@@ -9,6 +9,7 @@ import CustomCheckbox from "@/_components/common/CustomCheckBox";
 import DropDownForActions from "@/_components/common/MenuDropDownForActions/DropDownForActions";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { useMediaQuery } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
 import { RootState } from "@/redux/store";
 import {
@@ -237,6 +238,8 @@ const ServicesTable = () => {
     },
   ];
 
+  const xs = useMediaQuery("(max-width:600px)");
+
   return (
     <>
       <GenericTable<(typeof servicesData)[0]>
@@ -250,7 +253,7 @@ const ServicesTable = () => {
         open={openCreateModal}
         title={"Add Service"}
         handleClose={() => setOpenCreateModal(false)}
-        modalWidth="50%"
+        modalWidth={xs ? "100%" : "50%"}
       >
         <AddService
           serviceData={selectedService}

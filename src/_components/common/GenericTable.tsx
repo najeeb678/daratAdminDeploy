@@ -126,7 +126,6 @@ const GenericTable = <T extends {}>({
           minWidth: "max-content",
           justifyContent: "space-between",
           mb: 2,
-
         }}
       >
         <Box sx={{ width: "auto" }}>
@@ -146,7 +145,16 @@ const GenericTable = <T extends {}>({
             </CustomTypography>
           )}
         </Box>
-        <Box sx={{ width: "40%" }}>
+        <Box
+          sx={{
+            width: {
+              xs: "100%",
+              sm: "100%",
+              md: "40%",
+            },
+            mr: 2,
+          }}
+        >
           {handleSearchChange && (
             <SearchFilter
               placeholder="Search"
@@ -158,7 +166,11 @@ const GenericTable = <T extends {}>({
 
         <Box
           sx={{
-            width: "60%",
+            width: {
+              xs: "100%",
+              sm: "100%",
+              md: "60%",
+            },
             display: "flex",
             justifyContent: "flex-end",
             gap: "10px",

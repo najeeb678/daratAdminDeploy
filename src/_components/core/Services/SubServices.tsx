@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import GenericTable from "@/_components/common/GenericTable";
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import { ButtonConfig, Column } from "@/types/types";
 import { servicesData } from "@/utils/ServicesConstants";
 import Link from "next/link";
@@ -45,7 +45,7 @@ const SubServicesTable = () => {
     if (sub_serviceId) {
       dispatch(getSubServicesofService({ id: sub_serviceId }));
     }
-  }, [dispatch, sub_serviceId]); 
+  }, [dispatch, sub_serviceId]);
 
   const data = subServicesOfService
     ? subServicesOfService.map((subService: any, index) => {
@@ -61,10 +61,11 @@ const SubServicesTable = () => {
     : [];
   useEffect(() => {
     setLoading(true);
-    dispatch(getSubServicesofService({ id: sub_serviceId })).unwrap()
-    .finally(() => {
-      setLoading(false);
-    });;
+    dispatch(getSubServicesofService({ id: sub_serviceId }))
+      .unwrap()
+      .finally(() => {
+        setLoading(false);
+      });
   }, [dispatch]);
 
   // Set default status to "inactive" if not provided
@@ -98,7 +99,6 @@ const SubServicesTable = () => {
 
   // Handle status change
   const handleStatusChange = (srNo: number, newStatus: string) => {
-
     const data = {
       id: srNo,
       status: newStatus,
@@ -249,6 +249,8 @@ const SubServicesTable = () => {
     },
   ];
 
+  const xs = useMediaQuery("(max-width:600px)");
+
   return (
     <>
       <GenericTable<any>
@@ -262,7 +264,7 @@ const SubServicesTable = () => {
         open={openCreateModal}
         title={"Add Sub Service"}
         handleClose={() => setOpenCreateModal(false)}
-        modalWidth="50%"
+        modalWidth={xs ? "100%" : "50%"}
       >
         <AddSubService
           subServiceData={selectedServices}

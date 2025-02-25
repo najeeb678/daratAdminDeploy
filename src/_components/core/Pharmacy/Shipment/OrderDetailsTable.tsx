@@ -172,7 +172,7 @@ const OrderDetailsTable = ({ ordersData = [], loading = false }: any) => {
         loading={loading}
         handleSearchChange={handleSearchChange}
         searchStyle={{
-          width: "62%",
+          width: { xs: "60vw", sm: "60vw", md: "62%" },
           height: "29px",
           top: "0px",
           borderRadius: "50px",

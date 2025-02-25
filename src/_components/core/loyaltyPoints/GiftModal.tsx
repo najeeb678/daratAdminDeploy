@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Box } from "@mui/material";
+import { Button, Box, useMediaQuery } from "@mui/material";
 import CustomTypography from "@/_components/common/CustomTypography/CustomTypography";
 import CustomModal from "@/_components/common/CustomModal/CustomModal";
 import { useAppDispatch, useAppSelector } from "@/utils/hook";
@@ -49,6 +49,8 @@ const GiftModal = () => {
     });
   };
 
+  const xs = useMediaQuery("(max-width:600px)");
+
   return (
     <Box marginTop="-28px" display="flex" justifyContent="flex-end">
       <Button
@@ -85,7 +87,7 @@ const GiftModal = () => {
         title="Gift Information"
         handleClose={handleClose}
         isFooter={false}
-        modalWidth="50%"
+        modalWidth={xs ? "100%" : "50%"}
       >
         <Box component="form">
           <SingleSelect
@@ -130,7 +132,7 @@ const GiftModal = () => {
                 },
               }}
               onClick={handleSaveChanges}
-              disabled={!formData.subServiceId} 
+              disabled={!formData.subServiceId}
             >
               {loading ? (
                 <ThreeDots

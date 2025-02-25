@@ -10,7 +10,7 @@ import TransitionsDialog from "@/_components/common/CustomModal/TransitionsDialo
 import AddAppointment from "./AddAppointment";
 import { Doctor, ButtonConfig, Column, FilterConfig } from "@/types/types";
 
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 
 import { format } from "date-fns";
@@ -258,6 +258,8 @@ const AdminAppointmentsTable = ({ appointmentsData, loading }: any) => {
     },
   ];
 
+  const xs = useMediaQuery("(max-width:600px)");
+
   return (
     <>
       <GenericTable<Doctor>
@@ -269,7 +271,11 @@ const AdminAppointmentsTable = ({ appointmentsData, loading }: any) => {
         handleSearchChange={handleSearchChange}
         filters={filters}
         searchStyle={{
-          width: "62%",
+          width: {
+            xs: "60vw",
+            sm: "60vw",
+            md: "62%",
+          },
           height: "29px",
           top: "0px",
           borderRadius: "50px",
@@ -280,7 +286,7 @@ const AdminAppointmentsTable = ({ appointmentsData, loading }: any) => {
         open={openAppointmentModal}
         title={selectedAppointments ? "Update Appointment" : "Add Appointment"}
         handleClose={handleCloseUpdate}
-        modalWidth="70%"
+        modalWidth={xs ? "100%" : "70%"}
       >
         <AddAppointment
           handleClose={() => {

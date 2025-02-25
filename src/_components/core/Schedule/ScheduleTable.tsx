@@ -10,7 +10,7 @@ import TransitionsDialog from "@/_components/common/CustomModal/TransitionsDialo
 import AddScheduleForm from "./AddScheduleForm";
 import { Doctor, ButtonConfig, Column, FilterConfig } from "@/types/types";
 
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 
 import { format } from "date-fns";
@@ -217,7 +217,7 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
         backgroundColor: "#FBC02D !important",
         borderRadius: "50px !important",
         width: "auto !important",
-      
+
         boxShadow: "none",
         "&:hover": {
           color: "white !important",
@@ -225,6 +225,8 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
       },
     },
   ];
+
+  const xs = useMediaQuery("(max-width:600px)");
 
   return (
     <>
@@ -237,7 +239,7 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
         handleSearchChange={handleSearchChange}
         filters={filters}
         searchStyle={{
-          width: "62%",
+          width: { xs: "60vw", sm: "60vw", md: "62%" },
           height: "29px",
           top: "0px",
           borderRadius: "50px",
@@ -248,7 +250,7 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
         open={openScheduleModal}
         title={selectedSchedule ? "Update Schedule" : "Add Schedule"}
         handleClose={handleCloseUpdate}
-        modalWidth="70%"
+        modalWidth={xs ? "100%" : "70%"}
       >
         <AddScheduleForm
           selectedSchedule={selectedSchedule}

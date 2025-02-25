@@ -9,7 +9,7 @@ import TransitionsDialog from "@/_components/common/CustomModal/TransitionsDialo
 
 import { Doctor, ButtonConfig, Column, FilterConfig } from "@/types/types";
 
-import { Box } from "@mui/material";
+import { Box, useMediaQuery } from "@mui/material";
 import DriveFileRenameOutlineIcon from "@mui/icons-material/DriveFileRenameOutline";
 
 import { format } from "date-fns";
@@ -247,6 +247,8 @@ const ProductsTable = ({ productsData = [], loading }: any) => {
     },
   ];
 
+  const xs = useMediaQuery("(max-width:600px)");
+
   return (
     <>
       <GenericTable<any>
@@ -258,7 +260,11 @@ const ProductsTable = ({ productsData = [], loading }: any) => {
         handleSearchChange={handleSearchChange}
         // filters={filters}
         searchStyle={{
-          width: "62%",
+          width: {
+            xs: "60vw",
+            sm: "60vw",
+            md: "62%",
+          },
           height: "29px",
           top: "0px",
           borderRadius: "50px",
@@ -269,7 +275,7 @@ const ProductsTable = ({ productsData = [], loading }: any) => {
         open={openProductModal}
         title={selectedProduct ? "Update Product" : "Add Product"}
         handleClose={handleCloseUpdate}
-        modalWidth="60%"
+        modalWidth={xs ? "100%" : "60%"}
       >
         <AddProductForm
           productData={selectedProduct}
@@ -280,7 +286,7 @@ const ProductsTable = ({ productsData = [], loading }: any) => {
         open={openCategoryModal}
         title={"Add Category"}
         handleClose={() => setOpenCategoryModal(false)}
-        modalWidth="65%"
+        modalWidth={xs ? "100%" : "65%"}
       >
         <AddCategory handleClose={() => setOpenCategoryModal(false)} />
       </CustomModal>
