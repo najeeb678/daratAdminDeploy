@@ -85,10 +85,7 @@ const LoyaltyCards = () => {
               display: "flex",
               alignItems: "center",
               justifyContent: "space-between",
-              flexDirection: {
-                xs: "row",
-                // md: "row",
-              },
+              flexDirection: { xs: "column", sm: "row" },
             }}
           >
             <Box display="flex" sx={{ width: "85%" }}>
