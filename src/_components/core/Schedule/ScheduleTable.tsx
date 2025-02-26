@@ -40,8 +40,7 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
   const [selectedSchedule, setSelectedSchedule] = useState<any | null>(null);
   const [schedulefilter, setSchedulefilter] = useState<string>("weekly");
   const [searchInput, setSearchInput] = useState<string>("");
-  // console.log("scheduleData", scheduleData);
-  // console.log("selectedSchedule", selectedSchedule);
+
   useEffect(() => {
     dispatch(getSchedule({ search: searchInput, filter: schedulefilter }));
   }, [searchInput, schedulefilter, dispatch]);
