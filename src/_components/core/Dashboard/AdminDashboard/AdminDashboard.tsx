@@ -45,7 +45,7 @@ const AdminDashboard = ({ userData, greetingText }: any) => {
           greeting={`${greetingText}`}
           name={userData?.name || ""}
           message="Have a great day at work"
-          imgUrl="/images/admin.png"
+          imgUrl="/images/Admin.png"
         />
       </Grid>
       <Grid size={{ xs: 12 }} component="div">

@@ -245,11 +245,12 @@ const AdminAppointmentsTable = ({ appointmentsData, loading }: any) => {
       label: "Add Appointment",
       variant: "contained",
       onClick: handleNewAppointment,
-      size: "sm",
+      size: "md",
       textColored: true,
       sx: {
         backgroundColor: "#FBC02D !important",
         borderRadius: "50px !important",
+        width: "auto !important",
         boxShadow: "none",
         "&:hover": {
           color: "white !important",
