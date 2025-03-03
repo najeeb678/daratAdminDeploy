@@ -4,7 +4,7 @@ import Grid from "@mui/material/Grid2";
 import Greetings from "../Greetings";
 import AdminAnalyticsCards from "./AdminAnalyticsCards";
 import AdminAppointmentsTable from "./AdminAppointmentsTable";
-import { Typography } from "@mui/material";
+
 import PatientChart from "../../../common/Charts/PieCharts/PieChartCard";
 import TopDepartments from "./TopDepartments";
 import AdminRecentPatientsTable from "./AdminRecentPatientsTable";
