@@ -64,8 +64,7 @@ const EditModal = () => {
 
     return acc;
   }, {});
-  console.log("packageToSubServices", packageToSubServices);
-  console.log("packageToExpiryDates", packageToExpiryDates);
+
   useEffect(() => {
     dispatch(getSubservices());
   }, [dispatch]);

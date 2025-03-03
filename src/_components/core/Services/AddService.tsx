@@ -39,7 +39,7 @@ const AddService: React.FC<AddServiceProps> = ({
     setServiceImage(url); // Save the uploaded image URL
   };
 
-  console.log("serviceData", serviceData);
+
 
   useEffect(() => {
     if (serviceData) {
@@ -68,7 +68,7 @@ const AddService: React.FC<AddServiceProps> = ({
     }),
     onSubmit: async (data) => {
       setLoading(true);
-      console.log("Form submitted with data:", data);
+
 
       try {
         if (data.picture === "") {

@@ -35,7 +35,7 @@ export const createDiscountsApi = async (data: {
   value: string;
 }) => {
   const response = await api.post("discounts", data);
-  console.log("res", response?.data);
+
   return response.data;
 };
 

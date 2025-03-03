@@ -20,7 +20,7 @@ export const getDoctorsofSubServiceApi = async (id: any) => {
 };
 
 export const getAllsubServicesOfASubServiceApi = async (id: any) => {
-  console.log("id", id);
+
   const response = await api.post(`/sub-services/service/${id.id}`);
   return response.data; 
 };

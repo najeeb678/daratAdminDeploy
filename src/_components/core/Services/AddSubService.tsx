@@ -35,15 +35,15 @@ const AddSubService: React.FC<AddServiceProps> = ({
   const router = useRouter();
   const { sub_serviceId } = router.query;
   const [subServiceImage, setSubServiceImage] = useState("");
-  console.log("sub_serviceId in modal", sub_serviceId);
+
   const handleImageChange = (url: string) => {
     formik.setFieldValue("picture", url);
     setSubServiceImage(url); // Save the uploaded image URL
   };
-  console.log("outsubServiceData", subServiceData);
+
   useEffect(() => {
     if (subServiceData) {
-      console.log("subServiceData", subServiceData);
+
       setIsUpdate(true);
       formik.setValues({
         name: subServiceData?.SERVICE || "",
@@ -68,9 +68,9 @@ const AddSubService: React.FC<AddServiceProps> = ({
       description: Yup.string().required("Description is required"),
     }),
     onSubmit: async (data) => {
-      console.log("in submit");
+
       setLoading(true);
-      console.log("Form submitted with data:", data);
+
 
       try {
         if (data.picture === "") {
@@ -89,7 +89,7 @@ const AddSubService: React.FC<AddServiceProps> = ({
             ...data,
             id: subServiceData?.ID,
           };
-          console.log("updateData", subServiceData);
+
           await dispatch(updateSubServices(updateData)).unwrap();
           toast("Updated successfully", { type: "success" });
         } else {

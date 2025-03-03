@@ -106,7 +106,7 @@ export const changeUserRedeemedPackageStatus = createAsyncThunk(
   "loyalty/changeUserRedeemedPackageStatus",
   async (payload: any, { rejectWithValue }) => {
     try {
-      console.log("payload", payload);
+
       const data = await changeUserRedeemedPackageStatusApi(payload);
       return data;
     } catch (error: any) {
@@ -182,7 +182,7 @@ const loyaltyPointsSlice = createSlice({
       .addCase(
         createDiscount.fulfilled,
         (state, action: PayloadAction<any>) => {
-          console.log("createDiscount", action.payload?.value);
+
 
           state.loading = false;
           state.createCoupon = action.payload;

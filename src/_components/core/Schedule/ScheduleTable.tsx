@@ -216,6 +216,7 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
         backgroundColor: "#FBC02D !important",
         borderRadius: "50px !important",
         width: "auto !important",
+        fontSize: "12px!important",
 
         boxShadow: "none",
         "&:hover": {

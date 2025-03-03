@@ -61,7 +61,7 @@ const NotificationModal: React.FC<NotificationModalProps> = ({
   handleClose = () => {},
   role,
 }) => {
-  console.log("selectedNotification", selectedNotification);
+
   let type = selectedNotification?.type;
 
   return (

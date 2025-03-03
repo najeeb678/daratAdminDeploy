@@ -35,7 +35,7 @@ const OrderDetailsTable = ({ ordersData = [], loading = false }: any) => {
       fetchData();
     }
   }, [searchInput, dispatch]);
-  console.log("ordersData", ordersData);
+
   const formatDateTime = (dateString: string) => {
     return format(new Date(dateString), "MM/dd/yyyy hh:mm a");
   };

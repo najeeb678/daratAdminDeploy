@@ -45,7 +45,7 @@ const AddCategory: React.FC<AddCategoryProps> = ({
     }),
     onSubmit: async (data) => {
       setLoading(true);
-      console.log("Form submitted with data:", data);
+
       try {
         if (data.attachment === "") {
           toast.error("Please upload an image before submitting.");
