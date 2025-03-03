@@ -28,7 +28,7 @@ import {
   fetchScheduleById,
   getSchedule,
 } from "@/redux/slices/ScheduleSlice";
-import { formatDate, formatTime } from "@/utils/utils";
+import { formatDate } from "@/utils/utils";
 
 const ScheduleTable = ({ scheduleData, loading }: any) => {
   const dispatch = useDispatch<AppDispatch>();
@@ -209,7 +209,7 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
     {
       label: "Create a new Schedule",
       variant: "contained",
-      onClick: handleNewDoctor, // Open the Add Doctor modal
+      onClick: handleNewDoctor,
       size: "md",
       textColored: true,
       sx: {
