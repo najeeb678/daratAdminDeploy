@@ -123,9 +123,9 @@ const GenericTable = <T extends {}>({
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          minWidth: "max-content",
           justifyContent: "space-between",
           mb: 2,
+          minWidth: 650,
         }}
       >
         <Box sx={{ width: "auto" }}>
@@ -174,6 +174,7 @@ const GenericTable = <T extends {}>({
             display: "flex",
             justifyContent: "flex-end",
             gap: "10px",
+            marginLeft: "auto", // This will push the buttons to the rightmost side
           }}
         >
           {customContent && (
@@ -251,8 +252,6 @@ const GenericTable = <T extends {}>({
             sx={{
               display: "flex",
               flexDirection: "column",
-              // justifyContent: "center",
-              // marginBottom: "20px",
               alignItems: "center",
               minHeight: "40vh",
               textAlign: "center",

@@ -92,11 +92,7 @@ const CustomersTable = ({ customersData = [], loading = false }: any) => {
         loading={loading}
         handleSearchChange={handleSearchChange}
         searchStyle={{
-          width: {
-            xs: "60vw",
-            sm: "60vw",
-            md: "62%",
-          },
+          width: "62%",
           height: "29px",
           top: "0px",
           borderRadius: "50px",

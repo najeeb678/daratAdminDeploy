@@ -238,7 +238,7 @@ const ScheduleTable = ({ scheduleData, loading }: any) => {
         handleSearchChange={handleSearchChange}
         filters={filters}
         searchStyle={{
-          width: { xs: "60vw", sm: "60vw", md: "62%" },
+          width: "62%",
           height: "29px",
           top: "0px",
           borderRadius: "50px",
