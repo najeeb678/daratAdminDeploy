@@ -29,6 +29,7 @@ const AddSubService: React.FC<AddServiceProps> = ({
   handleClose = () => {},
   subServiceData = null,
 }) => {
+  console.log("subServiceData", subServiceData);
   const dispatch = useDispatch<AppDispatch>();
   const [loading, setLoading] = useState(false);
   const [isUpdate, setIsUpdate] = useState<boolean>(false);
@@ -43,7 +44,6 @@ const AddSubService: React.FC<AddServiceProps> = ({
 
   useEffect(() => {
     if (subServiceData) {
-
       setIsUpdate(true);
       formik.setValues({
         name: subServiceData?.SERVICE || "",
@@ -68,9 +68,7 @@ const AddSubService: React.FC<AddServiceProps> = ({
       description: Yup.string().required("Description is required"),
     }),
     onSubmit: async (data) => {
-
       setLoading(true);
-
 
       try {
         if (data.picture === "") {
@@ -84,7 +82,7 @@ const AddSubService: React.FC<AddServiceProps> = ({
           serviceId: sub_serviceId, // Add sub_serviceId to the payload
         };
 
-        if (isUpdate) {
+        if (subServiceData.length > 0 ) {
           const updateData = {
             ...data,
             id: subServiceData?.ID,
@@ -232,10 +230,10 @@ const AddSubService: React.FC<AddServiceProps> = ({
                 ariaLabel="three-dots-loading"
                 visible
               />
-            ) : isUpdate ? (
-              "Update Sub Service"
-            ) : (
+            ) : subServiceData.length === 0 ? (
               "Add Sub Service"
+            ) : (
+              "Update Sub Service"
             )}
           </Button>
         </Box>
