@@ -233,9 +233,10 @@ const ProductsTable = ({ productsData = [], loading }: any) => {
       size: "md",
       textColored: true,
       sx: {
-        width: "135px !important",
+        width: "225px !important",
         height: "29px !important",
         fontWeight: "400 !important",
+
         fontSize: "12px !important",
         backgroundColor: "#FBC02D !important",
         borderRadius: "50px !important",
